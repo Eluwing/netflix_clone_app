@@ -1,10 +1,9 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { RecoilRoot } from "recoil";
-import { ThemeProvider } from "styled-components";
-import App from "./App";
-import { createGlobalStyle } from "styled-components";
-import { theme } from "./theme";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { RecoilRoot } from 'recoil';
+import { ThemeProvider, createGlobalStyle } from 'styled-components';
+import App from './App';
+import { theme } from './theme';
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -80,5 +79,5 @@ ReactDOM.render(
       </ThemeProvider>
     </RecoilRoot>
   </React.StrictMode>,
-  document.getElementById("root")
+  document.getElementById('root'),
 );
