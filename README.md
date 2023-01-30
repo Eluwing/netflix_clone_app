@@ -1,1 +1,1 @@
-# pratice_animation_app
+# Netfilx Clone App
