@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Link, useRouteMatch } from 'react-router-dom';
@@ -57,7 +57,7 @@ const Search = styled.span`
   }
 `;
 
-const Circle = styled.span`
+const Circle = styled(motion.span)`
   position: absolute;
   width: 5px;
   height: 5px;
@@ -82,9 +82,20 @@ const logoVariants = {
   },
 };
 
+const Input = styled(motion.input)`
+  color: white;
+  display: flex;
+  align-items: center;
+  svg {
+    height: 25px;
+  }
+`;
+
 function Header(): JSX.Element {
+  const [searchOpen, setSearchOpen] = useState(false);
   const homeMatch = useRouteMatch('/');
   const tvMatch = useRouteMatch('/tv');
+  const openSearch = (): void => setSearchOpen(true);
   return (
     <Nav>
       <Col>
@@ -101,15 +112,15 @@ function Header(): JSX.Element {
         </Logo>
         <Items>
           <Item>
-            <Link to="/">Home {homeMatch?.isExact === true && <Circle />}</Link>
+            <Link to="/">Home {homeMatch?.isExact === true && <Circle layoutId="circle" />}</Link>
           </Item>
           <Item>
-            <Link to="/tv">Tv Shows {tvMatch != null && <Circle />}</Link>
+            <Link to="/tv">Tv Shows {tvMatch != null && <Circle layoutId="circle" />}</Link>
           </Item>
         </Items>
       </Col>
       <Col>
-        <Search>
+        <Search onClick={openSearch}>
           <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
             <path
               fillRule="evenodd"
@@ -117,6 +128,10 @@ function Header(): JSX.Element {
               clipRule="evenodd"
             ></path>
           </svg>
+          <Input
+            initial={{ scaleX: searchOpen ? 1 : 0 }}
+            placeholder="Search for movie or tv show..."
+          />
         </Search>
       </Col>
     </Nav>
