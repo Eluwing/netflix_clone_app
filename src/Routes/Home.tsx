@@ -52,6 +52,8 @@ const Row = styled(motion.div)`
 const Box = styled(motion.div)<{ bgPhoto: string }>`
   background-color: white;
   background: url(${(props) => props.bgPhoto});
+  background-size: cover;
+  background-position: center center;
   height: 200px;
 `;
 
@@ -76,8 +78,8 @@ function Home(): JSX.Element {
     if (data != null) {
       if (leaving) return;
       toggleLeaving();
-      const totalMovies = data.results.length;
-      const maxIndex = Math.ceil(totalMovies / offset);
+      const totalMovies = data.results.length - 1;
+      const maxIndex = Math.floor(totalMovies / offset) - 1;
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
   };
@@ -111,7 +113,7 @@ function Home(): JSX.Element {
                   .slice(1)
                   .slice(offset * index, offset * index + offset)
                   .map((movie) => (
-                    <Box key={movie.id} bgPhoto={makeImagePath(movie.backdrop_path ?? '')}>
+                    <Box key={movie.id} bgPhoto={makeImagePath(movie.backdrop_path ?? '', 'w500')}>
                       {movie.title}
                     </Box>
                   ))}
