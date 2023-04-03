@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
 import { getMovies, IGetMoviesResult } from '../api';
 import { makeImagePath } from '../utils';
@@ -51,8 +52,29 @@ const Row = styled(motion.div)`
 
 const Box = styled(motion.div)<{ bgPhoto: string }>`
   background-color: white;
-  background: url(${(props) => props.bgPhoto});
+  background-image: url(${(props) => props.bgPhoto});
+  background-size: cover;
+  background-position: center center;
   height: 200px;
+  &:first-child {
+    transform-origin: center left;
+  }
+  &:last-child {
+    transform-origin: center right;
+  }
+`;
+
+const Info = styled(motion.div)`
+  padding: 20px;
+  background-color: ${(props) => props.theme.black.lighter};
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  h4 {
+    text-align: center;
+    font-size: 18px;
+  }
 `;
 
 const rowVariants = {
@@ -67,23 +89,52 @@ const rowVariants = {
   },
 };
 
+const BoxVariants = {
+  normal: {
+    scale: 1,
+  },
+  hover: {
+    scale: 1.3,
+    y: -50,
+    transition: {
+      delay: 0.5,
+      type: 'tween',
+    },
+  },
+};
+
+const infoVariants = {
+  hover: {
+    opacity: 1,
+    transition: {
+      delay: 0.5,
+      type: 'tween',
+    },
+  },
+};
+
 const offset = 6;
 
 function Home(): JSX.Element {
+  const history = useHistory();
+  const bigMovieMatch = useRouteMatch<{ movieId: string }>('/movies/:movieId');
+  console.log(bigMovieMatch);
   const { data, isLoading } = useQuery<IGetMoviesResult>(['movies', 'noewPlaying'], getMovies);
   const [index, setIndex] = useState(0);
   const incraseIndex = (): void => {
     if (data != null) {
       if (leaving) return;
       toggleLeaving();
-      const totalMovies = data.results.length;
-      const maxIndex = Math.ceil(totalMovies / offset);
+      const totalMovies = data.results.length - 1;
+      const maxIndex = Math.floor(totalMovies / offset) - 1;
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
   };
   const [leaving, setLeaving] = useState(false);
   const toggleLeaving = (): void => setLeaving((prev) => !prev);
-
+  const onBoxClicked = (movieId: number): void => {
+    history.push(`/movies/${movieId}`);
+  };
   return (
     <Wrapper>
       {isLoading ? (
@@ -111,13 +162,42 @@ function Home(): JSX.Element {
                   .slice(1)
                   .slice(offset * index, offset * index + offset)
                   .map((movie) => (
-                    <Box key={movie.id} bgPhoto={makeImagePath(movie.backdrop_path ?? '')}>
+                    <Box
+                      layoutId={String(movie.id)}
+                      key={movie.id}
+                      variants={BoxVariants}
+                      whileHover="hover"
+                      initial="normal"
+                      onClick={() => onBoxClicked(movie.id)}
+                      transition={{ type: 'tween' }}
+                      bgPhoto={makeImagePath(movie.backdrop_path ?? '', 'w500')}
+                    >
                       {movie.title}
+                      <Info variants={infoVariants}>
+                        <h4>{movie.title}</h4>
+                      </Info>
                     </Box>
                   ))}
               </Row>
             </AnimatePresence>
           </Slider>
+          <AnimatePresence>
+            {bigMovieMatch ? (
+              <motion.div
+                layoutId={bigMovieMatch.params.movieId}
+                style={{
+                  position: 'absolute',
+                  width: '40vw',
+                  height: '80vh',
+                  backgroundColor: 'red',
+                  top: 50,
+                  left: 0,
+                  right: 0,
+                  margin: '0 auto',
+                }}
+              />
+            ) : null}
+          </AnimatePresence>
         </>
       )}
     </Wrapper>
