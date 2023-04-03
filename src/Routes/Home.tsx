@@ -89,7 +89,7 @@ const Overlay = styled(motion.div)`
 const BigMoive = styled(motion.div)`
   position: absolute;
   width: 40vw;
-  height: 80vh;
+  height: 90vh;
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -98,7 +98,7 @@ const BigMoive = styled(motion.div)`
   background-color: ${(props) => props.theme.black.lighter};
 `;
 
-const BigCover = styled.img`
+const BigCover = styled.div`
   width: 100%;
   background-size: cover;
   background-position: center center;
@@ -117,6 +117,7 @@ const BigOverview = styled.p`
   padding: 20px;
   position: relative;
   color: ${(props) => props.theme.white.lighter};
+  top: -60px;
 `;
 
 const rowVariants = {
@@ -244,7 +245,7 @@ function Home(): JSX.Element {
                             'w500',
                           )})`,
                         }}
-                      />
+                      ></BigCover>
                       <BigTitle>{clickedMovie.title}</BigTitle>
                       <BigOverview>{clickedMovie.overview}</BigOverview>
                     </>
