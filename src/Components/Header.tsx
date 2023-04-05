@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion, useAnimation, useMotionValueEvent, useScroll } from 'framer-motion';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link, useHistory, useRouteMatch } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 const Nav = styled(motion.nav)`
   display: flex;
@@ -50,7 +51,7 @@ const Item = styled.ul`
   }
 `;
 
-const Search = styled.span`
+const Search = styled.form`
   color: white;
   display: flex;
   align-items: center;
@@ -107,12 +108,23 @@ const navVariants = {
   },
 };
 
+interface IForm {
+  keyword: string;
+}
+
 function Header(): JSX.Element {
   const [searchOpen, setSearchOpen] = useState(false);
   const homeMatch = useRouteMatch('/');
   const tvMatch = useRouteMatch('/tv');
   const inputAnimation = useAnimation();
   const navAnimation = useAnimation();
+  const history = useHistory();
+  const { scrollY } = useScroll();
+  const { register, handleSubmit } = useForm<IForm>();
+  const onValid = (data: IForm): void => {
+    console.log(data);
+    history.push(`/search?keyword=${data.keyword}`);
+  };
   const toggleSearch = (): void => {
     if (searchOpen) {
       // Fix Me : promise error that return void
@@ -124,8 +136,6 @@ function Header(): JSX.Element {
     }
     setSearchOpen((prev) => !prev);
   };
-  const { scrollY } = useScroll();
-
   useMotionValueEvent(scrollY, 'change', (prevY) => {
     if (prevY > 80) {
       // Fix Me : promise error that return void
@@ -161,7 +171,7 @@ function Header(): JSX.Element {
         </Items>
       </Col>
       <Col>
-        <Search>
+        <Search onSubmit={handleSubmit(onValid)}>
           <motion.svg
             onClick={toggleSearch}
             animate={{ x: searchOpen ? -215 : 0 }}
@@ -177,6 +187,7 @@ function Header(): JSX.Element {
             ></path>
           </motion.svg>
           <Input
+            {...register('keyword', { required: true, minLength: 2 })}
             animate={inputAnimation}
             initial={{ scaleX: 0 }}
             transition={{ type: 'linear' }}
