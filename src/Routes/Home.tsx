@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll } from 'framer-motion';
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { useHistory, useRouteMatch } from 'react-router-dom';
@@ -77,6 +77,49 @@ const Info = styled(motion.div)`
   }
 `;
 
+const Overlay = styled(motion.div)`
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+`;
+
+const BigMoive = styled(motion.div)`
+  position: absolute;
+  width: 40vw;
+  height: 90vh;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  border-radius: 15px;
+  overflow: hidden;
+  background-color: ${(props) => props.theme.black.lighter};
+`;
+
+const BigCover = styled.div`
+  width: 100%;
+  background-size: cover;
+  background-position: center center;
+  height: 400px;
+`;
+
+const BigTitle = styled.h3`
+  color: ${(props) => props.theme.white.lighter};
+  padding: 10px;
+  font-size: 26px;
+  position: relative;
+  top: -60px;
+`;
+
+const BigOverview = styled.p`
+  padding: 20px;
+  position: relative;
+  color: ${(props) => props.theme.white.lighter};
+  top: -60px;
+`;
+
 const rowVariants = {
   hidden: {
     x: window.outerWidth + 5,
@@ -118,7 +161,7 @@ const offset = 6;
 function Home(): JSX.Element {
   const history = useHistory();
   const bigMovieMatch = useRouteMatch<{ movieId: string }>('/movies/:movieId');
-  console.log(bigMovieMatch);
+  const { scrollY } = useScroll();
   const { data, isLoading } = useQuery<IGetMoviesResult>(['movies', 'noewPlaying'], getMovies);
   const [index, setIndex] = useState(0);
   const incraseIndex = (): void => {
@@ -135,6 +178,10 @@ function Home(): JSX.Element {
   const onBoxClicked = (movieId: number): void => {
     history.push(`/movies/${movieId}`);
   };
+  const onOverlayClick = (): void => history.push('/');
+  const clickedMovie =
+    bigMovieMatch?.params.movieId &&
+    data?.results.find((movie) => String(movie.id) === bigMovieMatch.params.movieId);
   return (
     <Wrapper>
       {isLoading ? (
@@ -183,19 +230,28 @@ function Home(): JSX.Element {
           </Slider>
           <AnimatePresence>
             {bigMovieMatch ? (
-              <motion.div
-                layoutId={bigMovieMatch.params.movieId}
-                style={{
-                  position: 'absolute',
-                  width: '40vw',
-                  height: '80vh',
-                  backgroundColor: 'red',
-                  top: 50,
-                  left: 0,
-                  right: 0,
-                  margin: '0 auto',
-                }}
-              />
+              <>
+                <Overlay onClick={onOverlayClick} exit={{ opacity: 0 }} animate={{ opacity: 1 }} />
+                <BigMoive
+                  style={{ top: scrollY.get() + 100 }}
+                  layoutId={bigMovieMatch.params.movieId}
+                >
+                  {clickedMovie && (
+                    <>
+                      <BigCover
+                        style={{
+                          backgroundImage: `linear-gradient(to top,black, transparent), url(${makeImagePath(
+                            clickedMovie.backdrop_path,
+                            'w500',
+                          )})`,
+                        }}
+                      ></BigCover>
+                      <BigTitle>{clickedMovie.title}</BigTitle>
+                      <BigOverview>{clickedMovie.overview}</BigOverview>
+                    </>
+                  )}
+                </BigMoive>
+              </>
             ) : null}
           </AnimatePresence>
         </>
