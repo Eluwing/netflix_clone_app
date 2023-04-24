@@ -1,5 +1,4 @@
-const API_KEY = '9d9e113697aea324490c0ee7b9da45dd';
-const BASE_PATH = 'https://api.themoviedb.org/3';
+import { API_KEY, BASE_PATH } from './Constants/Common.js';
 
 interface IMovie {
   id: number;
@@ -33,8 +32,8 @@ export async function getMovies(): Promise<IGetMoviesResult> {
   );
 }
 
-export async function getListTypeMovies(listTypeUrl: string): Promise<IGetPopularMoviesResult> {
-  return await fetch(`${BASE_PATH}/movie/${listTypeUrl}?api_key=${API_KEY}`).then(
+export async function getPopularMovies(): Promise<IGetPopularMoviesResult> {
+  return await fetch(`${BASE_PATH}/movie/popular?api_key=${API_KEY}`).then(
     async (response) => await response.json(),
   );
 }

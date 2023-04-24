@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { getMovies, IGetMoviesResult } from '../api';
 import { makeImagePath } from '../utils';
 import Slider from '../Components/Slider';
+import { SCREEN_TYPES } from '../Constants/Common';
 
 const Wrapper = styled.div`
   background: black;
@@ -200,7 +201,8 @@ function Home(): JSX.Element {
             <OverView>{data?.results[0].overview}</OverView>
           </Banner>
           <SliderArea>
-            <Slider movieListStyle={''} />
+            <Slider movieListStyle={SCREEN_TYPES.NOW_PLAYING_MOVIE} />
+            <Slider movieListStyle={SCREEN_TYPES.POPULAR_MOVIE} />
           </SliderArea>
         </>
       )}

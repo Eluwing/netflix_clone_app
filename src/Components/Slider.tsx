@@ -1,12 +1,11 @@
 import { AnimatePresence, motion, useScroll } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import { IGetMoviesResult, IGetPopularMoviesResult, getMovies } from '../api';
+import { IGetMoviesResult, IGetPopularMoviesResult, getMovies, getPopularMovies } from '../api';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { makeImagePath } from '../utils';
-import { Interface } from 'readline';
-import { API_INTERFACE_TYPES, SCREEN_TYPES } from '../Constants/constants';
+import { API_INTERFACE_TYPES, SCREEN_TYPES } from '../Constants/Common';
 
 interface ISliderProps {
   movieListStyle: string;
@@ -136,10 +135,6 @@ const infoVariants = {
   },
 };
 
-const Wrapper = styled.div`
-  background: black;
-`;
-
 const Loader = styled.div`
   height: 20vh;
   display: flex;
@@ -171,7 +166,7 @@ function Slider({ movieListStyle }: ISliderProps): JSX.Element {
       : movieListStyle === SCREEN_TYPES.POPULAR_MOVIE
       ? useQuery<IGetPopularMoviesResult>({
           queryKey: ['popular'],
-          queryFn: getMovies,
+          queryFn: getPopularMovies,
         })
       : emptyData;
   const [index, setIndex] = useState(0);
