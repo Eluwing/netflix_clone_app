@@ -1,4 +1,4 @@
-import { API_KEY, BASE_PATH } from './Constants/Common.js';
+import { API_KEY, BASE_PATH } from './Constants/Common';
 
 interface IMovie {
   id: number;
