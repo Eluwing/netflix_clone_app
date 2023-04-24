@@ -152,6 +152,7 @@ interface useQueryType<TInterface> {
 function Slider({ movieListStyle }: ISliderProps): JSX.Element {
   const history = useHistory();
   const emptyData: useQueryType<API_INTERFACE_TYPES> = {
+    // Because it is not possible to set an empty object in TypeScript
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     data: {} as API_INTERFACE_TYPES,
     isLoading: true,
