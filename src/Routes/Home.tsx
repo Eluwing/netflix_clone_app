@@ -199,69 +199,8 @@ function Home(): JSX.Element {
             <Title>{data?.results[0].title}</Title>
             <OverView>{data?.results[0].overview}</OverView>
           </Banner>
-
-          {/* <FirstSlider>
-            <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
-              <Row
-                variants={rowVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                transition={{ type: 'tween', duration: 1 }}
-                key={index}
-              >
-                {data?.results
-                  .slice(1)
-                  .slice(offset * index, offset * index + offset)
-                  .map((movie) => (
-                    <Box
-                      layoutId={String(movie.id)}
-                      key={movie.id}
-                      variants={BoxVariants}
-                      whileHover="hover"
-                      initial="normal"
-                      onClick={() => onBoxClicked(movie.id)}
-                      transition={{ type: 'tween' }}
-                      bgPhoto={makeImagePath(movie.backdrop_path ?? '', 'w500')}
-                    >
-                      {movie.title}
-                      <Info variants={infoVariants}>
-                        <h4>{movie.title}</h4>
-                      </Info>
-                    </Box>
-                  ))}
-              </Row>
-            </AnimatePresence>
-          </FirstSlider>
-          <AnimatePresence>
-            {bigMovieMatch ? (
-              <>
-                <Overlay onClick={onOverlayClick} exit={{ opacity: 0 }} animate={{ opacity: 1 }} />
-                <BigMoive
-                  style={{ top: scrollY.get() + 100 }}
-                  layoutId={bigMovieMatch.params.movieId}
-                >
-                  {clickedMovie && (
-                    <>
-                      <BigCover
-                        style={{
-                          backgroundImage: `linear-gradient(to top,black, transparent), url(${makeImagePath(
-                            clickedMovie.backdrop_path,
-                            'w500',
-                          )})`,
-                        }}
-                      ></BigCover>
-                      <BigTitle>{clickedMovie.title}</BigTitle>
-                      <BigOverview>{clickedMovie.overview}</BigOverview>
-                    </>
-                  )}
-                </BigMoive>
-              </>
-            ) : null}
-          </AnimatePresence> */}
           <SliderArea>
-            <Slider />
-            <Slider />
+            <Slider movieListStyle={''} />
           </SliderArea>
         </>
       )}

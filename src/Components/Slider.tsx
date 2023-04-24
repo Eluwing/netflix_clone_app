@@ -1,10 +1,15 @@
 import { AnimatePresence, motion, useScroll } from 'framer-motion';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import { IGetPopularMoviesResult, getPopularMovies } from '../api';
+import { API_INTERFACE_TYPE, IGetMoviesResult, IGetPopularMoviesResult, getMovies } from '../api';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { makeImagePath } from '../utils';
+import { Interface } from 'readline';
+
+interface ISliderProps {
+  movieListStyle: string;
+}
 
 const Box = styled(motion.div)<{ bgPhoto: string }>`
   background-color: white;
@@ -143,13 +148,31 @@ const Loader = styled.div`
 
 const offset = 6;
 
-function Slider(): JSX.Element {
+interface useQueryType<TInterface> {
+  data: TInterface | undefined;
+  isLoading: boolean;
+}
+
+function Slider({ movieListStyle }: ISliderProps): JSX.Element {
   const history = useHistory();
+  const emptyData: useQueryType<API_INTERFACE_TYPE> = {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    data: {} as API_INTERFACE_TYPE,
+    isLoading: true,
+  };
   const popUpMovieMatch = useRouteMatch<{ movieId: string }>('/movies/:movieId');
-  const { data, isLoading } = useQuery<IGetPopularMoviesResult>(
-    ['movies', 'popular'],
-    getPopularMovies,
-  );
+  const { data, isLoading }: useQueryType<API_INTERFACE_TYPE> =
+    movieListStyle === 'now_play'
+      ? useQuery<IGetMoviesResult>({
+          queryKey: ['nowPlaying'],
+          queryFn: getMovies,
+        })
+      : movieListStyle === 'popular_movie'
+      ? useQuery<IGetPopularMoviesResult>({
+          queryKey: ['popular'],
+          queryFn: getMovies,
+        })
+      : emptyData;
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const { scrollY } = useScroll();
@@ -170,6 +193,7 @@ function Slider(): JSX.Element {
   const clickedMovie =
     popUpMovieMatch?.params.movieId &&
     data?.results.find((movie) => String(movie.id) === popUpMovieMatch.params.movieId);
+
   return (
     <>
       {isLoading ? (
