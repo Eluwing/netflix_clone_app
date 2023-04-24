@@ -197,7 +197,7 @@ function Slider({ movieListStyle }: ISliderProps): JSX.Element {
         <Loader>Loading...</Loader>
       ) : (
         <>
-          <SliderArea>
+          <SliderArea key={movieListStyle}>
             <ButtonArea>
               <button onClick={incraseIndex}>{'<'}</button>
               <button onClick={incraseIndex}>{'>'}</button>
