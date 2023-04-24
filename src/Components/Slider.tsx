@@ -2,10 +2,11 @@ import { AnimatePresence, motion, useScroll } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import { API_INTERFACE_TYPE, IGetMoviesResult, IGetPopularMoviesResult, getMovies } from '../api';
+import { IGetMoviesResult, IGetPopularMoviesResult, getMovies } from '../api';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { makeImagePath } from '../utils';
 import { Interface } from 'readline';
+import { API_INTERFACE_TYPES, SCREEN_TYPES } from '../Constants/constants';
 
 interface ISliderProps {
   movieListStyle: string;
@@ -155,19 +156,19 @@ interface useQueryType<TInterface> {
 
 function Slider({ movieListStyle }: ISliderProps): JSX.Element {
   const history = useHistory();
-  const emptyData: useQueryType<API_INTERFACE_TYPE> = {
+  const emptyData: useQueryType<API_INTERFACE_TYPES> = {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    data: {} as API_INTERFACE_TYPE,
+    data: {} as API_INTERFACE_TYPES,
     isLoading: true,
   };
   const popUpMovieMatch = useRouteMatch<{ movieId: string }>('/movies/:movieId');
-  const { data, isLoading }: useQueryType<API_INTERFACE_TYPE> =
-    movieListStyle === 'now_play'
+  const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> =
+    movieListStyle === SCREEN_TYPES.NOW_PLAYING_MOVIE
       ? useQuery<IGetMoviesResult>({
           queryKey: ['nowPlaying'],
           queryFn: getMovies,
         })
-      : movieListStyle === 'popular_movie'
+      : movieListStyle === SCREEN_TYPES.POPULAR_MOVIE
       ? useQuery<IGetPopularMoviesResult>({
           queryKey: ['popular'],
           queryFn: getMovies,
