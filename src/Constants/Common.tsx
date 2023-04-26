@@ -8,3 +8,10 @@ export const enum SCREEN_TYPES {
   POPULAR_MOVIE = 'popular_movie',
 }
 export type API_INTERFACE_TYPES = IGetMoviesResult | IGetPopularMoviesResult;
+
+export const enum SCREEN_KEY_TYPES {
+  MOVIE = 'movie',
+  TV = 'tv',
+  NOW_PLAYING = 'now_playing',
+  POPULAR = 'popular',
+}
