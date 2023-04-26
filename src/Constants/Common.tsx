@@ -7,6 +7,8 @@ export const enum SCREEN_TYPES {
   NOW_PLAYING_MOVIE = 'now_playing_movie',
   POPULAR_MOVIE = 'popular_movie',
 }
+
+// Add Me : if create interface type of API
 export type API_INTERFACE_TYPES = IGetMoviesResult | IGetPopularMoviesResult;
 
 export const enum SCREEN_QUERY_KEY {

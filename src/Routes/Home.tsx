@@ -59,7 +59,7 @@ function Home(): JSX.Element {
           </Banner>
           <SliderArea>
             <Slider movieListStyle={SCREEN_TYPES.NOW_PLAYING_MOVIE} />
-            <Slider movieListStyle={SCREEN_TYPES.POPULAR_MOVIE} />
+            {/* <Slider movieListStyle={SCREEN_TYPES.POPULAR_MOVIE} /> */}
           </SliderArea>
         </>
       )}

@@ -52,7 +52,7 @@ const Row = styled(motion.div)`
   display: grid;
   gap: 5px;
   grid-template-columns: repeat(6, 1fr);
-  position: relative;
+  position: absolute;
   width: 100%;
 `;
 
@@ -104,7 +104,8 @@ const rowVariants = {
     x: window.outerWidth + 5,
   },
   visible: {
-    x: 0,
+    x: 10,
+    y: 0,
   },
   exit: {
     x: -window.outerWidth - 5,
@@ -183,6 +184,15 @@ function Slider({ movieListStyle }: ISliderProps): JSX.Element {
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
   };
+  const decreaseIndex = (): void => {
+    if (data != null) {
+      if (leaving) return;
+      toggleLeaving();
+      const totalMovies = data.results.length - 1;
+      const maxIndex = Math.floor(totalMovies / offset) - 1;
+      setIndex((prev) => (prev === maxIndex ? 0 : prev - 1));
+    }
+  };
   const toggleLeaving = (): void => setLeaving((prev) => !prev);
   const onBoxClicked = (movieId: number): void => {
     history.push(`/movies/${movieId}`);
@@ -200,7 +210,7 @@ function Slider({ movieListStyle }: ISliderProps): JSX.Element {
         <>
           <SliderArea key={movieListStyle}>
             <ButtonArea>
-              <button onClick={incraseIndex}>{'<'}</button>
+              <button onClick={decreaseIndex}>{'<'}</button>
               <button onClick={incraseIndex}>{'>'}</button>
             </ButtonArea>
             <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
