@@ -39,6 +39,7 @@ const OverView = styled.div`
 `;
 
 const SliderArea = styled.div`
+  padding-bottom: 200px;
   margin: 30px 0px;
 `;
 
@@ -59,7 +60,9 @@ function Home(): JSX.Element {
           </Banner>
           <SliderArea>
             <Slider movieListStyle={SCREEN_TYPES.NOW_PLAYING_MOVIE} />
-            {/* <Slider movieListStyle={SCREEN_TYPES.POPULAR_MOVIE} /> */}
+          </SliderArea>
+          <SliderArea>
+            <Slider movieListStyle={SCREEN_TYPES.POPULAR_MOVIE} />
           </SliderArea>
         </>
       )}
