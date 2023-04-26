@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { getMovies, IGetMoviesResult } from '../api';
 import { makeImagePath } from '../utils';
 import Slider from '../Components/Slider';
-import { SCREEN_KEY_TYPES, SCREEN_TYPES } from '../Constants/Common';
+import { SCREEN_QUERY_KEY, SCREEN_TYPES } from '../Constants/Common';
 
 const Wrapper = styled.div`
   background: black;
@@ -44,7 +44,7 @@ const SliderArea = styled.div`
 
 function Home(): JSX.Element {
   const { data, isLoading } = useQuery<IGetMoviesResult>(
-    [SCREEN_KEY_TYPES.MOVIE, SCREEN_KEY_TYPES.NOW_PLAYING],
+    [SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.NOW_PLAYING],
     getMovies,
   );
   return (

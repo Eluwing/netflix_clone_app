@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { IGetPopularMoviesResult, getPopularMovies } from '../api';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { makeImagePath } from '../utils';
-import { API_INTERFACE_TYPES, SCREEN_KEY_TYPES, SCREEN_TYPES } from '../Constants/Common';
+import { API_INTERFACE_TYPES, SCREEN_QUERY_KEY, SCREEN_TYPES } from '../Constants/Common';
 
 interface ISliderProps {
   movieListStyle: string;
@@ -162,12 +162,12 @@ function Slider({ movieListStyle }: ISliderProps): JSX.Element {
   const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> =
     movieListStyle === SCREEN_TYPES.NOW_PLAYING_MOVIE
       ? {
-          data: queryClient.getQueryData([SCREEN_KEY_TYPES.MOVIE, SCREEN_KEY_TYPES.NOW_PLAYING]),
+          data: queryClient.getQueryData([SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.NOW_PLAYING]),
           isLoading: false,
         }
       : movieListStyle === SCREEN_TYPES.POPULAR_MOVIE
       ? useQuery<IGetPopularMoviesResult>({
-          queryKey: [[SCREEN_KEY_TYPES.MOVIE, SCREEN_KEY_TYPES.POPULAR]],
+          queryKey: [[SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.POPULAR]],
           queryFn: getPopularMovies,
         })
       : emptyData;
