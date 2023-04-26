@@ -104,8 +104,7 @@ const rowVariants = {
     x: window.outerWidth + 5,
   },
   visible: {
-    x: 10,
-    y: 0,
+    x: 0,
   },
   exit: {
     x: -window.outerWidth - 5,
