@@ -9,7 +9,7 @@ export const enum SCREEN_TYPES {
 }
 export type API_INTERFACE_TYPES = IGetMoviesResult | IGetPopularMoviesResult;
 
-export const enum SCREEN_KEY_TYPES {
+export const enum SCREEN_QUERY_KEY {
   MOVIE = 'movie',
   TV = 'tv',
   NOW_PLAYING = 'now_playing',
