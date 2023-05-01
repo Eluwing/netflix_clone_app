@@ -1,16 +1,29 @@
-import { IGetMoviesResult, IGetPopularMoviesResult } from '../api';
+import {
+  IGetUpcomingMoviesResult,
+  IGetMoviesResult,
+  IGetPopularMoviesResult,
+  IGetTopRatedMoviesResult,
+} from '../api';
 
 export const API_KEY = '9d9e113697aea324490c0ee7b9da45dd';
 export const BASE_PATH = 'https://api.themoviedb.org/3';
+export const GET_PAGE = 1;
 
 // Add Me : if create new Silder , Add key name
 export const enum SCREEN_TYPES {
-  NOW_PLAYING_MOVIE = 'now_playing_movie',
-  POPULAR_MOVIE = 'popular_movie',
+  NOW_PLAYING_MOVIE = 'New Movies in Theaters',
+  POPULAR_MOVIE = 'Popular Movies',
+  TOP_RATED_MOVIE = 'Top Rated Movies',
+  LATEST_MOVIE = 'Latest Moives',
+  UPCOMING_MOVIE = 'Upcoming Moives',
 }
 
 // Add Me : if create new interface type of API, Add interface name
-export type API_INTERFACE_TYPES = IGetMoviesResult | IGetPopularMoviesResult;
+export type API_INTERFACE_TYPES =
+  | IGetMoviesResult
+  | IGetPopularMoviesResult
+  | IGetTopRatedMoviesResult
+  | IGetUpcomingMoviesResult;
 
 // Add Me : if create new useQuery Key type, Add key name
 export const enum SCREEN_QUERY_KEY {
@@ -18,4 +31,7 @@ export const enum SCREEN_QUERY_KEY {
   TV = 'tv',
   NOW_PLAYING = 'now_playing',
   POPULAR = 'popular',
+  TOP_RATED = 'top_rated',
+  LATEST = 'latest',
+  UPCOMING = 'upcoming',
 }

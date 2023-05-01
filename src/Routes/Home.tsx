@@ -64,6 +64,12 @@ function Home(): JSX.Element {
           <SliderArea>
             <Slider movieListStyle={SCREEN_TYPES.POPULAR_MOVIE} />
           </SliderArea>
+          <SliderArea>
+            <Slider movieListStyle={SCREEN_TYPES.TOP_RATED_MOVIE} />
+          </SliderArea>
+          <SliderArea>
+            <Slider movieListStyle={SCREEN_TYPES.UPCOMING_MOVIE} />
+          </SliderArea>
         </>
       )}
     </Wrapper>

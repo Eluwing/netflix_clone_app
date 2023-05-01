@@ -2,7 +2,12 @@ import { AnimatePresence, motion, useScroll } from 'framer-motion';
 import React, { useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components';
-import { IGetPopularMoviesResult, getPopularMovies } from '../api';
+import {
+  IGetPopularMoviesResult,
+  getUpcomingMovies,
+  getPopularMovies,
+  getTopRatedMovies,
+} from '../api';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { makeImagePath } from '../utils';
 import { API_INTERFACE_TYPES, SCREEN_QUERY_KEY, SCREEN_TYPES } from '../Constants/Common';
@@ -41,6 +46,17 @@ const Info = styled(motion.div)`
 const SliderArea = styled.div`
   display: inline;
   margin: 30px 0px;
+`;
+
+const SliderTopBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+`;
+
+const SliderTitleArea = styled.div`
+  font-size: 20px;
+  font-weight: 1000;
 `;
 
 const ButtonArea = styled.div`
@@ -170,6 +186,16 @@ function Slider({ movieListStyle }: ISliderProps): JSX.Element {
           queryKey: [[SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.POPULAR]],
           queryFn: getPopularMovies,
         })
+      : movieListStyle === SCREEN_TYPES.TOP_RATED_MOVIE
+      ? useQuery<IGetPopularMoviesResult>({
+          queryKey: [[SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.TOP_RATED]],
+          queryFn: getTopRatedMovies,
+        })
+      : movieListStyle === SCREEN_TYPES.UPCOMING_MOVIE
+      ? useQuery<IGetPopularMoviesResult>({
+          queryKey: [[SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.UPCOMING]],
+          queryFn: getUpcomingMovies,
+        })
       : emptyData;
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
@@ -200,7 +226,6 @@ function Slider({ movieListStyle }: ISliderProps): JSX.Element {
   const clickedMovie =
     popUpMovieMatch?.params.movieId &&
     data?.results.find((movie) => String(movie.id) === popUpMovieMatch.params.movieId);
-
   return (
     <>
       {isLoading ? (
@@ -208,10 +233,13 @@ function Slider({ movieListStyle }: ISliderProps): JSX.Element {
       ) : (
         <>
           <SliderArea key={movieListStyle}>
-            <ButtonArea>
-              <button onClick={decreaseIndex}>{'<'}</button>
-              <button onClick={incraseIndex}>{'>'}</button>
-            </ButtonArea>
+            <SliderTopBar>
+              <SliderTitleArea>{movieListStyle}</SliderTitleArea>
+              <ButtonArea>
+                <button onClick={decreaseIndex}>{'<'}</button>
+                <button onClick={incraseIndex}>{'>'}</button>
+              </ButtonArea>
+            </SliderTopBar>
             <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
               <Row
                 variants={rowVariants}
