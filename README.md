@@ -6,7 +6,7 @@ https://eluwing.github.io/netflix_clone_app/
 
 ## Todo List
 
-1. More display moive list in Home Page
+1. More display moive list in Home Page(2023.05.01 Complete)
 2. Create Tv Show page
 3. Search Feature by entering the keyword 
 4. Improve moive detail modal
