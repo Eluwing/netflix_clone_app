@@ -11,3 +11,4 @@ https://eluwing.github.io/netflix_clone_app/
 3. Search Feature by entering the keyword 
 4. Improve moive detail modal
 5. Other Netflix like features
+6. Fix Slider Animation Bug
