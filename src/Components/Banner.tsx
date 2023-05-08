@@ -24,9 +24,9 @@ const OverView = styled.div`
 `;
 
 interface IBannerProps {
-  backgroundImagePath: string;
-  title: string;
-  overview: string;
+  backgroundImagePath: string | undefined;
+  title: string | undefined;
+  overview: string | undefined;
 }
 
 function Banner({ backgroundImagePath, title, overview }: IBannerProps): JSX.Element {
