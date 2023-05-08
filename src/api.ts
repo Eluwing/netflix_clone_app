@@ -44,6 +44,8 @@ interface ITv {
   id: number;
   backdrop_path: string;
   poster_path: string;
+  // Fix me : It is not in the API parameter list, but it is added because an error occurs.
+  title: string;
   name: string;
   overview: string;
 }
