@@ -7,6 +7,9 @@ import {
   getUpcomingMovies,
   getPopularMovies,
   getTopRatedMovies,
+  getCurrentOnAirTv,
+  getPopularTv,
+  getMostNewlyTv,
 } from '../api';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { makeImagePath } from '../utils';
@@ -181,7 +184,8 @@ function Slider({ movieListStyle }: ISliderProps): JSX.Element {
           data: queryClient.getQueryData([SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.NOW_PLAYING]),
           isLoading: false,
         }
-      : movieListStyle === SCREEN_TYPES.POPULAR_MOVIE
+      : // Movie List
+      movieListStyle === SCREEN_TYPES.POPULAR_MOVIE
       ? useQuery<IGetPopularMoviesResult>({
           queryKey: [[SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.POPULAR]],
           queryFn: getPopularMovies,
@@ -195,6 +199,27 @@ function Slider({ movieListStyle }: ISliderProps): JSX.Element {
       ? useQuery<IGetPopularMoviesResult>({
           queryKey: [[SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.UPCOMING]],
           queryFn: getUpcomingMovies,
+        })
+      : // TV List
+      movieListStyle === SCREEN_TYPES.AIRING_TODAY_TV
+      ? {
+          data: queryClient.getQueryData([SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.AIRING_TODAY]),
+          isLoading: false,
+        }
+      : movieListStyle === SCREEN_TYPES.POPULAR_TV
+      ? useQuery<IGetPopularMoviesResult>({
+          queryKey: [[SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.POPULAR]],
+          queryFn: getPopularTv,
+        })
+      : movieListStyle === SCREEN_TYPES.CURRENT_ON_AIR_TV
+      ? useQuery<IGetPopularMoviesResult>({
+          queryKey: [[SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.CURRENT_ON_AIR]],
+          queryFn: getCurrentOnAirTv,
+        })
+      : movieListStyle === SCREEN_TYPES.MOST_NEWLY_TV
+      ? useQuery<IGetPopularMoviesResult>({
+          queryKey: [[SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.UPCOMING]],
+          queryFn: getMostNewlyTv,
         })
       : emptyData;
   const [index, setIndex] = useState(0);
