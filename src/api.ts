@@ -109,17 +109,17 @@ export async function getAiringTodayTv(): Promise<IGetAiringTodayTvResult> {
   );
 }
 export async function getPopularTv(): Promise<IGetPopularTvResult> {
-  return await fetch(`${BASE_PATH}/tv/popular?api_key=${API_KEY}&page=${GET_PAGE}`).then(
+  return await fetch(`${BASE_PATH}/tv/popular?api_key=${API_KEY}&page=2`).then(
     async (response) => await response.json(),
   );
 }
 export async function getCurrentOnAirTv(): Promise<IGetCurrentOnAirTvResult> {
-  return await fetch(`${BASE_PATH}/tv/on_the_air?api_key=${API_KEY}&page=${GET_PAGE}`).then(
+  return await fetch(`${BASE_PATH}/tv/on_the_air?api_key=${API_KEY}&page=3`).then(
     async (response) => await response.json(),
   );
 }
 export async function getMostNewlyTv(): Promise<IGetMostNewlyTvResult> {
-  return await fetch(`${BASE_PATH}/tv/latest?api_key=${API_KEY}&page=${GET_PAGE}`).then(
+  return await fetch(`${BASE_PATH}/tv/latest?api_key=${API_KEY}&page=4`).then(
     async (response) => await response.json(),
   );
 }

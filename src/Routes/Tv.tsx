@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { IGetAiringTodayTvResult, getAiringTodayTv } from '../api';
 import Banner from '../Components/Banner';
 import { useQuery } from 'react-query';
-import { SCREEN_QUERY_KEY } from '../Constants/Common';
+import { SCREEN_QUERY_KEY, SCREEN_TYPES } from '../Constants/Common';
+import Slider from '../Components/Slider';
 
 const Wrapper = styled.div`
   background: black;
@@ -16,9 +17,14 @@ const Loader = styled.div`
   align-items: center;
 `;
 
+const SliderArea = styled.div`
+  padding-bottom: 200px;
+  margin: 30px 0px;
+`;
+
 function Tv(): JSX.Element {
   const { data, isLoading } = useQuery<IGetAiringTodayTvResult>(
-    [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.CURRENT_ON_AIR],
+    [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.AIRING_TODAY],
     getAiringTodayTv,
   );
 
@@ -27,11 +33,22 @@ function Tv(): JSX.Element {
       {isLoading ? (
         <Loader>Loading...</Loader>
       ) : (
-        <Banner
-          backgroundImagePath={data?.results[0].backdrop_path}
-          title={data?.results[0].name}
-          overview={data?.results[0].overview}
-        />
+        <>
+          <Banner
+            backgroundImagePath={data?.results[0].backdrop_path}
+            title={data?.results[0].name}
+            overview={data?.results[0].overview}
+          />
+          <SliderArea>
+            <Slider movieListStyle={SCREEN_TYPES.AIRING_TODAY_TV} />
+          </SliderArea>
+          <SliderArea>
+            <Slider movieListStyle={SCREEN_TYPES.POPULAR_TV} />
+          </SliderArea>
+          <SliderArea>
+            <Slider movieListStyle={SCREEN_TYPES.CURRENT_ON_AIR_TV} />
+          </SliderArea>
+        </>
       )}
     </Wrapper>
   );
