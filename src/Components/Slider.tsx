@@ -17,12 +17,12 @@ import {
 } from '../api';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { makeImagePath } from '../utils';
-import { API_INTERFACE_TYPES, SCREEN_QUERY_KEY, SLIDER_TYPES } from '../Constants/Common';
-
-interface ISliderProps {
-  sliderType: string;
-  screenType: number;
-}
+import {
+  API_INTERFACE_TYPES,
+  SCREEN_QUERY_KEY,
+  SCREEN_TYPES,
+  SLIDER_TYPES,
+} from '../Constants/Common';
 
 const Box = styled(motion.div)<{ bgPhoto: string }>`
   background-color: white;
@@ -168,12 +168,17 @@ const Loader = styled.div`
 
 const offset = 6;
 
+interface ISliderProps {
+  sliderType: string;
+  screenType: number;
+}
+
 interface useQueryType<TInterface> {
   data: TInterface | undefined;
   isLoading: boolean;
 }
 
-function Slider({ sliderType }: ISliderProps): JSX.Element {
+function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
   const history = useHistory();
   const emptyData: useQueryType<API_INTERFACE_TYPES> = {
     // Because it is not possible to set an empty object in TypeScript
@@ -181,7 +186,12 @@ function Slider({ sliderType }: ISliderProps): JSX.Element {
     data: {} as API_INTERFACE_TYPES,
     isLoading: true,
   };
-  const popUpMovieMatch = useRouteMatch<{ movieId: string }>('/movies/:movieId');
+  const popUpMovieMatch =
+    screenType === SCREEN_TYPES.MOVIES
+      ? useRouteMatch<{ screenId: string }>('/movies/:screenId')
+      : screenType === SCREEN_TYPES.TV
+      ? useRouteMatch<{ screenId: string }>('/tv/:screenId')
+      : null;
   const queryClient = useQueryClient();
   const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> =
     sliderType === SLIDER_TYPES.NOW_PLAYING_MOVIE
@@ -249,14 +259,24 @@ function Slider({ sliderType }: ISliderProps): JSX.Element {
     }
   };
   const toggleLeaving = (): void => setLeaving((prev) => !prev);
-  const onBoxClicked = (movieId: number): void => {
-    history.push(`/movies/${movieId}`);
+  const onBoxClicked = (screenId: number): void => {
+    if (screenType === SCREEN_TYPES.MOVIES) {
+      history.push(`/movies/${screenId}`);
+    } else if (screenType === SCREEN_TYPES.TV) {
+      history.push(`/tv/${screenId}`);
+    }
   };
-  const onOverlayClick = (): void => history.push('/');
+  const onOverlayClick = (): void => {
+    if (screenType === SCREEN_TYPES.MOVIES) {
+      history.push('/');
+    } else if (screenType === SCREEN_TYPES.TV) {
+      history.push('/tv');
+    }
+  };
   const clickedMovie =
-    popUpMovieMatch?.params.movieId &&
+    popUpMovieMatch?.params.screenId &&
     data?.results.find(
-      (movie: { id: number }) => String(movie.id) === popUpMovieMatch.params.movieId,
+      (movie: { id: number }) => String(movie.id) === popUpMovieMatch.params.screenId,
     );
   return (
     <>
@@ -310,7 +330,7 @@ function Slider({ sliderType }: ISliderProps): JSX.Element {
                 <Overlay onClick={onOverlayClick} exit={{ opacity: 0 }} animate={{ opacity: 1 }} />
                 <PopUpArea
                   style={{ top: scrollY.get() + 100 }}
-                  layoutId={popUpMovieMatch.params.movieId}
+                  layoutId={popUpMovieMatch.params.screenId}
                 >
                   {clickedMovie && (
                     <>
