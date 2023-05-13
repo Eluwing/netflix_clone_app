@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { getMovies, IGetMoviesResult } from '../api';
 import Slider from '../Components/Slider';
-import { SCREEN_QUERY_KEY, SLIDER_TYPES } from '../Constants/Common';
+import { SCREEN_QUERY_KEY, SCREEN_TYPES, SLIDER_TYPES } from '../Constants/Common';
 import Banner from '../Components/Banner';
 
 const Wrapper = styled.div`
@@ -39,16 +39,16 @@ function Home(): JSX.Element {
             overview={data?.results[0].overview}
           />
           <SliderArea>
-            <Slider movieListStyle={SLIDER_TYPES.NOW_PLAYING_MOVIE} />
+            <Slider sliderType={SLIDER_TYPES.NOW_PLAYING_MOVIE} screenType={SCREEN_TYPES.MOVIES} />
           </SliderArea>
           <SliderArea>
-            <Slider movieListStyle={SLIDER_TYPES.POPULAR_MOVIE} />
+            <Slider sliderType={SLIDER_TYPES.POPULAR_MOVIE} screenType={SCREEN_TYPES.MOVIES} />
           </SliderArea>
           <SliderArea>
-            <Slider movieListStyle={SLIDER_TYPES.TOP_RATED_MOVIE} />
+            <Slider sliderType={SLIDER_TYPES.TOP_RATED_MOVIE} screenType={SCREEN_TYPES.MOVIES} />
           </SliderArea>
           <SliderArea>
-            <Slider movieListStyle={SLIDER_TYPES.UPCOMING_MOVIE} />
+            <Slider sliderType={SLIDER_TYPES.UPCOMING_MOVIE} screenType={SCREEN_TYPES.MOVIES} />
           </SliderArea>
         </>
       )}

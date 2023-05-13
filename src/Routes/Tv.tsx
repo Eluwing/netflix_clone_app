@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { IGetAiringTodayTvResult, getAiringTodayTv } from '../api';
 import Banner from '../Components/Banner';
 import { useQuery } from 'react-query';
-import { SCREEN_QUERY_KEY, SLIDER_TYPES } from '../Constants/Common';
+import { SCREEN_QUERY_KEY, SCREEN_TYPES, SLIDER_TYPES } from '../Constants/Common';
 import Slider from '../Components/Slider';
 
 const Wrapper = styled.div`
@@ -40,13 +40,13 @@ function Tv(): JSX.Element {
             overview={data?.results[0].overview}
           />
           <SliderArea>
-            <Slider movieListStyle={SLIDER_TYPES.AIRING_TODAY_TV} />
+            <Slider sliderType={SLIDER_TYPES.AIRING_TODAY_TV} screenType={SCREEN_TYPES.TV} />
           </SliderArea>
           <SliderArea>
-            <Slider movieListStyle={SLIDER_TYPES.POPULAR_TV} />
+            <Slider sliderType={SLIDER_TYPES.POPULAR_TV} screenType={SCREEN_TYPES.TV} />
           </SliderArea>
           <SliderArea>
-            <Slider movieListStyle={SLIDER_TYPES.CURRENT_ON_AIR_TV} />
+            <Slider sliderType={SLIDER_TYPES.CURRENT_ON_AIR_TV} screenType={SCREEN_TYPES.TV} />
           </SliderArea>
         </>
       )}
