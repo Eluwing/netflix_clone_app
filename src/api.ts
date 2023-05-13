@@ -1,10 +1,11 @@
 import { API_KEY, BASE_PATH, GET_PAGE } from './Constants/Common';
 
-interface IMovie {
+interface IMovieOrTv {
   id: number;
   backdrop_path: string;
   poster_path: string;
-  title: string;
+  title?: string;
+  name?: string;
   overview: string;
 }
 
@@ -14,28 +15,28 @@ export interface IGetMoviesResult {
     minimum: string;
   };
   page: number;
-  results: IMovie[];
+  results: IMovieOrTv[];
   total_pages: number;
   total_results: number;
 }
 
 export interface IGetPopularMoviesResult {
   page: number;
-  results: IMovie[];
+  results: IMovieOrTv[];
   total_pages: number;
   total_results: number;
 }
 
 export interface IGetTopRatedMoviesResult {
   page: number;
-  results: IMovie[];
+  results: IMovieOrTv[];
   total_pages: number;
   total_results: number;
 }
 
 export interface IGetUpcomingMoviesResult {
   page: number;
-  results: IMovie[];
+  results: IMovieOrTv[];
   total_pages: number;
   total_results: number;
 }
@@ -52,28 +53,28 @@ interface ITv {
 
 export interface IGetAiringTodayTvResult {
   page: number;
-  results: ITv[];
+  results: IMovieOrTv[];
   total_pages: number;
   total_results: number;
 }
 
 export interface IGetPopularTvResult {
   page: number;
-  results: ITv[];
+  results: IMovieOrTv[];
   total_pages: number;
   total_results: number;
 }
 
 export interface IGetCurrentOnAirTvResult {
   page: number;
-  results: ITv[];
+  results: IMovieOrTv[];
   total_pages: number;
   total_results: number;
 }
 
 export interface IGetMostNewlyTvResult {
   page: number;
-  results: ITv[];
+  results: IMovieOrTv[];
   total_pages: number;
   total_results: number;
 }

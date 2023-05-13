@@ -254,7 +254,9 @@ function Slider({ movieListStyle }: ISliderProps): JSX.Element {
   const onOverlayClick = (): void => history.push('/');
   const clickedMovie =
     popUpMovieMatch?.params.movieId &&
-    data?.results.find((movie) => String(movie.id) === popUpMovieMatch.params.movieId);
+    data?.results.find(
+      (movie: { id: number }) => String(movie.id) === popUpMovieMatch.params.movieId,
+    );
   return (
     <>
       {isLoading ? (
@@ -292,9 +294,9 @@ function Slider({ movieListStyle }: ISliderProps): JSX.Element {
                       transition={{ type: 'tween' }}
                       bgPhoto={makeImagePath(movie.backdrop_path ?? '', 'w500')}
                     >
-                      {movie.title}
+                      {(movie.title && movie.title) ?? (movie.name && movie.name)}
                       <Info variants={infoVariants}>
-                        <h4>{movie.title}</h4>
+                        <h4>{(movie.title && movie.title) ?? (movie.name && movie.name)}</h4>
                       </Info>
                     </Box>
                   ))}
@@ -319,7 +321,10 @@ function Slider({ movieListStyle }: ISliderProps): JSX.Element {
                           )})`,
                         }}
                       ></PopUpCover>
-                      <PopUpTitle>{clickedMovie.title}</PopUpTitle>
+                      <PopUpTitle>
+                        {(clickedMovie.title && clickedMovie.title) ??
+                          (clickedMovie.name && clickedMovie.name)}
+                      </PopUpTitle>
                       <PopUpOverview>{clickedMovie.overview}</PopUpOverview>
                     </>
                   )}
