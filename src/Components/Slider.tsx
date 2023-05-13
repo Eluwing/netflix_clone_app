@@ -17,7 +17,7 @@ import {
 } from '../api';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { makeImagePath } from '../utils';
-import { API_INTERFACE_TYPES, SCREEN_QUERY_KEY, SCREEN_TYPES } from '../Constants/Common';
+import { API_INTERFACE_TYPES, SCREEN_QUERY_KEY, SLIDER_TYPES } from '../Constants/Common';
 
 interface ISliderProps {
   movieListStyle: string;
@@ -183,44 +183,44 @@ function Slider({ movieListStyle }: ISliderProps): JSX.Element {
   const popUpMovieMatch = useRouteMatch<{ movieId: string }>('/movies/:movieId');
   const queryClient = useQueryClient();
   const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> =
-    movieListStyle === SCREEN_TYPES.NOW_PLAYING_MOVIE
+    movieListStyle === SLIDER_TYPES.NOW_PLAYING_MOVIE
       ? {
           data: queryClient.getQueryData([SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.NOW_PLAYING]),
           isLoading: false,
         }
       : // Movie List
-      movieListStyle === SCREEN_TYPES.POPULAR_MOVIE
+      movieListStyle === SLIDER_TYPES.POPULAR_MOVIE
       ? useQuery<IGetPopularMoviesResult>({
           queryKey: [[SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.POPULAR]],
           queryFn: getPopularMovies,
         })
-      : movieListStyle === SCREEN_TYPES.TOP_RATED_MOVIE
+      : movieListStyle === SLIDER_TYPES.TOP_RATED_MOVIE
       ? useQuery<IGetTopRatedMoviesResult>({
           queryKey: [[SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.TOP_RATED]],
           queryFn: getTopRatedMovies,
         })
-      : movieListStyle === SCREEN_TYPES.UPCOMING_MOVIE
+      : movieListStyle === SLIDER_TYPES.UPCOMING_MOVIE
       ? useQuery<IGetUpcomingMoviesResult>({
           queryKey: [[SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.UPCOMING]],
           queryFn: getUpcomingMovies,
         })
       : // TV List
-      movieListStyle === SCREEN_TYPES.AIRING_TODAY_TV
+      movieListStyle === SLIDER_TYPES.AIRING_TODAY_TV
       ? {
           data: queryClient.getQueryData([SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.AIRING_TODAY]),
           isLoading: false,
         }
-      : movieListStyle === SCREEN_TYPES.POPULAR_TV
+      : movieListStyle === SLIDER_TYPES.POPULAR_TV
       ? useQuery<IGetPopularTvResult>({
           queryKey: [[SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.POPULAR]],
           queryFn: getPopularTv,
         })
-      : movieListStyle === SCREEN_TYPES.CURRENT_ON_AIR_TV
+      : movieListStyle === SLIDER_TYPES.CURRENT_ON_AIR_TV
       ? useQuery<IGetCurrentOnAirTvResult>({
           queryKey: [[SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.CURRENT_ON_AIR]],
           queryFn: getCurrentOnAirTv,
         })
-      : movieListStyle === SCREEN_TYPES.MOST_NEWLY_TV
+      : movieListStyle === SLIDER_TYPES.MOST_NEWLY_TV
       ? useQuery<IGetPopularMoviesResult>({
           queryKey: [[SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.UPCOMING]],
           queryFn: getMostNewlyTv,

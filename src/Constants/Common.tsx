@@ -14,7 +14,7 @@ export const BASE_PATH = 'https://api.themoviedb.org/3';
 export const GET_PAGE = 1;
 
 // Add Me : if create new Silder , Add key name
-export const enum SCREEN_TYPES {
+export const enum SLIDER_TYPES {
   NOW_PLAYING_MOVIE = 'New Movies in Theaters',
   POPULAR_MOVIE = 'Popular Movies',
   TOP_RATED_MOVIE = 'Top Rated Movies',
@@ -24,6 +24,11 @@ export const enum SCREEN_TYPES {
   POPULAR_TV = 'Popular Tv Shows',
   CURRENT_ON_AIR_TV = 'Current On Air Tv Shows',
   MOST_NEWLY_TV = 'Most Newly Tv Shows',
+}
+
+export const enum SCREEN_TYPES {
+  TV = 1,
+  MOVIES = 2,
 }
 
 // Add Me : if create new interface type of API, Add interface name
