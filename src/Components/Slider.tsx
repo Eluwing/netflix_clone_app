@@ -264,6 +264,8 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
       history.push(`/movies/${screenId}`);
     } else if (screenType === SCREEN_TYPES.TV) {
       history.push(`/tv/${screenId}`);
+    } else {
+      history.push('/');
     }
   };
   const onOverlayClick = (): void => {
@@ -271,6 +273,8 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
       history.push('/');
     } else if (screenType === SCREEN_TYPES.TV) {
       history.push('/tv');
+    } else {
+      history.push('/');
     }
   };
   const clickedMovie =
