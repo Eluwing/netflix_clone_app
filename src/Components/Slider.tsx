@@ -329,6 +329,7 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
               <>
                 <Overlay onClick={onOverlayClick} exit={{ opacity: 0 }} animate={{ opacity: 1 }} />
                 <PopUpArea
+                  // fix me: Y axis not moving dynamically
                   style={{ top: scrollY.get() + 100 }}
                   layoutId={popUpMovieMatch.params.screenId}
                 >
