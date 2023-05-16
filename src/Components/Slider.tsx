@@ -7,14 +7,22 @@ import {
   getUpcomingMovies,
   getPopularMovies,
   getTopRatedMovies,
+  getCurrentOnAirTv,
+  getPopularTv,
+  getMostNewlyTv,
+  IGetTopRatedMoviesResult,
+  IGetUpcomingMoviesResult,
+  IGetPopularTvResult,
+  IGetCurrentOnAirTvResult,
 } from '../api';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { makeImagePath } from '../utils';
-import { API_INTERFACE_TYPES, SCREEN_QUERY_KEY, SCREEN_TYPES } from '../Constants/Common';
-
-interface ISliderProps {
-  movieListStyle: string;
-}
+import {
+  API_INTERFACE_TYPES,
+  SCREEN_QUERY_KEY,
+  SCREEN_TYPES,
+  SLIDER_TYPES,
+} from '../Constants/Common';
 
 const Box = styled(motion.div)<{ bgPhoto: string }>`
   background-color: white;
@@ -160,12 +168,17 @@ const Loader = styled.div`
 
 const offset = 6;
 
+interface ISliderProps {
+  sliderType: string;
+  screenType: number;
+}
+
 interface useQueryType<TInterface> {
   data: TInterface | undefined;
   isLoading: boolean;
 }
 
-function Slider({ movieListStyle }: ISliderProps): JSX.Element {
+function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
   const history = useHistory();
   const emptyData: useQueryType<API_INTERFACE_TYPES> = {
     // Because it is not possible to set an empty object in TypeScript
@@ -173,28 +186,55 @@ function Slider({ movieListStyle }: ISliderProps): JSX.Element {
     data: {} as API_INTERFACE_TYPES,
     isLoading: true,
   };
-  const popUpMovieMatch = useRouteMatch<{ movieId: string }>('/movies/:movieId');
+  const popUpMovieMatch =
+    screenType === SCREEN_TYPES.MOVIES
+      ? useRouteMatch<{ screenId: string }>('/movies/:screenId')
+      : screenType === SCREEN_TYPES.TV
+      ? useRouteMatch<{ screenId: string }>('/tv/:screenId')
+      : null;
   const queryClient = useQueryClient();
   const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> =
-    movieListStyle === SCREEN_TYPES.NOW_PLAYING_MOVIE
+    sliderType === SLIDER_TYPES.NOW_PLAYING_MOVIE
       ? {
           data: queryClient.getQueryData([SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.NOW_PLAYING]),
           isLoading: false,
         }
-      : movieListStyle === SCREEN_TYPES.POPULAR_MOVIE
+      : // Movie List
+      sliderType === SLIDER_TYPES.POPULAR_MOVIE
       ? useQuery<IGetPopularMoviesResult>({
           queryKey: [[SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.POPULAR]],
           queryFn: getPopularMovies,
         })
-      : movieListStyle === SCREEN_TYPES.TOP_RATED_MOVIE
-      ? useQuery<IGetPopularMoviesResult>({
+      : sliderType === SLIDER_TYPES.TOP_RATED_MOVIE
+      ? useQuery<IGetTopRatedMoviesResult>({
           queryKey: [[SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.TOP_RATED]],
           queryFn: getTopRatedMovies,
         })
-      : movieListStyle === SCREEN_TYPES.UPCOMING_MOVIE
-      ? useQuery<IGetPopularMoviesResult>({
+      : sliderType === SLIDER_TYPES.UPCOMING_MOVIE
+      ? useQuery<IGetUpcomingMoviesResult>({
           queryKey: [[SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.UPCOMING]],
           queryFn: getUpcomingMovies,
+        })
+      : // TV List
+      sliderType === SLIDER_TYPES.AIRING_TODAY_TV
+      ? {
+          data: queryClient.getQueryData([SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.AIRING_TODAY]),
+          isLoading: false,
+        }
+      : sliderType === SLIDER_TYPES.POPULAR_TV
+      ? useQuery<IGetPopularTvResult>({
+          queryKey: [[SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.POPULAR]],
+          queryFn: getPopularTv,
+        })
+      : sliderType === SLIDER_TYPES.CURRENT_ON_AIR_TV
+      ? useQuery<IGetCurrentOnAirTvResult>({
+          queryKey: [[SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.CURRENT_ON_AIR]],
+          queryFn: getCurrentOnAirTv,
+        })
+      : sliderType === SLIDER_TYPES.MOST_NEWLY_TV
+      ? useQuery<IGetPopularMoviesResult>({
+          queryKey: [[SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.UPCOMING]],
+          queryFn: getMostNewlyTv,
         })
       : emptyData;
   const [index, setIndex] = useState(0);
@@ -219,22 +259,38 @@ function Slider({ movieListStyle }: ISliderProps): JSX.Element {
     }
   };
   const toggleLeaving = (): void => setLeaving((prev) => !prev);
-  const onBoxClicked = (movieId: number): void => {
-    history.push(`/movies/${movieId}`);
+  const onBoxClicked = (screenId: number): void => {
+    if (screenType === SCREEN_TYPES.MOVIES) {
+      history.push(`/movies/${screenId}`);
+    } else if (screenType === SCREEN_TYPES.TV) {
+      history.push(`/tv/${screenId}`);
+    } else {
+      history.push('/');
+    }
   };
-  const onOverlayClick = (): void => history.push('/');
+  const onOverlayClick = (): void => {
+    if (screenType === SCREEN_TYPES.MOVIES) {
+      history.push('/');
+    } else if (screenType === SCREEN_TYPES.TV) {
+      history.push('/tv');
+    } else {
+      history.push('/');
+    }
+  };
   const clickedMovie =
-    popUpMovieMatch?.params.movieId &&
-    data?.results.find((movie) => String(movie.id) === popUpMovieMatch.params.movieId);
+    popUpMovieMatch?.params.screenId &&
+    data?.results.find(
+      (movie: { id: number }) => String(movie.id) === popUpMovieMatch.params.screenId,
+    );
   return (
     <>
       {isLoading ? (
         <Loader>Loading...</Loader>
       ) : (
         <>
-          <SliderArea key={movieListStyle}>
+          <SliderArea key={sliderType}>
             <SliderTopBar>
-              <SliderTitleArea>{movieListStyle}</SliderTitleArea>
+              <SliderTitleArea>{sliderType}</SliderTitleArea>
               <ButtonArea>
                 <button onClick={decreaseIndex}>{'<'}</button>
                 <button onClick={incraseIndex}>{'>'}</button>
@@ -263,9 +319,9 @@ function Slider({ movieListStyle }: ISliderProps): JSX.Element {
                       transition={{ type: 'tween' }}
                       bgPhoto={makeImagePath(movie.backdrop_path ?? '', 'w500')}
                     >
-                      {movie.title}
+                      {(movie.title && movie.title) ?? (movie.name && movie.name)}
                       <Info variants={infoVariants}>
-                        <h4>{movie.title}</h4>
+                        <h4>{(movie.title && movie.title) ?? (movie.name && movie.name)}</h4>
                       </Info>
                     </Box>
                   ))}
@@ -277,8 +333,9 @@ function Slider({ movieListStyle }: ISliderProps): JSX.Element {
               <>
                 <Overlay onClick={onOverlayClick} exit={{ opacity: 0 }} animate={{ opacity: 1 }} />
                 <PopUpArea
+                  // fix me: Y axis not moving dynamically
                   style={{ top: scrollY.get() + 100 }}
-                  layoutId={popUpMovieMatch.params.movieId}
+                  layoutId={popUpMovieMatch.params.screenId}
                 >
                   {clickedMovie && (
                     <>
@@ -290,7 +347,10 @@ function Slider({ movieListStyle }: ISliderProps): JSX.Element {
                           )})`,
                         }}
                       ></PopUpCover>
-                      <PopUpTitle>{clickedMovie.title}</PopUpTitle>
+                      <PopUpTitle>
+                        {(clickedMovie.title && clickedMovie.title) ??
+                          (clickedMovie.name && clickedMovie.name)}
+                      </PopUpTitle>
                       <PopUpOverview>{clickedMovie.overview}</PopUpOverview>
                     </>
                   )}
