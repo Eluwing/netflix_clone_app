@@ -286,7 +286,7 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
       (movie: { id: number }) => String(movie.id) === popUpMovieMatch.params.screenId,
     );
   const sliderKeyNum = sliderType.concat(String(screenType));
-  const changeScrollY = useTransform(scrollY, (latest) => latest + 100);
+  const popUpScrollY = useTransform(scrollY, (latest) => latest + 20);
   return (
     <div className={sliderKeyNum}>
       {isLoading ? (
@@ -337,11 +337,7 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
             {popUpMovieMatch ? (
               <>
                 <Overlay onClick={onOverlayClick} exit={{ opacity: 0 }} animate={{ opacity: 1 }} />
-                <PopUpArea
-                  // fix me: Y axis not moving dynamically
-                  style={{ top: changeScrollY }}
-                  layoutId={popUpMovieMatch.params.screenId}
-                >
+                <PopUpArea style={{ top: popUpScrollY }} layoutId={popUpMovieMatch.params.screenId}>
                   {clickedMovie && (
                     <>
                       <PopUpCover
