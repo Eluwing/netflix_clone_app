@@ -1,5 +1,5 @@
-import { AnimatePresence, motion, useMotionValue, useScroll, useTransform } from 'framer-motion';
-import React, { useMemo, useState } from 'react';
+import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
+import React, { useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 import {
@@ -21,6 +21,7 @@ import {
   API_INTERFACE_TYPES,
   SCREEN_QUERY_KEY,
   SCREEN_TYPES,
+  SLIDER_TITLE,
   SLIDER_TYPES,
 } from '../Constants/Common';
 
@@ -179,10 +180,7 @@ interface useQueryType<TInterface> {
 
 function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
   const history = useHistory();
-  const getBoxScreenId = (id: number): string => {
-    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-    return String(String(id).concat(String(screenType)));
-  };
+  const [layoutScreenId, setLayoutScreenId] = useState(0);
   const emptyData: useQueryType<API_INTERFACE_TYPES> = {
     // Because it is not possible to set an empty object in TypeScript
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -263,6 +261,7 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
   };
   const toggleLeaving = (): void => setLeaving((prev) => !prev);
   const onBoxClicked = (screenId: number): void => {
+    setLayoutScreenId((prev) => screenId + screenType);
     if (screenType === SCREEN_TYPES.MOVIES) {
       history.push(`/movies/${screenId}`);
     } else if (screenType === SCREEN_TYPES.TV) {
@@ -287,6 +286,29 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
     );
   const sliderKeyNum = sliderType.concat(String(screenType));
   const popUpScrollY = useTransform(scrollY, (latest) => latest + 20);
+  // const transLayoutScreenId = useTransform(layoutScreenId, (latest) => latest + 10000);
+  // console.log({ scrollY, layoutScreenId, transLayoutScreenId });
+  const slidersTitle =
+    sliderType === SLIDER_TYPES.NOW_PLAYING_MOVIE
+      ? SLIDER_TITLE.NOW_PLAYING_MOVIE
+      : sliderType === SLIDER_TYPES.POPULAR_MOVIE
+      ? SLIDER_TITLE.POPULAR_MOVIE
+      : sliderType === SLIDER_TYPES.TOP_RATED_MOVIE
+      ? SLIDER_TITLE.TOP_RATED_MOVIE
+      : sliderType === SLIDER_TYPES.LATEST_MOVIE
+      ? SLIDER_TITLE.LATEST_MOVIE
+      : sliderType === SLIDER_TYPES.UPCOMING_MOVIE
+      ? SLIDER_TITLE.UPCOMING_MOVIE
+      : sliderType === SLIDER_TYPES.AIRING_TODAY_TV
+      ? SLIDER_TITLE.AIRING_TODAY_TV
+      : sliderType === SLIDER_TYPES.POPULAR_TV
+      ? SLIDER_TITLE.POPULAR_TV
+      : sliderType === SLIDER_TYPES.CURRENT_ON_AIR_TV
+      ? SLIDER_TITLE.CURRENT_ON_AIR_TV
+      : sliderType === SLIDER_TYPES.MOST_NEWLY_TV
+      ? SLIDER_TITLE.MOST_NEWLY_TV
+      : '';
+  console.log({ layoutScreenId });
   return (
     <div className={sliderKeyNum}>
       {isLoading ? (
@@ -295,7 +317,7 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
         <>
           <SliderArea key={sliderKeyNum}>
             <SliderTopBar>
-              <SliderTitleArea>{sliderType}</SliderTitleArea>
+              <SliderTitleArea>{slidersTitle}</SliderTitleArea>
               <ButtonArea>
                 <button onClick={decreaseIndex}>{'<'}</button>
                 <button onClick={incraseIndex}>{'>'}</button>
@@ -315,8 +337,8 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
                   .slice(offset * index, offset * index + offset)
                   .map((movie) => (
                     <Box
-                      layoutId={getBoxScreenId(movie.id)}
-                      key={movie.id}
+                      layoutId={String(layoutScreenId)}
+                      key={String(layoutScreenId)}
                       variants={BoxVariants}
                       whileHover="hover"
                       initial="normal"
