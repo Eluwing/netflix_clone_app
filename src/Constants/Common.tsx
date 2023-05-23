@@ -15,6 +15,18 @@ export const GET_PAGE = 1;
 
 // Add Me : if create new Silder , Add key name
 export const enum SLIDER_TYPES {
+  NOW_PLAYING_MOVIE = 'NPM',
+  POPULAR_MOVIE = 'PM',
+  TOP_RATED_MOVIE = 'TRM',
+  LATEST_MOVIE = 'LM',
+  UPCOMING_MOVIE = 'UM',
+  AIRING_TODAY_TV = 'ATT',
+  POPULAR_TV = 'PT',
+  CURRENT_ON_AIR_TV = 'COAT',
+  MOST_NEWLY_TV = 'MNT',
+}
+
+export const enum SLIDER_TITLE {
   NOW_PLAYING_MOVIE = 'New Movies in Theaters',
   POPULAR_MOVIE = 'Popular Movies',
   TOP_RATED_MOVIE = 'Top Rated Movies',
