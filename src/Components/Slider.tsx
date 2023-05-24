@@ -21,7 +21,6 @@ import {
   API_INTERFACE_TYPES,
   SCREEN_QUERY_KEY,
   SCREEN_TYPES,
-  SLIDER_TITLE,
   SLIDER_TYPES,
 } from '../Constants/Common';
 
