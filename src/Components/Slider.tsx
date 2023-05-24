@@ -16,7 +16,7 @@ import {
   IGetCurrentOnAirTvResult,
 } from '../api';
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import { getSliderBoxId, makeImagePath } from '../utils';
+import { getSliderBoxId, getSlidersTitle, makeImagePath } from '../utils';
 import {
   API_INTERFACE_TYPES,
   SCREEN_QUERY_KEY,
@@ -285,26 +285,7 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
       (movie: { id: number }) =>
         String(movie.id).concat(sliderAndScreenType) === popUpMovieMatch.params.screenId,
     );
-  const slidersTitle =
-    sliderType === SLIDER_TYPES.NOW_PLAYING_MOVIE
-      ? SLIDER_TITLE.NOW_PLAYING_MOVIE
-      : sliderType === SLIDER_TYPES.POPULAR_MOVIE
-      ? SLIDER_TITLE.POPULAR_MOVIE
-      : sliderType === SLIDER_TYPES.TOP_RATED_MOVIE
-      ? SLIDER_TITLE.TOP_RATED_MOVIE
-      : sliderType === SLIDER_TYPES.LATEST_MOVIE
-      ? SLIDER_TITLE.LATEST_MOVIE
-      : sliderType === SLIDER_TYPES.UPCOMING_MOVIE
-      ? SLIDER_TITLE.UPCOMING_MOVIE
-      : sliderType === SLIDER_TYPES.AIRING_TODAY_TV
-      ? SLIDER_TITLE.AIRING_TODAY_TV
-      : sliderType === SLIDER_TYPES.POPULAR_TV
-      ? SLIDER_TITLE.POPULAR_TV
-      : sliderType === SLIDER_TYPES.CURRENT_ON_AIR_TV
-      ? SLIDER_TITLE.CURRENT_ON_AIR_TV
-      : sliderType === SLIDER_TYPES.MOST_NEWLY_TV
-      ? SLIDER_TITLE.MOST_NEWLY_TV
-      : '';
+  const slidersTitle = getSlidersTitle(sliderType);
   return (
     <>
       {isLoading ? (
