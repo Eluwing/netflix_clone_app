@@ -16,7 +16,7 @@ import {
   IGetCurrentOnAirTvResult,
 } from '../api';
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import { makeImagePath } from '../utils';
+import { getSliderBoxId, makeImagePath } from '../utils';
 import {
   API_INTERFACE_TYPES,
   SCREEN_QUERY_KEY,
@@ -180,7 +180,11 @@ interface useQueryType<TInterface> {
 
 function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
   const history = useHistory();
-  const [layoutScreenId, setLayoutScreenId] = useState(0);
+  const { scrollY } = useScroll();
+  const sliderAndScreenType = sliderType.concat(String(screenType));
+  const popUpScrollY = useTransform(scrollY, (latest) => latest + 20);
+  const [index, setIndex] = useState(0);
+  const [leaving, setLeaving] = useState(false);
   const emptyData: useQueryType<API_INTERFACE_TYPES> = {
     // Because it is not possible to set an empty object in TypeScript
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -238,9 +242,6 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
           queryFn: getMostNewlyTv,
         })
       : emptyData;
-  const [index, setIndex] = useState(0);
-  const [leaving, setLeaving] = useState(false);
-  const { scrollY } = useScroll();
   const incraseIndex = (): void => {
     if (data != null) {
       if (leaving) return;
@@ -260,8 +261,7 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
     }
   };
   const toggleLeaving = (): void => setLeaving((prev) => !prev);
-  const onBoxClicked = (screenId: number): void => {
-    setLayoutScreenId((prev) => screenId + screenType);
+  const onBoxClicked = (screenId: string): void => {
     if (screenType === SCREEN_TYPES.MOVIES) {
       history.push(`/movies/${screenId}`);
     } else if (screenType === SCREEN_TYPES.TV) {
@@ -282,12 +282,9 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
   const clickedMovie =
     popUpMovieMatch?.params.screenId &&
     data?.results.find(
-      (movie: { id: number }) => String(movie.id) === popUpMovieMatch.params.screenId,
+      (movie: { id: number }) =>
+        String(movie.id).concat(sliderAndScreenType) === popUpMovieMatch.params.screenId,
     );
-  const sliderKeyNum = sliderType.concat(String(screenType));
-  const popUpScrollY = useTransform(scrollY, (latest) => latest + 20);
-  // const transLayoutScreenId = useTransform(layoutScreenId, (latest) => latest + 10000);
-  // console.log({ scrollY, layoutScreenId, transLayoutScreenId });
   const slidersTitle =
     sliderType === SLIDER_TYPES.NOW_PLAYING_MOVIE
       ? SLIDER_TITLE.NOW_PLAYING_MOVIE
@@ -308,14 +305,13 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
       : sliderType === SLIDER_TYPES.MOST_NEWLY_TV
       ? SLIDER_TITLE.MOST_NEWLY_TV
       : '';
-  console.log({ layoutScreenId });
   return (
-    <div className={sliderKeyNum}>
+    <>
       {isLoading ? (
         <Loader>Loading...</Loader>
       ) : (
         <>
-          <SliderArea key={sliderKeyNum}>
+          <SliderArea>
             <SliderTopBar>
               <SliderTitleArea>{slidersTitle}</SliderTitleArea>
               <ButtonArea>
@@ -337,12 +333,13 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
                   .slice(offset * index, offset * index + offset)
                   .map((movie) => (
                     <Box
-                      layoutId={String(layoutScreenId)}
-                      key={String(layoutScreenId)}
+                      layout
+                      layoutId={getSliderBoxId(movie.id, sliderAndScreenType)}
+                      key={getSliderBoxId(movie.id, sliderAndScreenType)}
                       variants={BoxVariants}
                       whileHover="hover"
                       initial="normal"
-                      onClick={() => onBoxClicked(movie.id)}
+                      onClick={() => onBoxClicked(getSliderBoxId(movie.id, sliderAndScreenType))}
                       transition={{ type: 'tween' }}
                       bgPhoto={makeImagePath(movie.backdrop_path ?? '', 'w500')}
                     >
@@ -383,7 +380,7 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
           </AnimatePresence>
         </>
       )}
-    </div>
+    </>
   );
 }
 export default React.memo(Slider);
