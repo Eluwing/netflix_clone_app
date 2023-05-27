@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useScroll } from 'framer-motion';
+import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
 import React, { useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components';
@@ -16,7 +16,7 @@ import {
   IGetCurrentOnAirTvResult,
 } from '../api';
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import { makeImagePath } from '../utils';
+import { getSliderBoxId, getSlidersTitle, makeImagePath } from '../utils';
 import {
   API_INTERFACE_TYPES,
   SCREEN_QUERY_KEY,
@@ -52,8 +52,7 @@ const Info = styled(motion.div)`
 `;
 
 const SliderArea = styled.div`
-  display: inline;
-  margin: 30px 0px;
+  margin-bottom: 250px;
 `;
 
 const SliderTopBar = styled.div`
@@ -180,6 +179,11 @@ interface useQueryType<TInterface> {
 
 function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
   const history = useHistory();
+  const { scrollY } = useScroll();
+  const sliderAndScreenType = sliderType.concat(String(screenType));
+  const popUpScrollY = useTransform(scrollY, (latest) => latest + 20);
+  const [index, setIndex] = useState(0);
+  const [leaving, setLeaving] = useState(false);
   const emptyData: useQueryType<API_INTERFACE_TYPES> = {
     // Because it is not possible to set an empty object in TypeScript
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -237,9 +241,6 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
           queryFn: getMostNewlyTv,
         })
       : emptyData;
-  const [index, setIndex] = useState(0);
-  const [leaving, setLeaving] = useState(false);
-  const { scrollY } = useScroll();
   const incraseIndex = (): void => {
     if (data != null) {
       if (leaving) return;
@@ -259,7 +260,7 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
     }
   };
   const toggleLeaving = (): void => setLeaving((prev) => !prev);
-  const onBoxClicked = (screenId: number): void => {
+  const onBoxClicked = (screenId: string): void => {
     if (screenType === SCREEN_TYPES.MOVIES) {
       history.push(`/movies/${screenId}`);
     } else if (screenType === SCREEN_TYPES.TV) {
@@ -280,17 +281,19 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
   const clickedMovie =
     popUpMovieMatch?.params.screenId &&
     data?.results.find(
-      (movie: { id: number }) => String(movie.id) === popUpMovieMatch.params.screenId,
+      (movie: { id: number }) =>
+        String(movie.id).concat(sliderAndScreenType) === popUpMovieMatch.params.screenId,
     );
+  const slidersTitle = getSlidersTitle(sliderType);
   return (
     <>
       {isLoading ? (
         <Loader>Loading...</Loader>
       ) : (
         <>
-          <SliderArea key={sliderType}>
+          <SliderArea>
             <SliderTopBar>
-              <SliderTitleArea>{sliderType}</SliderTitleArea>
+              <SliderTitleArea>{slidersTitle}</SliderTitleArea>
               <ButtonArea>
                 <button onClick={decreaseIndex}>{'<'}</button>
                 <button onClick={incraseIndex}>{'>'}</button>
@@ -310,12 +313,13 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
                   .slice(offset * index, offset * index + offset)
                   .map((movie) => (
                     <Box
-                      layoutId={String(movie.id)}
-                      key={movie.id}
+                      layout
+                      layoutId={getSliderBoxId(movie.id, sliderAndScreenType)}
+                      key={getSliderBoxId(movie.id, sliderAndScreenType)}
                       variants={BoxVariants}
                       whileHover="hover"
                       initial="normal"
-                      onClick={() => onBoxClicked(movie.id)}
+                      onClick={() => onBoxClicked(getSliderBoxId(movie.id, sliderAndScreenType))}
                       transition={{ type: 'tween' }}
                       bgPhoto={makeImagePath(movie.backdrop_path ?? '', 'w500')}
                     >
@@ -332,11 +336,7 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
             {popUpMovieMatch ? (
               <>
                 <Overlay onClick={onOverlayClick} exit={{ opacity: 0 }} animate={{ opacity: 1 }} />
-                <PopUpArea
-                  // fix me: Y axis not moving dynamically
-                  style={{ top: scrollY.get() + 100 }}
-                  layoutId={popUpMovieMatch.params.screenId}
-                >
+                <PopUpArea style={{ top: popUpScrollY }} layoutId={popUpMovieMatch.params.screenId}>
                   {clickedMovie && (
                     <>
                       <PopUpCover
@@ -363,4 +363,4 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
     </>
   );
 }
-export default Slider;
+export default React.memo(Slider);
