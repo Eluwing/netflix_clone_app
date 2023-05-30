@@ -4,6 +4,7 @@ export function makeImagePath(id: string, format?: string): string {
   return `https://image.tmdb.org/t/p/${format !== undefined ? format : 'original'}/${id}`;
 }
 
+// Generator Slider Box Id because avoid duplicate slider box layouts Id
 export function getSliderBoxId(screenNum: number, sliderAndScreenType: string): string {
   return String(screenNum).concat(sliderAndScreenType);
 }
