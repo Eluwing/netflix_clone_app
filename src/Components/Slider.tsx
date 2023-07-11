@@ -352,10 +352,7 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
             {isBoxPopUp ? (
               <>
                 <Overlay onClick={onOverlayClick} exit={{ opacity: 0 }} animate={{ opacity: 1 }} />
-                <PopUpArea
-                  style={{ top: popUpScrollY }}
-                  layoutId={popUpMovieMatch?.params.screenId}
-                >
+                <PopUpArea style={{ top: popUpScrollY }} layoutId={screenId}>
                   {clickedMovie && (
                     <>
                       <PopUpCover
