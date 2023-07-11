@@ -18,7 +18,6 @@ const Loader = styled.div`
 `;
 
 const SliderArea = styled.div`
-  padding-bottom: 200px;
   margin: 30px 0px;
 `;
 

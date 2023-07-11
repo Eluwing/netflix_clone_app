@@ -1,10 +1,11 @@
 import { SLIDER_TITLE, SLIDER_TYPES } from './Constants/Common';
 
-export function makeImagePath(id: string, format?: string): string {
-  return `https://image.tmdb.org/t/p/${format !== undefined ? format : 'original'}/${id}`;
+export function makeImagePath(id?: string, format?: string): string {
+  return `https://image.tmdb.org/t/p/${format !== undefined ? format : 'original'}/${id ?? ''}`;
 }
 
-export function getSliderBoxId(screenNum: number, sliderAndScreenType: string): string {
+// Generator Slider Box Id because avoid duplicate slider box layouts Id
+export function getSliderBoxId(screenNum: number | string, sliderAndScreenType: string): string {
   return String(screenNum).concat(sliderAndScreenType);
 }
 

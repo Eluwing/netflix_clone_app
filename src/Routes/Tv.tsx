@@ -17,11 +17,6 @@ const Loader = styled.div`
   align-items: center;
 `;
 
-const SliderArea = styled.div`
-  padding-bottom: 200px;
-  margin: 30px 0px;
-`;
-
 function Tv(): JSX.Element {
   const { data, isLoading } = useQuery<IGetAiringTodayTvResult>(
     [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.AIRING_TODAY],
@@ -39,11 +34,10 @@ function Tv(): JSX.Element {
             title={data?.results[0].name}
             overview={data?.results[0].overview}
           />
-          <SliderArea>
-            <Slider sliderType={SLIDER_TYPES.AIRING_TODAY_TV} screenType={SCREEN_TYPES.TV} />
-            <Slider sliderType={SLIDER_TYPES.POPULAR_TV} screenType={SCREEN_TYPES.TV} />
-            <Slider sliderType={SLIDER_TYPES.CURRENT_ON_AIR_TV} screenType={SCREEN_TYPES.TV} />
-          </SliderArea>
+
+          <Slider sliderType={SLIDER_TYPES.AIRING_TODAY_TV} screenType={SCREEN_TYPES.TV} />
+          <Slider sliderType={SLIDER_TYPES.POPULAR_TV} screenType={SCREEN_TYPES.TV} />
+          <Slider sliderType={SLIDER_TYPES.CURRENT_ON_AIR_TV} screenType={SCREEN_TYPES.TV} />
         </>
       )}
     </Wrapper>
