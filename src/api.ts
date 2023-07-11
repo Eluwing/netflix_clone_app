@@ -1,6 +1,6 @@
 import { API_KEY, BASE_PATH, GET_PAGE } from './Constants/Common';
 
-interface IMovieOrTv {
+export interface IMovieOrTv {
   id: number;
   backdrop_path: string;
   poster_path: string;

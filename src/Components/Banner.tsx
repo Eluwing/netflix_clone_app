@@ -2,14 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import { makeImagePath } from '../utils';
 
-const BannerArea = styled.div<{ bgPhoto: string }>`
+const BannerArea = styled.div<{ bgphoto: string }>`
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 60px;
   background-image: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)),
-    url(${(props) => props.bgPhoto});
+    url(${(props) => props.bgphoto});
   background-size: cover;
 `;
 
@@ -32,7 +32,7 @@ interface IBannerProps {
 function Banner({ backgroundImagePath, title, overview }: IBannerProps): JSX.Element {
   return (
     <>
-      <BannerArea bgPhoto={makeImagePath(backgroundImagePath ?? '')}>
+      <BannerArea bgphoto={makeImagePath(backgroundImagePath ?? '')}>
         <Title>{title}</Title>
         <OverView>{overview}</OverView>
       </BannerArea>

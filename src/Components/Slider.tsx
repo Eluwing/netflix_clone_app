@@ -1,5 +1,5 @@
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 import {
@@ -14,8 +14,9 @@ import {
   IGetUpcomingMoviesResult,
   IGetPopularTvResult,
   IGetCurrentOnAirTvResult,
+  IMovieOrTv,
 } from '../api';
-import { useHistory, useRouteMatch } from 'react-router-dom';
+import { match, useHistory, useRouteMatch } from 'react-router-dom';
 import { getSliderBoxId, getSlidersTitle, makeImagePath } from '../utils';
 import {
   API_INTERFACE_TYPES,
@@ -24,9 +25,9 @@ import {
   SLIDER_TYPES,
 } from '../Constants/Common';
 
-const Box = styled(motion.div)<{ bgPhoto: string }>`
+const Box = styled(motion.div)<{ bgphoto: string }>`
   background-color: white;
-  background-image: url(${(props) => props.bgPhoto});
+  background-image: url(${(props) => props.bgphoto});
   background-size: cover;
   background-position: center center;
   height: 200px;
@@ -184,18 +185,16 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
   const popUpScrollY = useTransform(scrollY, (latest) => latest + 20);
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
+  const [isBoxPopUp, isSetBoxPopUp] = useState(false);
+  const [popUpMovieMatch, setPopUpMovieMatch] = useState<match<{ screenId: string }> | null>();
+  const [clickedMovie, setClickedMovie] = useState<IMovieOrTv | null>();
+  const [screenId, setScreenId] = useState<string>();
   const emptyData: useQueryType<API_INTERFACE_TYPES> = {
     // Because it is not possible to set an empty object in TypeScript
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     data: {} as API_INTERFACE_TYPES,
     isLoading: true,
   };
-  const popUpMovieMatch =
-    screenType === SCREEN_TYPES.MOVIES
-      ? useRouteMatch<{ screenId: string }>('/movies/:screenId')
-      : screenType === SCREEN_TYPES.TV
-      ? useRouteMatch<{ screenId: string }>('/tv/:screenId')
-      : null;
   const queryClient = useQueryClient();
   const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> =
     sliderType === SLIDER_TYPES.NOW_PLAYING_MOVIE
@@ -260,7 +259,10 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
     }
   };
   const toggleLeaving = (): void => setLeaving((prev) => !prev);
+  const toggleBox = (): void => isSetBoxPopUp((prev) => !prev);
   const onBoxClicked = (screenId: string): void => {
+    toggleBox();
+    setScreenId(screenId);
     if (screenType === SCREEN_TYPES.MOVIES) {
       history.push(`/movies/${screenId}`);
     } else if (screenType === SCREEN_TYPES.TV) {
@@ -270,6 +272,7 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
     }
   };
   const onOverlayClick = (): void => {
+    toggleBox();
     if (screenType === SCREEN_TYPES.MOVIES) {
       history.push('/');
     } else if (screenType === SCREEN_TYPES.TV) {
@@ -278,21 +281,33 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
       history.push('/');
     }
   };
-  const clickedMovie =
-    popUpMovieMatch?.params.screenId &&
-    data?.results.find(
-      (movie: { id: number }) =>
-        String(movie.id).concat(sliderAndScreenType) === popUpMovieMatch.params.screenId,
-    );
   const slidersTitle = getSlidersTitle(sliderType);
+  useEffect(() => {
+    if (screenType === SCREEN_TYPES.MOVIES) {
+      setPopUpMovieMatch((prev) => useRouteMatch<{ screenId: string }>('/movies/:screenId'));
+    } else if (screenType === SCREEN_TYPES.TV) {
+      setPopUpMovieMatch((prev) => useRouteMatch<{ screenId: string }>('/tv/:screenId'));
+    }
+  }, [screenId]);
+  useEffect(() => {
+    setClickedMovie(
+      data?.results.find(
+        (movie: { id: number }) => String(movie.id).concat(sliderAndScreenType) === screenId,
+      ),
+    );
+  }, [screenId]);
   return (
     <>
       {isLoading ? (
         <Loader>Loading...</Loader>
       ) : (
         <>
-          <SliderArea>
-            <SliderTopBar>
+          <SliderArea
+            id={sliderAndScreenType}
+            className={sliderAndScreenType}
+            key={sliderAndScreenType}
+          >
+            <SliderTopBar className={sliderAndScreenType}>
               <SliderTitleArea>{slidersTitle}</SliderTitleArea>
               <ButtonArea>
                 <button onClick={decreaseIndex}>{'<'}</button>
@@ -307,6 +322,7 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
                 exit="exit"
                 transition={{ type: 'tween', duration: 1 }}
                 key={index}
+                className={sliderAndScreenType}
               >
                 {data?.results
                   .slice(1)
@@ -321,7 +337,7 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
                       initial="normal"
                       onClick={() => onBoxClicked(getSliderBoxId(movie.id, sliderAndScreenType))}
                       transition={{ type: 'tween' }}
-                      bgPhoto={makeImagePath(movie.backdrop_path ?? '', 'w500')}
+                      bgphoto={makeImagePath(movie.backdrop_path ?? '', 'w500')}
                     >
                       {(movie.title && movie.title) ?? (movie.name && movie.name)}
                       <Info variants={infoVariants}>
@@ -333,10 +349,13 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
             </AnimatePresence>
           </SliderArea>
           <AnimatePresence>
-            {popUpMovieMatch ? (
+            {isBoxPopUp ? (
               <>
                 <Overlay onClick={onOverlayClick} exit={{ opacity: 0 }} animate={{ opacity: 1 }} />
-                <PopUpArea style={{ top: popUpScrollY }} layoutId={popUpMovieMatch.params.screenId}>
+                <PopUpArea
+                  style={{ top: popUpScrollY }}
+                  layoutId={popUpMovieMatch?.params.screenId}
+                >
                   {clickedMovie && (
                     <>
                       <PopUpCover
@@ -363,4 +382,4 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
     </>
   );
 }
-export default React.memo(Slider);
+export default Slider;
