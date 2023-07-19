@@ -1,5 +1,5 @@
-import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 import {
@@ -80,49 +80,6 @@ const Row = styled(motion.div)`
   width: 100%;
 `;
 
-const Overlay = styled(motion.div)`
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-`;
-
-const PopUpArea = styled(motion.div)`
-  position: absolute;
-  width: 40vw;
-  height: 90vh;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  border-radius: 15px;
-  overflow: hidden;
-  background-color: ${(props) => props.theme.black.lighter};
-`;
-
-const PopUpCover = styled.div`
-  width: 100%;
-  background-size: cover;
-  background-position: center center;
-  height: 400px;
-`;
-
-const PopUpTitle = styled.h3`
-  color: ${(props) => props.theme.white.lighter};
-  padding: 10px;
-  font-size: 26px;
-  position: relative;
-  top: -60px;
-`;
-
-const PopUpOverview = styled.p`
-  padding: 20px;
-  position: relative;
-  color: ${(props) => props.theme.white.lighter};
-  top: -60px;
-`;
-
 const rowVariants = {
   hidden: {
     x: window.outerWidth + 5,
@@ -171,6 +128,8 @@ const offset = 6;
 interface ISliderProps {
   sliderType: string;
   screenType: number;
+  setClickedMovie: Dispatch<SetStateAction<IMovieOrTv | null | undefined>>;
+  isSetBoxPopUp: Dispatch<SetStateAction<boolean>>;
 }
 
 interface useQueryType<TInterface> {
@@ -178,16 +137,17 @@ interface useQueryType<TInterface> {
   isLoading: boolean;
 }
 
-function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
+function Slider({
+  sliderType,
+  screenType,
+  setClickedMovie,
+  isSetBoxPopUp,
+}: ISliderProps): JSX.Element {
   const history = useHistory();
-  const { scrollY } = useScroll();
   const sliderAndScreenType = sliderType.concat(String(screenType));
-  const popUpScrollY = useTransform(scrollY, (latest) => latest + 20);
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
-  const [isBoxPopUp, isSetBoxPopUp] = useState(false);
-  const [popUpMovieMatch, setPopUpMovieMatch] = useState<match<{ screenId: string }> | null>();
-  const [clickedMovie, setClickedMovie] = useState<IMovieOrTv | null>();
+  const [, setPopUpMovieMatch] = useState<match<{ screenId: string }> | null>();
   const [screenId, setScreenId] = useState<string>();
   const emptyData: useQueryType<API_INTERFACE_TYPES> = {
     // Because it is not possible to set an empty object in TypeScript
@@ -271,16 +231,6 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
       history.push('/');
     }
   };
-  const onOverlayClick = (): void => {
-    toggleBox();
-    if (screenType === SCREEN_TYPES.MOVIES) {
-      history.push('/');
-    } else if (screenType === SCREEN_TYPES.TV) {
-      history.push('/tv');
-    } else {
-      history.push('/');
-    }
-  };
   const slidersTitle = getSlidersTitle(sliderType);
   useEffect(() => {
     if (screenType === SCREEN_TYPES.MOVIES) {
@@ -302,12 +252,8 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
         <Loader>Loading...</Loader>
       ) : (
         <>
-          <SliderArea
-            id={sliderAndScreenType}
-            className={sliderAndScreenType}
-            key={sliderAndScreenType}
-          >
-            <SliderTopBar className={sliderAndScreenType}>
+          <SliderArea>
+            <SliderTopBar>
               <SliderTitleArea>{slidersTitle}</SliderTitleArea>
               <ButtonArea>
                 <button onClick={decreaseIndex}>{'<'}</button>
@@ -321,15 +267,12 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
                 animate="visible"
                 exit="exit"
                 transition={{ type: 'tween', duration: 1 }}
-                key={index}
-                className={sliderAndScreenType}
               >
                 {data?.results
                   .slice(1)
                   .slice(offset * index, offset * index + offset)
                   .map((movie) => (
                     <Box
-                      layout
                       layoutId={getSliderBoxId(movie.id, sliderAndScreenType)}
                       key={getSliderBoxId(movie.id, sliderAndScreenType)}
                       variants={BoxVariants}
@@ -348,7 +291,7 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
               </Row>
             </AnimatePresence>
           </SliderArea>
-          <AnimatePresence>
+          {/* <AnimatePresence>
             {isBoxPopUp ? (
               <>
                 <Overlay onClick={onOverlayClick} exit={{ opacity: 0 }} animate={{ opacity: 1 }} />
@@ -373,7 +316,7 @@ function Slider({ sliderType, screenType }: ISliderProps): JSX.Element {
                 </PopUpArea>
               </>
             ) : null}
-          </AnimatePresence>
+          </AnimatePresence> */}
         </>
       )}
     </>

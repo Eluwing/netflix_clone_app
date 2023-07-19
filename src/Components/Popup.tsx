@@ -52,14 +52,14 @@ const Overlay = styled(motion.div)`
 interface IPopupProps {
   sliderType: string;
   screenType: number;
-  clickedMovie: IMovieOrTv | null;
-  screenId: string;
+  clickedMovie: IMovieOrTv | undefined | null;
+  screenId: string | undefined;
 }
 
 function Popup({ sliderType, screenType, clickedMovie, screenId }: IPopupProps): JSX.Element {
   const history = useHistory();
   const { scrollY } = useScroll();
-  const [isBoxPopUp, isSetBoxPopUp] = useState(false);
+  const [isBoxPopUp, isSetBoxPopUp] = useState(true);
   const popUpScrollY = useTransform(scrollY, (latest) => latest + 20);
   const toggleBox = (): void => isSetBoxPopUp((prev) => !prev);
   const onOverlayClick = (): void => {
@@ -79,12 +79,6 @@ function Popup({ sliderType, screenType, clickedMovie, screenId }: IPopupProps):
         {isBoxPopUp ? (
           <>
             <Overlay onClick={onOverlayClick} exit={{ opacity: 0 }} animate={{ opacity: 1 }} />
-          </>
-        ) : null}
-      </AnimatePresence>
-      <AnimatePresence>
-        {isBoxPopUp ? (
-          <>
             <PopUpArea style={{ top: popUpScrollY }} layoutId={screenId}>
               {clickedMovie && (
                 <>

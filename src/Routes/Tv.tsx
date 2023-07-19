@@ -35,9 +35,9 @@ function Tv(): JSX.Element {
             overview={data?.results[0].overview}
           />
 
-          <Slider sliderType={SLIDER_TYPES.AIRING_TODAY_TV} screenType={SCREEN_TYPES.TV} />
+          {/* <Slider sliderType={SLIDER_TYPES.AIRING_TODAY_TV} screenType={SCREEN_TYPES.TV} />
           <Slider sliderType={SLIDER_TYPES.POPULAR_TV} screenType={SCREEN_TYPES.TV} />
-          <Slider sliderType={SLIDER_TYPES.CURRENT_ON_AIR_TV} screenType={SCREEN_TYPES.TV} />
+          <Slider sliderType={SLIDER_TYPES.CURRENT_ON_AIR_TV} screenType={SCREEN_TYPES.TV} /> */}
         </>
       )}
     </Wrapper>
