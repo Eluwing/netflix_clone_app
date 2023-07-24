@@ -1,5 +1,5 @@
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 import { SCREEN_TYPES } from '../Constants/Common';
 import { useHistory } from 'react-router-dom';
@@ -50,16 +50,15 @@ const Overlay = styled(motion.div)`
 `;
 
 interface IPopupProps {
-  sliderType: string;
   screenType: number;
   clickedMovie: IMovieOrTv | undefined | null;
   screenId: string | undefined;
+  isSetBoxPopUp: Dispatch<SetStateAction<boolean>>;
 }
 
-function Popup({ sliderType, screenType, clickedMovie, screenId }: IPopupProps): JSX.Element {
+function Popup({ screenType, clickedMovie, screenId, isSetBoxPopUp }: IPopupProps): JSX.Element {
   const history = useHistory();
   const { scrollY } = useScroll();
-  const [isBoxPopUp, isSetBoxPopUp] = useState(true);
   const popUpScrollY = useTransform(scrollY, (latest) => latest + 20);
   const toggleBox = (): void => isSetBoxPopUp((prev) => !prev);
   const onOverlayClick = (): void => {
@@ -76,30 +75,28 @@ function Popup({ sliderType, screenType, clickedMovie, screenId }: IPopupProps):
   return (
     <>
       <AnimatePresence>
-        {isBoxPopUp ? (
-          <>
-            <Overlay onClick={onOverlayClick} exit={{ opacity: 0 }} animate={{ opacity: 1 }} />
-            <PopUpArea style={{ top: popUpScrollY }} layoutId={screenId}>
-              {clickedMovie && (
-                <>
-                  <PopUpCover
-                    style={{
-                      backgroundImage: `linear-gradient(to top,black, transparent), url(${makeImagePath(
-                        clickedMovie.backdrop_path,
-                        'w500',
-                      )})`,
-                    }}
-                  ></PopUpCover>
-                  <PopUpTitle>
-                    {(clickedMovie.title && clickedMovie.title) ??
-                      (clickedMovie.name && clickedMovie.name)}
-                  </PopUpTitle>
-                  <PopUpOverview>{clickedMovie.overview}</PopUpOverview>
-                </>
-              )}
-            </PopUpArea>
-          </>
-        ) : null}
+        <>
+          <Overlay onClick={onOverlayClick} exit={{ opacity: 0 }} animate={{ opacity: 1 }} />
+          <PopUpArea style={{ top: popUpScrollY }} layoutId={screenId}>
+            {clickedMovie && (
+              <>
+                <PopUpCover
+                  style={{
+                    backgroundImage: `linear-gradient(to top,black, transparent), url(${makeImagePath(
+                      clickedMovie.backdrop_path,
+                      'w500',
+                    )})`,
+                  }}
+                ></PopUpCover>
+                <PopUpTitle>
+                  {(clickedMovie.title && clickedMovie.title) ??
+                    (clickedMovie.name && clickedMovie.name)}
+                </PopUpTitle>
+                <PopUpOverview>{clickedMovie.overview}</PopUpOverview>
+              </>
+            )}
+          </PopUpArea>
+        </>
       </AnimatePresence>
     </>
   );

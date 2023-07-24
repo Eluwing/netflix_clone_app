@@ -130,6 +130,7 @@ interface ISliderProps {
   screenType: number;
   setClickedMovie: Dispatch<SetStateAction<IMovieOrTv | null | undefined>>;
   isSetBoxPopUp: Dispatch<SetStateAction<boolean>>;
+  setScreenId: Dispatch<SetStateAction<string | undefined>>;
 }
 
 interface useQueryType<TInterface> {
@@ -142,13 +143,14 @@ function Slider({
   screenType,
   setClickedMovie,
   isSetBoxPopUp,
+  setScreenId,
 }: ISliderProps): JSX.Element {
   const history = useHistory();
   const sliderAndScreenType = sliderType.concat(String(screenType));
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const [, setPopUpMovieMatch] = useState<match<{ screenId: string }> | null>();
-  const [screenId, setScreenId] = useState<string>();
+  const [screenId] = useState<string>();
   const emptyData: useQueryType<API_INTERFACE_TYPES> = {
     // Because it is not possible to set an empty object in TypeScript
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -223,6 +225,7 @@ function Slider({
   const onBoxClicked = (screenId: string): void => {
     toggleBox();
     setScreenId(screenId);
+    console.log({ screenId });
     if (screenType === SCREEN_TYPES.MOVIES) {
       history.push(`/movies/${screenId}`);
     } else if (screenType === SCREEN_TYPES.TV) {

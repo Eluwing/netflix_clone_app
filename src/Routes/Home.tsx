@@ -30,7 +30,8 @@ function Home(): JSX.Element {
   );
   const [clickedMovie, setClickedMovie] = useState<IMovieOrTv | null>();
   const [isBoxPopUp, isSetBoxPopUp] = useState(false);
-
+  const [screenId, setScreenId] = useState<string>();
+  console.log({ clickedMovie, screenId, isBoxPopUp });
   return (
     <Wrapper>
       {isLoading ? (
@@ -48,6 +49,7 @@ function Home(): JSX.Element {
               screenType={SCREEN_TYPES.MOVIES}
               setClickedMovie={setClickedMovie}
               isSetBoxPopUp={isSetBoxPopUp}
+              setScreenId={setScreenId}
             />
           </SliderArea>
           <SliderArea>
@@ -56,6 +58,7 @@ function Home(): JSX.Element {
               screenType={SCREEN_TYPES.MOVIES}
               setClickedMovie={setClickedMovie}
               isSetBoxPopUp={isSetBoxPopUp}
+              setScreenId={setScreenId}
             />
           </SliderArea>
           <SliderArea>
@@ -64,6 +67,7 @@ function Home(): JSX.Element {
               screenType={SCREEN_TYPES.MOVIES}
               setClickedMovie={setClickedMovie}
               isSetBoxPopUp={isSetBoxPopUp}
+              setScreenId={setScreenId}
             />
           </SliderArea>
           <SliderArea>
@@ -72,18 +76,17 @@ function Home(): JSX.Element {
               screenType={SCREEN_TYPES.MOVIES}
               setClickedMovie={setClickedMovie}
               isSetBoxPopUp={isSetBoxPopUp}
+              setScreenId={setScreenId}
             />
           </SliderArea>
           {isBoxPopUp ? (
             <>
-              <AnimatePresence>
-                <Popup
-                  clickedMovie={clickedMovie}
-                  sliderType={''}
-                  screenType={0}
-                  screenId={undefined}
-                />
-              </AnimatePresence>
+              <Popup
+                clickedMovie={clickedMovie}
+                screenType={SCREEN_TYPES.MOVIES}
+                screenId={''}
+                isSetBoxPopUp={isSetBoxPopUp}
+              />
             </>
           ) : null}
         </>
