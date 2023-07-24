@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import { getMovies, IGetMoviesResult } from '../api';
+import { getMovies, IGetMoviesResult, IMovieOrTv } from '../api';
 import Slider from '../Components/Slider';
 import { SCREEN_QUERY_KEY, SCREEN_TYPES, SLIDER_TYPES } from '../Constants/Common';
 import Banner from '../Components/Banner';
+import Popup from '../Components/Popup';
 
 const Wrapper = styled.div`
   background: black;
@@ -26,6 +27,10 @@ function Home(): JSX.Element {
     [SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.NOW_PLAYING],
     getMovies,
   );
+  const [clickedMovie, setClickedMovie] = useState<IMovieOrTv | null>();
+  const [isBoxPopUp, isSetBoxPopUp] = useState(false);
+  const [screenId, setScreenId] = useState<string>();
+  console.log({ clickedMovie, screenId, isBoxPopUp });
   return (
     <Wrapper>
       {isLoading ? (
@@ -38,17 +43,55 @@ function Home(): JSX.Element {
             overview={data?.results[0].overview}
           />
           <SliderArea>
-            <Slider sliderType={SLIDER_TYPES.NOW_PLAYING_MOVIE} screenType={SCREEN_TYPES.MOVIES} />
+            <Slider
+              sliderType={SLIDER_TYPES.NOW_PLAYING_MOVIE}
+              screenType={SCREEN_TYPES.MOVIES}
+              setClickedMovie={setClickedMovie}
+              isSetBoxPopUp={isSetBoxPopUp}
+              setScreenId={setScreenId}
+              screenId={screenId}
+            />
           </SliderArea>
           <SliderArea>
-            <Slider sliderType={SLIDER_TYPES.POPULAR_MOVIE} screenType={SCREEN_TYPES.MOVIES} />
+            <Slider
+              sliderType={SLIDER_TYPES.POPULAR_MOVIE}
+              screenType={SCREEN_TYPES.MOVIES}
+              setClickedMovie={setClickedMovie}
+              isSetBoxPopUp={isSetBoxPopUp}
+              setScreenId={setScreenId}
+              screenId={screenId}
+            />
           </SliderArea>
           <SliderArea>
-            <Slider sliderType={SLIDER_TYPES.TOP_RATED_MOVIE} screenType={SCREEN_TYPES.MOVIES} />
+            <Slider
+              sliderType={SLIDER_TYPES.TOP_RATED_MOVIE}
+              screenType={SCREEN_TYPES.MOVIES}
+              setClickedMovie={setClickedMovie}
+              isSetBoxPopUp={isSetBoxPopUp}
+              setScreenId={setScreenId}
+              screenId={screenId}
+            />
           </SliderArea>
           <SliderArea>
-            <Slider sliderType={SLIDER_TYPES.UPCOMING_MOVIE} screenType={SCREEN_TYPES.MOVIES} />
+            <Slider
+              sliderType={SLIDER_TYPES.UPCOMING_MOVIE}
+              screenType={SCREEN_TYPES.MOVIES}
+              setClickedMovie={setClickedMovie}
+              isSetBoxPopUp={isSetBoxPopUp}
+              setScreenId={setScreenId}
+              screenId={screenId}
+            />
           </SliderArea>
+          {isBoxPopUp ? (
+            <>
+              <Popup
+                clickedMovie={clickedMovie}
+                screenType={SCREEN_TYPES.MOVIES}
+                screenId={''}
+                isSetBoxPopUp={isSetBoxPopUp}
+              />
+            </>
+          ) : null}
         </>
       )}
     </Wrapper>
