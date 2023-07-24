@@ -1,5 +1,5 @@
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { SCREEN_TYPES } from '../Constants/Common';
 import { useHistory } from 'react-router-dom';

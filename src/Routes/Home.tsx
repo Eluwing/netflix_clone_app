@@ -6,7 +6,6 @@ import Slider from '../Components/Slider';
 import { SCREEN_QUERY_KEY, SCREEN_TYPES, SLIDER_TYPES } from '../Constants/Common';
 import Banner from '../Components/Banner';
 import Popup from '../Components/Popup';
-import { AnimatePresence } from 'framer-motion';
 
 const Wrapper = styled.div`
   background: black;
@@ -50,6 +49,7 @@ function Home(): JSX.Element {
               setClickedMovie={setClickedMovie}
               isSetBoxPopUp={isSetBoxPopUp}
               setScreenId={setScreenId}
+              screenId={screenId}
             />
           </SliderArea>
           <SliderArea>
@@ -59,6 +59,7 @@ function Home(): JSX.Element {
               setClickedMovie={setClickedMovie}
               isSetBoxPopUp={isSetBoxPopUp}
               setScreenId={setScreenId}
+              screenId={screenId}
             />
           </SliderArea>
           <SliderArea>
@@ -68,6 +69,7 @@ function Home(): JSX.Element {
               setClickedMovie={setClickedMovie}
               isSetBoxPopUp={isSetBoxPopUp}
               setScreenId={setScreenId}
+              screenId={screenId}
             />
           </SliderArea>
           <SliderArea>
@@ -77,6 +79,7 @@ function Home(): JSX.Element {
               setClickedMovie={setClickedMovie}
               isSetBoxPopUp={isSetBoxPopUp}
               setScreenId={setScreenId}
+              screenId={screenId}
             />
           </SliderArea>
           {isBoxPopUp ? (

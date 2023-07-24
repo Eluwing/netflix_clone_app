@@ -131,6 +131,7 @@ interface ISliderProps {
   setClickedMovie: Dispatch<SetStateAction<IMovieOrTv | null | undefined>>;
   isSetBoxPopUp: Dispatch<SetStateAction<boolean>>;
   setScreenId: Dispatch<SetStateAction<string | undefined>>;
+  screenId: string | undefined;
 }
 
 interface useQueryType<TInterface> {
@@ -144,13 +145,14 @@ function Slider({
   setClickedMovie,
   isSetBoxPopUp,
   setScreenId,
+  screenId,
 }: ISliderProps): JSX.Element {
   const history = useHistory();
   const sliderAndScreenType = sliderType.concat(String(screenType));
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const [, setPopUpMovieMatch] = useState<match<{ screenId: string }> | null>();
-  const [screenId] = useState<string>();
+  // const [screenId] = useState<string>();
   const emptyData: useQueryType<API_INTERFACE_TYPES> = {
     // Because it is not possible to set an empty object in TypeScript
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -294,32 +296,6 @@ function Slider({
               </Row>
             </AnimatePresence>
           </SliderArea>
-          {/* <AnimatePresence>
-            {isBoxPopUp ? (
-              <>
-                <Overlay onClick={onOverlayClick} exit={{ opacity: 0 }} animate={{ opacity: 1 }} />
-                <PopUpArea style={{ top: popUpScrollY }} layoutId={screenId}>
-                  {clickedMovie && (
-                    <>
-                      <PopUpCover
-                        style={{
-                          backgroundImage: `linear-gradient(to top,black, transparent), url(${makeImagePath(
-                            clickedMovie.backdrop_path,
-                            'w500',
-                          )})`,
-                        }}
-                      ></PopUpCover>
-                      <PopUpTitle>
-                        {(clickedMovie.title && clickedMovie.title) ??
-                          (clickedMovie.name && clickedMovie.name)}
-                      </PopUpTitle>
-                      <PopUpOverview>{clickedMovie.overview}</PopUpOverview>
-                    </>
-                  )}
-                </PopUpArea>
-              </>
-            ) : null}
-          </AnimatePresence> */}
         </>
       )}
     </>
