@@ -14,7 +14,6 @@ import {
   IGetUpcomingMoviesResult,
   IGetPopularTvResult,
   IGetCurrentOnAirTvResult,
-  IMovieOrTv,
 } from '../api';
 import { match, useHistory, useRouteMatch } from 'react-router-dom';
 import { getSliderBoxId, getSlidersTitle, makeImagePath } from '../utils';
@@ -128,7 +127,6 @@ const offset = 6;
 interface ISliderProps {
   sliderType: string;
   screenType: number;
-  setClickedMovie: Dispatch<SetStateAction<IMovieOrTv | null | undefined>>;
   isSetBoxPopUp: Dispatch<SetStateAction<boolean>>;
   setScreenId: Dispatch<SetStateAction<string | undefined>>;
   screenId: string | undefined;
@@ -142,7 +140,6 @@ interface useQueryType<TInterface> {
 function Slider({
   sliderType,
   screenType,
-  setClickedMovie,
   isSetBoxPopUp,
   setScreenId,
   screenId,
@@ -226,7 +223,6 @@ function Slider({
   const onBoxClicked = (screenId: string): void => {
     toggleBox();
     setScreenId(screenId);
-    console.log({ screenId });
     if (screenType === SCREEN_TYPES.MOVIES) {
       history.push(`/movies/${screenId}`);
     } else if (screenType === SCREEN_TYPES.TV) {
@@ -243,13 +239,6 @@ function Slider({
       setPopUpMovieMatch((prev) => useRouteMatch<{ screenId: string }>('/tv/:screenId'));
     }
   }, [screenId]);
-  // useEffect(() => {
-  //   setClickedMovie(
-  //     data?.results.find(
-  //       (movie: { id: number }) => String(movie.id).concat(sliderAndScreenType) === screenId,
-  //     ),
-  //   );
-  // }, [screenId]);
   return (
     <>
       {isLoading ? (

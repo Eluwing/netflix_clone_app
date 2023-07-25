@@ -49,6 +49,14 @@ const Overlay = styled(motion.div)`
   background-color: rgba(0, 0, 0, 0.5);
   opacity: 0;
 `;
+
+const Loader = styled.div`
+  height: 20vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 interface useQueryType<TInterface> {
   data: TInterface | undefined;
   isLoading: boolean;
@@ -56,12 +64,11 @@ interface useQueryType<TInterface> {
 
 interface IPopupProps {
   screenType: number;
-  clickedMovie: IMovieOrTv | undefined | null;
   screenId: string | undefined;
   isSetBoxPopUp: Dispatch<SetStateAction<boolean>>;
 }
 
-function Popup({ screenType, clickedMovie, screenId, isSetBoxPopUp }: IPopupProps): JSX.Element {
+function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Element {
   const history = useHistory();
   const { scrollY } = useScroll();
   const popUpScrollY = useTransform(scrollY, (latest) => latest + 20);
@@ -84,10 +91,7 @@ function Popup({ screenType, clickedMovie, screenId, isSetBoxPopUp }: IPopupProp
   };
   useEffect(() => {
     setClickedScreen(
-      data?.results.find(
-        // (movie: { id: number }) => String(movie.id).concat(sliderAndScreenType) === screenId,
-        (movie: { id: number }) => screenId?.includes(String(movie.id)),
-      ),
+      data?.results.find((movie: { id: number }) => screenId?.includes(String(movie.id))),
     );
   }, [screenId]);
 
@@ -98,21 +102,23 @@ function Popup({ screenType, clickedMovie, screenId, isSetBoxPopUp }: IPopupProp
         <>
           <Overlay onClick={onOverlayClick} exit={{ opacity: 0 }} animate={{ opacity: 1 }} />
           <PopUpArea style={{ top: popUpScrollY }} layoutId={screenId}>
-            {clickedScreen && (
+            {isLoading ? (
+              <Loader>Loading...</Loader>
+            ) : (
               <>
                 <PopUpCover
                   style={{
                     backgroundImage: `linear-gradient(to top,black, transparent), url(${makeImagePath(
-                      clickedScreen.backdrop_path,
+                      clickedScreen?.backdrop_path,
                       'w500',
                     )})`,
                   }}
                 ></PopUpCover>
                 <PopUpTitle>
-                  {(clickedScreen.title && clickedScreen.title) ??
-                    (clickedScreen.name && clickedScreen.name)}
+                  {(clickedScreen?.title && clickedScreen.title) ??
+                    (clickedScreen?.name && clickedScreen.name)}
                 </PopUpTitle>
-                <PopUpOverview>{clickedScreen.overview}</PopUpOverview>
+                <PopUpOverview>{clickedScreen?.overview}</PopUpOverview>
               </>
             )}
           </PopUpArea>
