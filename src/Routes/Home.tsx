@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import { getMovies, IGetMoviesResult, IMovieOrTv } from '../api';
+import { getMovies, IGetMoviesResult } from '../api';
 import Slider from '../Components/Slider';
 import { SCREEN_QUERY_KEY, SCREEN_TYPES, SLIDER_TYPES } from '../Constants/Common';
 import Banner from '../Components/Banner';
