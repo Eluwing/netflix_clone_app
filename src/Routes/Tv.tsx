@@ -34,7 +34,7 @@ function Tv(): JSX.Element {
             title={data?.results[0].name}
             overview={data?.results[0].overview}
           />
-
+          {/* Fix me: If complete feature Home component  */}
           {/* <Slider sliderType={SLIDER_TYPES.AIRING_TODAY_TV} screenType={SCREEN_TYPES.TV} />
           <Slider sliderType={SLIDER_TYPES.POPULAR_TV} screenType={SCREEN_TYPES.TV} />
           <Slider sliderType={SLIDER_TYPES.CURRENT_ON_AIR_TV} screenType={SCREEN_TYPES.TV} /> */}
