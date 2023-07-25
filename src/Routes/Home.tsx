@@ -30,7 +30,7 @@ function Home(): JSX.Element {
   const [clickedMovie, setClickedMovie] = useState<IMovieOrTv | null>();
   const [isBoxPopUp, isSetBoxPopUp] = useState(false);
   const [screenId, setScreenId] = useState<string>();
-  console.log({ clickedMovie, screenId, isBoxPopUp });
+  console.log({ clickedMovie, screenId });
   return (
     <Wrapper>
       {isLoading ? (
@@ -87,7 +87,7 @@ function Home(): JSX.Element {
               <Popup
                 clickedMovie={clickedMovie}
                 screenType={SCREEN_TYPES.MOVIES}
-                screenId={''}
+                screenId={screenId}
                 isSetBoxPopUp={isSetBoxPopUp}
               />
             </>

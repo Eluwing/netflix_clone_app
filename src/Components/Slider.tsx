@@ -152,7 +152,6 @@ function Slider({
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const [, setPopUpMovieMatch] = useState<match<{ screenId: string }> | null>();
-  // const [screenId] = useState<string>();
   const emptyData: useQueryType<API_INTERFACE_TYPES> = {
     // Because it is not possible to set an empty object in TypeScript
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -244,13 +243,13 @@ function Slider({
       setPopUpMovieMatch((prev) => useRouteMatch<{ screenId: string }>('/tv/:screenId'));
     }
   }, [screenId]);
-  useEffect(() => {
-    setClickedMovie(
-      data?.results.find(
-        (movie: { id: number }) => String(movie.id).concat(sliderAndScreenType) === screenId,
-      ),
-    );
-  }, [screenId]);
+  // useEffect(() => {
+  //   setClickedMovie(
+  //     data?.results.find(
+  //       (movie: { id: number }) => String(movie.id).concat(sliderAndScreenType) === screenId,
+  //     ),
+  //   );
+  // }, [screenId]);
   return (
     <>
       {isLoading ? (
