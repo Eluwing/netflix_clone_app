@@ -3,7 +3,7 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { API_INTERFACE_TYPES, SCREEN_QUERY_KEY, SCREEN_TYPES } from '../Constants/Common';
 import { useHistory } from 'react-router-dom';
-import { makeImagePath } from '../utils';
+import { getSliderType, makeImagePath } from '../utils';
 import { IMovieOrTv } from '../api';
 import { useQueryClient } from 'react-query';
 
@@ -95,7 +95,8 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
     );
   }, [screenId]);
 
-  console.log({ data, clickedScreen, screenId });
+  const clickedMovieId: string[] = getSliderType(screenId, String(clickedScreen?.id));
+  console.log({ data, clickedScreen, screenId, clickedMovieId });
   return (
     <>
       <AnimatePresence>
