@@ -1,7 +1,7 @@
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { API_INTERFACE_TYPES, SCREEN_QUERY_KEY, SCREEN_TYPES } from '../Constants/Common';
+import { API_INTERFACE_TYPES, SCREEN_TYPES } from '../Constants/Common';
 import { useHistory } from 'react-router-dom';
 import { getSliderTypeKey, makeImagePath } from '../utils';
 import { IMovieOrTv } from '../api';
@@ -101,7 +101,6 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
     setQueryKeySet(getSliderTypeKey(screenId));
   }, [screenId]);
 
-  console.log({ data, clickedScreen, screenId, queryKeySet });
   return (
     <>
       <AnimatePresence>
