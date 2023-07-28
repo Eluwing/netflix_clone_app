@@ -9,9 +9,20 @@ export function getSliderBoxId(screenNum: number | string, sliderAndScreenType: 
   return String(screenNum).concat(sliderAndScreenType);
 }
 
-export function getSliderType(screenId: string | undefined, currentMovieId: string): string[] {
-  const sliderAndScreenType = screenId?.replace(currentMovieId, '');
-  const sliderType = sliderAndScreenType?.slice(0, -1);
+function getSliderType(screenId: string | undefined): string {
+  const sliderTypeArry: string[] = Object.values(SLIDER_TYPES);
+  for (let i = 0; i < sliderTypeArry.length; i++) {
+    if (screenId?.includes(sliderTypeArry[i])) {
+      return sliderTypeArry[i];
+    }
+  }
+  return '';
+}
+
+export function getSliderTypeKey(screenId: string | undefined): string[] {
+  // const sliderAndScreenType = screenId?.replace(currentMovieId, '');
+  // const sliderType = sliderAndScreenType?.slice(0, -1);
+  const sliderType = getSliderType(screenId);
 
   switch (sliderType) {
     case SLIDER_TYPES.NOW_PLAYING_MOVIE:

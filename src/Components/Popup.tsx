@@ -3,7 +3,7 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { API_INTERFACE_TYPES, SCREEN_QUERY_KEY, SCREEN_TYPES } from '../Constants/Common';
 import { useHistory } from 'react-router-dom';
-import { getSliderType, makeImagePath } from '../utils';
+import { getSliderTypeKey, makeImagePath } from '../utils';
 import { IMovieOrTv } from '../api';
 import { useQueryClient } from 'react-query';
 
@@ -75,8 +75,9 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
   const toggleBox = (): void => isSetBoxPopUp((prev) => !prev);
   const queryClient = useQueryClient();
   const [clickedScreen, setClickedScreen] = useState<IMovieOrTv | null>();
+  const queryKeySet: string[] = getSliderTypeKey(screenId);
   const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> = {
-    data: queryClient.getQueryData([SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.NOW_PLAYING]),
+    data: queryClient.getQueryData([queryKeySet[0], queryKeySet[1]]),
     isLoading: false,
   };
   const onOverlayClick = (): void => {
@@ -95,8 +96,7 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
     );
   }, [screenId]);
 
-  const clickedMovieId: string[] = getSliderType(screenId, String(clickedScreen?.id));
-  console.log({ data, clickedScreen, screenId, clickedMovieId });
+  console.log({ data, clickedScreen, screenId, queryKeySet });
   return (
     <>
       <AnimatePresence>

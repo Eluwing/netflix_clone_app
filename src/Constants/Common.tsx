@@ -14,7 +14,7 @@ export const BASE_PATH = 'https://api.themoviedb.org/3';
 export const GET_PAGE = 1;
 
 // Add Me : if create new Silder , Add key name
-export const enum SLIDER_TYPES {
+export enum SLIDER_TYPES {
   NOW_PLAYING_MOVIE = 'NPM',
   POPULAR_MOVIE = 'PM',
   TOP_RATED_MOVIE = 'TRM',
