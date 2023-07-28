@@ -165,17 +165,17 @@ function Slider({
       : // Movie List
       sliderType === SLIDER_TYPES.POPULAR_MOVIE
       ? useQuery<IGetPopularMoviesResult>({
-          queryKey: [[SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.POPULAR]],
+          queryKey: [SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.POPULAR],
           queryFn: getPopularMovies,
         })
       : sliderType === SLIDER_TYPES.TOP_RATED_MOVIE
       ? useQuery<IGetTopRatedMoviesResult>({
-          queryKey: [[SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.TOP_RATED]],
+          queryKey: [SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.TOP_RATED],
           queryFn: getTopRatedMovies,
         })
       : sliderType === SLIDER_TYPES.UPCOMING_MOVIE
       ? useQuery<IGetUpcomingMoviesResult>({
-          queryKey: [[SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.UPCOMING]],
+          queryKey: [SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.UPCOMING],
           queryFn: getUpcomingMovies,
         })
       : // TV List
@@ -186,17 +186,17 @@ function Slider({
         }
       : sliderType === SLIDER_TYPES.POPULAR_TV
       ? useQuery<IGetPopularTvResult>({
-          queryKey: [[SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.POPULAR]],
+          queryKey: [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.POPULAR],
           queryFn: getPopularTv,
         })
       : sliderType === SLIDER_TYPES.CURRENT_ON_AIR_TV
       ? useQuery<IGetCurrentOnAirTvResult>({
-          queryKey: [[SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.CURRENT_ON_AIR]],
+          queryKey: [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.CURRENT_ON_AIR],
           queryFn: getCurrentOnAirTv,
         })
       : sliderType === SLIDER_TYPES.MOST_NEWLY_TV
       ? useQuery<IGetPopularMoviesResult>({
-          queryKey: [[SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.UPCOMING]],
+          queryKey: [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.UPCOMING],
           queryFn: getMostNewlyTv,
         })
       : emptyData;

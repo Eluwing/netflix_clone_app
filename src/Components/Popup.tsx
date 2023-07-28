@@ -75,7 +75,8 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
   const toggleBox = (): void => isSetBoxPopUp((prev) => !prev);
   const queryClient = useQueryClient();
   const [clickedScreen, setClickedScreen] = useState<IMovieOrTv | null>();
-  const queryKeySet: string[] = getSliderTypeKey(screenId);
+  const [queryKeySet, setQueryKeySet] = useState<string[]>(['', '']);
+  // const queryKeySet: string[] = getSliderTypeKey(screenId);
   const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> = {
     data: queryClient.getQueryData([queryKeySet[0], queryKeySet[1]]),
     isLoading: false,
@@ -94,6 +95,10 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
     setClickedScreen(
       data?.results.find((movie: { id: number }) => screenId?.includes(String(movie.id))),
     );
+  }, [data]);
+
+  useEffect(() => {
+    setQueryKeySet(getSliderTypeKey(screenId));
   }, [screenId]);
 
   console.log({ data, clickedScreen, screenId, queryKeySet });

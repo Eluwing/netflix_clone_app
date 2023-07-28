@@ -19,7 +19,7 @@ const Loader = styled.div`
 
 function Tv(): JSX.Element {
   const { data, isLoading } = useQuery<IGetAiringTodayTvResult>(
-    [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.AIRING_TODAY],
+    [[SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.AIRING_TODAY]],
     getAiringTodayTv,
   );
 
