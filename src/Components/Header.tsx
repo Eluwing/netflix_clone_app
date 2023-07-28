@@ -122,7 +122,6 @@ function Header(): JSX.Element {
   const { scrollY } = useScroll();
   const { register, handleSubmit } = useForm<IForm>();
   const onValid = (data: IForm): void => {
-    console.log(data);
     history.push(`/search?keyword=${data.keyword}`);
   };
   const toggleSearch = (): void => {

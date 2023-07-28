@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import { getMovies, IGetMoviesResult, IMovieOrTv } from '../api';
+import { getMovies, IGetMoviesResult } from '../api';
 import Slider from '../Components/Slider';
 import { SCREEN_QUERY_KEY, SCREEN_TYPES, SLIDER_TYPES } from '../Constants/Common';
 import Banner from '../Components/Banner';
@@ -27,10 +27,8 @@ function Home(): JSX.Element {
     [SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.NOW_PLAYING],
     getMovies,
   );
-  const [clickedMovie, setClickedMovie] = useState<IMovieOrTv | null>();
   const [isBoxPopUp, isSetBoxPopUp] = useState(false);
   const [screenId, setScreenId] = useState<string>();
-  console.log({ clickedMovie, screenId, isBoxPopUp });
   return (
     <Wrapper>
       {isLoading ? (
@@ -46,7 +44,6 @@ function Home(): JSX.Element {
             <Slider
               sliderType={SLIDER_TYPES.NOW_PLAYING_MOVIE}
               screenType={SCREEN_TYPES.MOVIES}
-              setClickedMovie={setClickedMovie}
               isSetBoxPopUp={isSetBoxPopUp}
               setScreenId={setScreenId}
               screenId={screenId}
@@ -56,7 +53,6 @@ function Home(): JSX.Element {
             <Slider
               sliderType={SLIDER_TYPES.POPULAR_MOVIE}
               screenType={SCREEN_TYPES.MOVIES}
-              setClickedMovie={setClickedMovie}
               isSetBoxPopUp={isSetBoxPopUp}
               setScreenId={setScreenId}
               screenId={screenId}
@@ -66,7 +62,6 @@ function Home(): JSX.Element {
             <Slider
               sliderType={SLIDER_TYPES.TOP_RATED_MOVIE}
               screenType={SCREEN_TYPES.MOVIES}
-              setClickedMovie={setClickedMovie}
               isSetBoxPopUp={isSetBoxPopUp}
               setScreenId={setScreenId}
               screenId={screenId}
@@ -76,7 +71,6 @@ function Home(): JSX.Element {
             <Slider
               sliderType={SLIDER_TYPES.UPCOMING_MOVIE}
               screenType={SCREEN_TYPES.MOVIES}
-              setClickedMovie={setClickedMovie}
               isSetBoxPopUp={isSetBoxPopUp}
               setScreenId={setScreenId}
               screenId={screenId}
@@ -85,9 +79,8 @@ function Home(): JSX.Element {
           {isBoxPopUp ? (
             <>
               <Popup
-                clickedMovie={clickedMovie}
                 screenType={SCREEN_TYPES.MOVIES}
-                screenId={''}
+                screenId={screenId}
                 isSetBoxPopUp={isSetBoxPopUp}
               />
             </>

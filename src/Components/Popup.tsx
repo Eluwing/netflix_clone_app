@@ -1,10 +1,11 @@
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { SCREEN_TYPES } from '../Constants/Common';
+import { API_INTERFACE_TYPES, SCREEN_TYPES } from '../Constants/Common';
 import { useHistory } from 'react-router-dom';
-import { makeImagePath } from '../utils';
+import { getSliderTypeKey, makeImagePath } from '../utils';
 import { IMovieOrTv } from '../api';
+import { useQueryClient } from 'react-query';
 
 const PopUpArea = styled(motion.div)`
   position: absolute;
@@ -49,18 +50,37 @@ const Overlay = styled(motion.div)`
   opacity: 0;
 `;
 
+const Loader = styled.div`
+  height: 20vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+interface useQueryType<TInterface> {
+  data: TInterface | undefined;
+  isLoading: boolean;
+}
+
 interface IPopupProps {
   screenType: number;
-  clickedMovie: IMovieOrTv | undefined | null;
   screenId: string | undefined;
   isSetBoxPopUp: Dispatch<SetStateAction<boolean>>;
 }
 
-function Popup({ screenType, clickedMovie, screenId, isSetBoxPopUp }: IPopupProps): JSX.Element {
+function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Element {
   const history = useHistory();
   const { scrollY } = useScroll();
   const popUpScrollY = useTransform(scrollY, (latest) => latest + 20);
   const toggleBox = (): void => isSetBoxPopUp((prev) => !prev);
+  const queryClient = useQueryClient();
+  const [clickedScreen, setClickedScreen] = useState<IMovieOrTv | null>();
+  const [queryKeySet, setQueryKeySet] = useState<string[]>(['', '']);
+  // const queryKeySet: string[] = getSliderTypeKey(screenId);
+  const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> = {
+    data: queryClient.getQueryData([queryKeySet[0], queryKeySet[1]]),
+    isLoading: false,
+  };
   const onOverlayClick = (): void => {
     toggleBox();
     if (screenType === SCREEN_TYPES.MOVIES) {
@@ -71,6 +91,15 @@ function Popup({ screenType, clickedMovie, screenId, isSetBoxPopUp }: IPopupProp
       history.push('/');
     }
   };
+  useEffect(() => {
+    setClickedScreen(
+      data?.results.find((movie: { id: number }) => screenId?.includes(String(movie.id))),
+    );
+  }, [data]);
+
+  useEffect(() => {
+    setQueryKeySet(getSliderTypeKey(screenId));
+  }, [screenId]);
 
   return (
     <>
@@ -78,21 +107,23 @@ function Popup({ screenType, clickedMovie, screenId, isSetBoxPopUp }: IPopupProp
         <>
           <Overlay onClick={onOverlayClick} exit={{ opacity: 0 }} animate={{ opacity: 1 }} />
           <PopUpArea style={{ top: popUpScrollY }} layoutId={screenId}>
-            {clickedMovie && (
+            {isLoading ? (
+              <Loader>Loading...</Loader>
+            ) : (
               <>
                 <PopUpCover
                   style={{
                     backgroundImage: `linear-gradient(to top,black, transparent), url(${makeImagePath(
-                      clickedMovie.backdrop_path,
+                      clickedScreen?.backdrop_path,
                       'w500',
                     )})`,
                   }}
                 ></PopUpCover>
                 <PopUpTitle>
-                  {(clickedMovie.title && clickedMovie.title) ??
-                    (clickedMovie.name && clickedMovie.name)}
+                  {(clickedScreen?.title && clickedScreen.title) ??
+                    (clickedScreen?.name && clickedScreen.name)}
                 </PopUpTitle>
-                <PopUpOverview>{clickedMovie.overview}</PopUpOverview>
+                <PopUpOverview>{clickedScreen?.overview}</PopUpOverview>
               </>
             )}
           </PopUpArea>

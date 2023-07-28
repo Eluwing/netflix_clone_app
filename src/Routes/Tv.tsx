@@ -19,7 +19,7 @@ const Loader = styled.div`
 
 function Tv(): JSX.Element {
   const { data, isLoading } = useQuery<IGetAiringTodayTvResult>(
-    [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.AIRING_TODAY],
+    [[SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.AIRING_TODAY]],
     getAiringTodayTv,
   );
 
@@ -34,7 +34,7 @@ function Tv(): JSX.Element {
             title={data?.results[0].name}
             overview={data?.results[0].overview}
           />
-
+          {/* Fix me: If complete feature Home component  */}
           {/* <Slider sliderType={SLIDER_TYPES.AIRING_TODAY_TV} screenType={SCREEN_TYPES.TV} />
           <Slider sliderType={SLIDER_TYPES.POPULAR_TV} screenType={SCREEN_TYPES.TV} />
           <Slider sliderType={SLIDER_TYPES.CURRENT_ON_AIR_TV} screenType={SCREEN_TYPES.TV} /> */}

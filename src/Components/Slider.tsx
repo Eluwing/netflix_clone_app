@@ -14,7 +14,6 @@ import {
   IGetUpcomingMoviesResult,
   IGetPopularTvResult,
   IGetCurrentOnAirTvResult,
-  IMovieOrTv,
 } from '../api';
 import { match, useHistory, useRouteMatch } from 'react-router-dom';
 import { getSliderBoxId, getSlidersTitle, makeImagePath } from '../utils';
@@ -128,7 +127,6 @@ const offset = 6;
 interface ISliderProps {
   sliderType: string;
   screenType: number;
-  setClickedMovie: Dispatch<SetStateAction<IMovieOrTv | null | undefined>>;
   isSetBoxPopUp: Dispatch<SetStateAction<boolean>>;
   setScreenId: Dispatch<SetStateAction<string | undefined>>;
   screenId: string | undefined;
@@ -142,7 +140,6 @@ interface useQueryType<TInterface> {
 function Slider({
   sliderType,
   screenType,
-  setClickedMovie,
   isSetBoxPopUp,
   setScreenId,
   screenId,
@@ -152,7 +149,6 @@ function Slider({
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const [, setPopUpMovieMatch] = useState<match<{ screenId: string }> | null>();
-  // const [screenId] = useState<string>();
   const emptyData: useQueryType<API_INTERFACE_TYPES> = {
     // Because it is not possible to set an empty object in TypeScript
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -169,17 +165,17 @@ function Slider({
       : // Movie List
       sliderType === SLIDER_TYPES.POPULAR_MOVIE
       ? useQuery<IGetPopularMoviesResult>({
-          queryKey: [[SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.POPULAR]],
+          queryKey: [SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.POPULAR],
           queryFn: getPopularMovies,
         })
       : sliderType === SLIDER_TYPES.TOP_RATED_MOVIE
       ? useQuery<IGetTopRatedMoviesResult>({
-          queryKey: [[SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.TOP_RATED]],
+          queryKey: [SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.TOP_RATED],
           queryFn: getTopRatedMovies,
         })
       : sliderType === SLIDER_TYPES.UPCOMING_MOVIE
       ? useQuery<IGetUpcomingMoviesResult>({
-          queryKey: [[SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.UPCOMING]],
+          queryKey: [SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.UPCOMING],
           queryFn: getUpcomingMovies,
         })
       : // TV List
@@ -190,17 +186,17 @@ function Slider({
         }
       : sliderType === SLIDER_TYPES.POPULAR_TV
       ? useQuery<IGetPopularTvResult>({
-          queryKey: [[SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.POPULAR]],
+          queryKey: [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.POPULAR],
           queryFn: getPopularTv,
         })
       : sliderType === SLIDER_TYPES.CURRENT_ON_AIR_TV
       ? useQuery<IGetCurrentOnAirTvResult>({
-          queryKey: [[SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.CURRENT_ON_AIR]],
+          queryKey: [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.CURRENT_ON_AIR],
           queryFn: getCurrentOnAirTv,
         })
       : sliderType === SLIDER_TYPES.MOST_NEWLY_TV
       ? useQuery<IGetPopularMoviesResult>({
-          queryKey: [[SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.UPCOMING]],
+          queryKey: [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.UPCOMING],
           queryFn: getMostNewlyTv,
         })
       : emptyData;
@@ -227,7 +223,6 @@ function Slider({
   const onBoxClicked = (screenId: string): void => {
     toggleBox();
     setScreenId(screenId);
-    console.log({ screenId });
     if (screenType === SCREEN_TYPES.MOVIES) {
       history.push(`/movies/${screenId}`);
     } else if (screenType === SCREEN_TYPES.TV) {
@@ -243,13 +238,6 @@ function Slider({
     } else if (screenType === SCREEN_TYPES.TV) {
       setPopUpMovieMatch((prev) => useRouteMatch<{ screenId: string }>('/tv/:screenId'));
     }
-  }, [screenId]);
-  useEffect(() => {
-    setClickedMovie(
-      data?.results.find(
-        (movie: { id: number }) => String(movie.id).concat(sliderAndScreenType) === screenId,
-      ),
-    );
   }, [screenId]);
   return (
     <>
