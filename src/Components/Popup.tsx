@@ -76,7 +76,6 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
   const queryClient = useQueryClient();
   const [clickedScreen, setClickedScreen] = useState<IMovieOrTv | null>();
   const [queryKeySet, setQueryKeySet] = useState<string[]>(['', '']);
-  // const queryKeySet: string[] = getSliderTypeKey(screenId);
   const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> = {
     data: queryClient.getQueryData([queryKeySet[0], queryKeySet[1]]),
     isLoading: false,
