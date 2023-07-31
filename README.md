@@ -17,3 +17,6 @@ https://eluwing.github.io/netflix_clone_app/
 9. Improve moive detail modal
 10. Other Netflix like features
 11. Fix Slider Animation Bug
+
+## Bug Fix Report(Korean)
+https://www.notion.so/Clone-Netfilx-379ec8e8b68249b3bf5d1efec0854123?pvs=4

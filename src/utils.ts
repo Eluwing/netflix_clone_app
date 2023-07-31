@@ -20,8 +20,6 @@ function getSliderType(screenId: string | undefined): string {
 }
 
 export function getSliderTypeKey(screenId: string | undefined): string[] {
-  // const sliderAndScreenType = screenId?.replace(currentMovieId, '');
-  // const sliderType = sliderAndScreenType?.slice(0, -1);
   const sliderType = getSliderType(screenId);
 
   switch (sliderType) {

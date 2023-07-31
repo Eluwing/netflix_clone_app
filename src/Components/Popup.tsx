@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { API_INTERFACE_TYPES, SCREEN_TYPES } from '../Constants/Common';
@@ -71,12 +71,11 @@ interface IPopupProps {
 function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Element {
   const history = useHistory();
   const { scrollY } = useScroll();
-  const popUpScrollY = useTransform(scrollY, (latest) => latest + 20);
+  const [currentScrollY, setCurrentScrollY] = useState<number>(0);
   const toggleBox = (): void => isSetBoxPopUp((prev) => !prev);
   const queryClient = useQueryClient();
   const [clickedScreen, setClickedScreen] = useState<IMovieOrTv | null>();
   const [queryKeySet, setQueryKeySet] = useState<string[]>(['', '']);
-  // const queryKeySet: string[] = getSliderTypeKey(screenId);
   const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> = {
     data: queryClient.getQueryData([queryKeySet[0], queryKeySet[1]]),
     isLoading: false,
@@ -101,33 +100,34 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
     setQueryKeySet(getSliderTypeKey(screenId));
   }, [screenId]);
 
+  useMotionValueEvent(scrollY, 'change', (latest: number) => {
+    setCurrentScrollY(latest + 20);
+  });
   return (
     <>
       <AnimatePresence>
-        <>
-          <Overlay onClick={onOverlayClick} exit={{ opacity: 0 }} animate={{ opacity: 1 }} />
-          <PopUpArea style={{ top: popUpScrollY }} layoutId={screenId}>
-            {isLoading ? (
-              <Loader>Loading...</Loader>
-            ) : (
-              <>
-                <PopUpCover
-                  style={{
-                    backgroundImage: `linear-gradient(to top,black, transparent), url(${makeImagePath(
-                      clickedScreen?.backdrop_path,
-                      'w500',
-                    )})`,
-                  }}
-                ></PopUpCover>
-                <PopUpTitle>
-                  {(clickedScreen?.title && clickedScreen.title) ??
-                    (clickedScreen?.name && clickedScreen.name)}
-                </PopUpTitle>
-                <PopUpOverview>{clickedScreen?.overview}</PopUpOverview>
-              </>
-            )}
-          </PopUpArea>
-        </>
+        <Overlay onClick={onOverlayClick} exit={{ opacity: 0 }} animate={{ opacity: 1 }} />
+        <PopUpArea style={{ top: currentScrollY }} layoutId={screenId}>
+          {isLoading ? (
+            <Loader>Loading...</Loader>
+          ) : (
+            <>
+              <PopUpCover
+                style={{
+                  backgroundImage: `linear-gradient(to top,black, transparent), url(${makeImagePath(
+                    clickedScreen?.backdrop_path,
+                    'w500',
+                  )})`,
+                }}
+              ></PopUpCover>
+              <PopUpTitle>
+                {(clickedScreen?.title && clickedScreen.title) ??
+                  (clickedScreen?.name && clickedScreen.name)}
+              </PopUpTitle>
+              <PopUpOverview>{clickedScreen?.overview}</PopUpOverview>
+            </>
+          )}
+        </PopUpArea>
       </AnimatePresence>
     </>
   );
