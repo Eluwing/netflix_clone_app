@@ -71,11 +71,17 @@ const ButtonArea = styled.div`
   justify-content: end;
 `;
 
+const BoxArea = styled.div`
+  display: flex;
+  position: relative;
+`;
+const BoxListArea = styled.div``;
+
 const Row = styled(motion.div)`
   display: grid;
   gap: 5px;
   grid-template-columns: repeat(6, 1fr);
-  position: absolute;
+  /* position: absolute; */
   width: 100%;
 `;
 
@@ -248,41 +254,49 @@ function Slider({
           <SliderArea>
             <SliderTopBar>
               <SliderTitleArea>{slidersTitle}</SliderTitleArea>
+            </SliderTopBar>
+            <BoxArea>
               <ButtonArea>
                 <button onClick={decreaseIndex}>{'<'}</button>
+              </ButtonArea>
+              <BoxListArea>
+                <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
+                  <Row
+                    variants={rowVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    transition={{ type: 'tween', duration: 1 }}
+                  >
+                    {data?.results
+                      .slice(1)
+                      .slice(offset * index, offset * index + offset)
+                      .map((movie) => (
+                        <Box
+                          layoutId={getSliderBoxId(movie.id, sliderAndScreenType)}
+                          key={getSliderBoxId(movie.id, sliderAndScreenType)}
+                          variants={BoxVariants}
+                          whileHover="hover"
+                          initial="normal"
+                          onClick={() =>
+                            onBoxClicked(getSliderBoxId(movie.id, sliderAndScreenType))
+                          }
+                          transition={{ type: 'tween' }}
+                          bgphoto={makeImagePath(movie.backdrop_path ?? '', 'w500')}
+                        >
+                          {(movie.title && movie.title) ?? (movie.name && movie.name)}
+                          <Info variants={infoVariants}>
+                            <h4>{(movie.title && movie.title) ?? (movie.name && movie.name)}</h4>
+                          </Info>
+                        </Box>
+                      ))}
+                  </Row>
+                </AnimatePresence>
+              </BoxListArea>
+              <ButtonArea>
                 <button onClick={incraseIndex}>{'>'}</button>
               </ButtonArea>
-            </SliderTopBar>
-            <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
-              <Row
-                variants={rowVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                transition={{ type: 'tween', duration: 1 }}
-              >
-                {data?.results
-                  .slice(1)
-                  .slice(offset * index, offset * index + offset)
-                  .map((movie) => (
-                    <Box
-                      layoutId={getSliderBoxId(movie.id, sliderAndScreenType)}
-                      key={getSliderBoxId(movie.id, sliderAndScreenType)}
-                      variants={BoxVariants}
-                      whileHover="hover"
-                      initial="normal"
-                      onClick={() => onBoxClicked(getSliderBoxId(movie.id, sliderAndScreenType))}
-                      transition={{ type: 'tween' }}
-                      bgphoto={makeImagePath(movie.backdrop_path ?? '', 'w500')}
-                    >
-                      {(movie.title && movie.title) ?? (movie.name && movie.name)}
-                      <Info variants={infoVariants}>
-                        <h4>{(movie.title && movie.title) ?? (movie.name && movie.name)}</h4>
-                      </Info>
-                    </Box>
-                  ))}
-              </Row>
-            </AnimatePresence>
+            </BoxArea>
           </SliderArea>
         </>
       )}
