@@ -67,10 +67,9 @@ const SliderTitleArea = styled.div`
   font-weight: 1000;
 `;
 
-const NextButtonArea = styled.div`
+const CommonButton = styled.div`
   display: flex;
   position: absolute;
-  right: 0%;
   height: 100%;
   width: 4vmin;
   box-sizing: border-box;
@@ -78,16 +77,12 @@ const NextButtonArea = styled.div`
   opacity: 0.6;
   justify-content: center;
 `;
-const PrevButtonArea = styled.div`
-  display: flex;
-  position: absolute;
+
+const NextButtonArea = styled(CommonButton)`
+  right: 0%;
+`;
+const PrevButtonArea = styled(CommonButton)`
   left: 0%;
-  width: 4vmin;
-  height: 100%;
-  box-sizing: border-box;
-  background-color: #000;
-  opacity: 0.6;
-  justify-content: center;
 `;
 
 const BoxArea = styled.div`
