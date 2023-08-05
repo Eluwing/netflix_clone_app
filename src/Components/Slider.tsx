@@ -66,7 +66,11 @@ const SliderTitleArea = styled.div`
   font-weight: 1000;
 `;
 
-const ButtonArea = styled.div`
+const NextButtonArea = styled.div`
+  display: flex;
+  justify-content: end;
+`;
+const PrevButtonArea = styled.div`
   display: flex;
   justify-content: end;
 `;
@@ -256,9 +260,9 @@ function Slider({
               <SliderTitleArea>{slidersTitle}</SliderTitleArea>
             </SliderTopBar>
             <BoxArea>
-              <ButtonArea>
+              <PrevButtonArea>
                 <button onClick={decreaseIndex}>{'<'}</button>
-              </ButtonArea>
+              </PrevButtonArea>
               <BoxListArea>
                 <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
                   <Row
@@ -293,9 +297,9 @@ function Slider({
                   </Row>
                 </AnimatePresence>
               </BoxListArea>
-              <ButtonArea>
+              <NextButtonArea>
                 <button onClick={incraseIndex}>{'>'}</button>
-              </ButtonArea>
+              </NextButtonArea>
             </BoxArea>
           </SliderArea>
         </>
