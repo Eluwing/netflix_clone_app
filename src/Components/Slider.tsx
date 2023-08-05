@@ -52,9 +52,7 @@ const Info = styled(motion.div)`
   }
 `;
 
-const SliderArea = styled.div`
-  margin-bottom: 250px;
-`;
+const SliderArea = styled.div``;
 
 const SliderTopBar = styled.div`
   display: flex;
