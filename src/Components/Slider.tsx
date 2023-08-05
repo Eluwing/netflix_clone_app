@@ -23,6 +23,7 @@ import {
   SCREEN_TYPES,
   SLIDER_TYPES,
 } from '../Constants/Common';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 const Box = styled(motion.div)<{ bgphoto: string }>`
   background-color: white;
@@ -51,9 +52,7 @@ const Info = styled(motion.div)`
   }
 `;
 
-const SliderArea = styled.div`
-  margin-bottom: 250px;
-`;
+const SliderArea = styled.div``;
 
 const SliderTopBar = styled.div`
   display: flex;
@@ -66,16 +65,35 @@ const SliderTitleArea = styled.div`
   font-weight: 1000;
 `;
 
-const ButtonArea = styled.div`
+const CommonButton = styled.div`
   display: flex;
-  justify-content: end;
+  position: absolute;
+  height: 100%;
+  width: 4vmin;
+  box-sizing: border-box;
+  background-color: #000;
+  opacity: 0.6;
+  justify-content: center;
 `;
+
+const NextButtonArea = styled(CommonButton)`
+  right: 0%;
+`;
+const PrevButtonArea = styled(CommonButton)`
+  left: 0%;
+`;
+
+const BoxArea = styled.div`
+  display: flex;
+  position: relative;
+`;
+const BoxListArea = styled.div``;
 
 const Row = styled(motion.div)`
   display: grid;
   gap: 5px;
   grid-template-columns: repeat(6, 1fr);
-  position: absolute;
+  /* position: absolute; */
   width: 100%;
 `;
 
@@ -248,41 +266,52 @@ function Slider({
           <SliderArea>
             <SliderTopBar>
               <SliderTitleArea>{slidersTitle}</SliderTitleArea>
-              <ButtonArea>
-                <button onClick={decreaseIndex}>{'<'}</button>
-                <button onClick={incraseIndex}>{'>'}</button>
-              </ButtonArea>
             </SliderTopBar>
-            <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
-              <Row
-                variants={rowVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                transition={{ type: 'tween', duration: 1 }}
-              >
-                {data?.results
-                  .slice(1)
-                  .slice(offset * index, offset * index + offset)
-                  .map((movie) => (
-                    <Box
-                      layoutId={getSliderBoxId(movie.id, sliderAndScreenType)}
-                      key={getSliderBoxId(movie.id, sliderAndScreenType)}
-                      variants={BoxVariants}
-                      whileHover="hover"
-                      initial="normal"
-                      onClick={() => onBoxClicked(getSliderBoxId(movie.id, sliderAndScreenType))}
-                      transition={{ type: 'tween' }}
-                      bgphoto={makeImagePath(movie.backdrop_path ?? '', 'w500')}
-                    >
-                      {(movie.title && movie.title) ?? (movie.name && movie.name)}
-                      <Info variants={infoVariants}>
-                        <h4>{(movie.title && movie.title) ?? (movie.name && movie.name)}</h4>
-                      </Info>
-                    </Box>
-                  ))}
-              </Row>
-            </AnimatePresence>
+            <BoxArea>
+              <PrevButtonArea>
+                <IoIosArrowBack style={{ height: '100%' }} onClick={decreaseIndex}></IoIosArrowBack>
+              </PrevButtonArea>
+              <BoxListArea>
+                <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
+                  <Row
+                    variants={rowVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    transition={{ type: 'tween', duration: 1 }}
+                  >
+                    {data?.results
+                      .slice(1)
+                      .slice(offset * index, offset * index + offset)
+                      .map((movie) => (
+                        <Box
+                          layoutId={getSliderBoxId(movie.id, sliderAndScreenType)}
+                          key={getSliderBoxId(movie.id, sliderAndScreenType)}
+                          variants={BoxVariants}
+                          whileHover="hover"
+                          initial="normal"
+                          onClick={() =>
+                            onBoxClicked(getSliderBoxId(movie.id, sliderAndScreenType))
+                          }
+                          transition={{ type: 'tween' }}
+                          bgphoto={makeImagePath(movie.backdrop_path ?? '', 'w500')}
+                        >
+                          {(movie.title && movie.title) ?? (movie.name && movie.name)}
+                          <Info variants={infoVariants}>
+                            <h4>{(movie.title && movie.title) ?? (movie.name && movie.name)}</h4>
+                          </Info>
+                        </Box>
+                      ))}
+                  </Row>
+                </AnimatePresence>
+              </BoxListArea>
+              <NextButtonArea>
+                <IoIosArrowForward
+                  style={{ height: '100%' }}
+                  onClick={incraseIndex}
+                ></IoIosArrowForward>
+              </NextButtonArea>
+            </BoxArea>
           </SliderArea>
         </>
       )}
