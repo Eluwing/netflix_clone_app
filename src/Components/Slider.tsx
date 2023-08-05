@@ -68,10 +68,14 @@ const SliderTitleArea = styled.div`
 
 const NextButtonArea = styled.div`
   display: flex;
+  position: absolute;
+  right: 0%;
   justify-content: end;
 `;
 const PrevButtonArea = styled.div`
   display: flex;
+  position: absolute;
+  left: 0%;
   justify-content: end;
 `;
 
