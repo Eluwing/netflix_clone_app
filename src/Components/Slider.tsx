@@ -23,6 +23,7 @@ import {
   SCREEN_TYPES,
   SLIDER_TYPES,
 } from '../Constants/Common';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 const Box = styled(motion.div)<{ bgphoto: string }>`
   background-color: white;
@@ -70,13 +71,23 @@ const NextButtonArea = styled.div`
   display: flex;
   position: absolute;
   right: 0%;
-  justify-content: end;
+  height: 100%;
+  width: 4vmin;
+  box-sizing: border-box;
+  background-color: #000;
+  opacity: 0.6;
+  justify-content: center;
 `;
 const PrevButtonArea = styled.div`
   display: flex;
   position: absolute;
   left: 0%;
-  justify-content: end;
+  width: 4vmin;
+  height: 100%;
+  box-sizing: border-box;
+  background-color: #000;
+  opacity: 0.6;
+  justify-content: center;
 `;
 
 const BoxArea = styled.div`
@@ -265,7 +276,7 @@ function Slider({
             </SliderTopBar>
             <BoxArea>
               <PrevButtonArea>
-                <button onClick={decreaseIndex}>{'<'}</button>
+                <IoIosArrowBack style={{ height: '100%' }} onClick={decreaseIndex}></IoIosArrowBack>
               </PrevButtonArea>
               <BoxListArea>
                 <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
@@ -302,7 +313,10 @@ function Slider({
                 </AnimatePresence>
               </BoxListArea>
               <NextButtonArea>
-                <button onClick={incraseIndex}>{'>'}</button>
+                <IoIosArrowForward
+                  style={{ height: '100%' }}
+                  onClick={incraseIndex}
+                ></IoIosArrowForward>
               </NextButtonArea>
             </BoxArea>
           </SliderArea>
