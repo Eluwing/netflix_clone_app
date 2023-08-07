@@ -279,6 +279,7 @@ function Slider({
                     animate="visible"
                     exit="exit"
                     transition={{ type: 'tween', duration: 1 }}
+                    key={index}
                   >
                     {data?.results
                       .slice(1)
