@@ -49,7 +49,7 @@ function Home(): JSX.Element {
               screenId={screenId}
             />
           </SliderArea>
-          {/* <SliderArea>
+          <SliderArea>
             <Slider
               sliderType={SLIDER_TYPES.POPULAR_MOVIE}
               screenType={SCREEN_TYPES.MOVIES}
@@ -75,7 +75,7 @@ function Home(): JSX.Element {
               setScreenId={setScreenId}
               screenId={screenId}
             />
-          </SliderArea> */}
+          </SliderArea>
           {isBoxPopUp ? (
             <>
               <Popup
