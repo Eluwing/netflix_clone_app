@@ -269,7 +269,7 @@ function Slider({
             </SliderTopBar>
             <BoxArea>
               <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
-                <PrevButtonArea>
+                <PrevButtonArea key={index}>
                   <IoIosArrowBack
                     style={{ height: '100%' }}
                     onClick={decreaseIndex}
@@ -308,7 +308,7 @@ function Slider({
                       ))}
                   </Row>
                 </BoxListArea>
-                <NextButtonArea>
+                <NextButtonArea key={index}>
                   <IoIosArrowForward
                     style={{ height: '100%' }}
                     onClick={incraseIndex}
