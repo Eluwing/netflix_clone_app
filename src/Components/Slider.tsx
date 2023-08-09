@@ -268,17 +268,21 @@ function Slider({
               <SliderTitleArea>{slidersTitle}</SliderTitleArea>
             </SliderTopBar>
             <BoxArea>
-              <PrevButtonArea>
-                <IoIosArrowBack style={{ height: '100%' }} onClick={decreaseIndex}></IoIosArrowBack>
-              </PrevButtonArea>
-              <BoxListArea>
-                <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
+              <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
+                <PrevButtonArea key={index}>
+                  <IoIosArrowBack
+                    style={{ height: '100%' }}
+                    onClick={decreaseIndex}
+                  ></IoIosArrowBack>
+                </PrevButtonArea>
+                <BoxListArea>
                   <Row
                     variants={rowVariants}
                     initial="hidden"
                     animate="visible"
                     exit="exit"
                     transition={{ type: 'tween', duration: 1 }}
+                    key={index}
                   >
                     {data?.results
                       .slice(1)
@@ -303,14 +307,14 @@ function Slider({
                         </Box>
                       ))}
                   </Row>
-                </AnimatePresence>
-              </BoxListArea>
-              <NextButtonArea>
-                <IoIosArrowForward
-                  style={{ height: '100%' }}
-                  onClick={incraseIndex}
-                ></IoIosArrowForward>
-              </NextButtonArea>
+                </BoxListArea>
+                <NextButtonArea key={index}>
+                  <IoIosArrowForward
+                    style={{ height: '100%' }}
+                    onClick={incraseIndex}
+                  ></IoIosArrowForward>
+                </NextButtonArea>
+              </AnimatePresence>
             </BoxArea>
           </SliderArea>
         </>
