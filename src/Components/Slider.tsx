@@ -263,6 +263,9 @@ function Slider({
         <Loader>Loading...</Loader>
       ) : (
         <>
+          <button style={{ height: '100%' }} onClick={incraseIndex}>
+            {'>'}
+          </button>
           <SliderArea>
             <SliderTopBar>
               <SliderTitleArea>{slidersTitle}</SliderTitleArea>
