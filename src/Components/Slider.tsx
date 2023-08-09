@@ -263,19 +263,19 @@ function Slider({
         <Loader>Loading...</Loader>
       ) : (
         <>
-          <button style={{ height: '100%' }} onClick={incraseIndex}>
-            {'>'}
-          </button>
           <SliderArea>
             <SliderTopBar>
               <SliderTitleArea>{slidersTitle}</SliderTitleArea>
             </SliderTopBar>
             <BoxArea>
-              <PrevButtonArea>
-                <IoIosArrowBack style={{ height: '100%' }} onClick={decreaseIndex}></IoIosArrowBack>
-              </PrevButtonArea>
-              <BoxListArea>
-                <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
+              <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
+                <PrevButtonArea>
+                  <IoIosArrowBack
+                    style={{ height: '100%' }}
+                    onClick={decreaseIndex}
+                  ></IoIosArrowBack>
+                </PrevButtonArea>
+                <BoxListArea>
                   <Row
                     variants={rowVariants}
                     initial="hidden"
@@ -307,14 +307,14 @@ function Slider({
                         </Box>
                       ))}
                   </Row>
-                </AnimatePresence>
-              </BoxListArea>
-              <NextButtonArea>
-                <IoIosArrowForward
-                  style={{ height: '100%' }}
-                  onClick={incraseIndex}
-                ></IoIosArrowForward>
-              </NextButtonArea>
+                </BoxListArea>
+                <NextButtonArea>
+                  <IoIosArrowForward
+                    style={{ height: '100%' }}
+                    onClick={incraseIndex}
+                  ></IoIosArrowForward>
+                </NextButtonArea>
+              </AnimatePresence>
             </BoxArea>
           </SliderArea>
         </>
