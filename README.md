@@ -15,10 +15,11 @@ https://eluwing.github.io/netflix_clone_app/
 7. Fix Not display Pop up data(2023.07.28 Complete)
 8. Improve CSS prev and next button in List Area(2023.08.05 Complete)
 9. Movie list next button animation in Slider component(2023.08.09 Complete)
-10. Search Feature by entering the keyword 
-11. Improve moive detail modal
-12. Other Netflix like features
+10. Fix a bug where some movie image width settings in slide components were set incorrectly
+11. Search Feature by entering the keyword 
+12. Improve moive detail modal
 13. Fix Slider Animation Bug
+14. Other Netflix like features
 
 ## Bug Fix and Feature Report(Korean)
 https://www.notion.so/Clone-Netfilx-379ec8e8b68249b3bf5d1efec0854123?pvs=4
