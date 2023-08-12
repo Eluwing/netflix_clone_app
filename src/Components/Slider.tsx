@@ -46,9 +46,16 @@ const Info = styled(motion.div)`
   position: absolute;
   width: -webkit-fill-available;
   bottom: 0;
+  &:first-child {
+    padding-left: 10px;
+    padding-right: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
 `;
 
 const InfoTitle = styled(motion.div)`
+  padding-left: 10px;
   text-align: center;
   font-size: 18px;
 `;
