@@ -44,7 +44,7 @@ const Info = styled(motion.div)`
   background-color: ${(props) => props.theme.black.lighter};
   opacity: 0;
   position: absolute;
-  width: 100%;
+  width: -webkit-fill-available;
   bottom: 0;
   h4 {
     text-align: center;
@@ -93,7 +93,6 @@ const Row = styled(motion.div)`
   display: grid;
   gap: 5px;
   grid-template-columns: repeat(6, 1fr);
-  /* position: absolute; */
   width: 100%;
 `;
 
