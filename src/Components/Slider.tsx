@@ -46,10 +46,18 @@ const Info = styled(motion.div)`
   position: absolute;
   width: -webkit-fill-available;
   bottom: 0;
-  h4 {
-    text-align: center;
-    font-size: 18px;
+  &:first-child {
+    padding-left: 10px;
+    padding-right: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
   }
+`;
+
+const InfoTitle = styled(motion.div)`
+  padding-left: 10px;
+  text-align: center;
+  font-size: 18px;
 `;
 
 const SliderArea = styled.div``;
@@ -301,7 +309,9 @@ function Slider({
                         >
                           {(movie.title && movie.title) ?? (movie.name && movie.name)}
                           <Info variants={infoVariants}>
-                            <h4>{(movie.title && movie.title) ?? (movie.name && movie.name)}</h4>
+                            <InfoTitle>
+                              {(movie.title && movie.title) ?? (movie.name && movie.name)}
+                            </InfoTitle>
                           </Info>
                         </Box>
                       ))}
