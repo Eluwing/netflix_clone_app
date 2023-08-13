@@ -276,7 +276,7 @@ function Slider({
             </SliderTopBar>
             <BoxArea>
               <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
-                <PrevButtonArea key={index}>
+                <PrevButtonArea key={sliderAndScreenType.concat(String(index)).concat('prev')}>
                   <IoIosArrowBack
                     style={{ height: '100%' }}
                     onClick={decreaseIndex}
@@ -289,7 +289,7 @@ function Slider({
                     animate="visible"
                     exit="exit"
                     transition={{ type: 'tween', duration: 1 }}
-                    key={index}
+                    key={sliderAndScreenType.concat(String(index)).concat('box')}
                   >
                     {data?.results
                       .slice(1)
@@ -317,7 +317,7 @@ function Slider({
                       ))}
                   </Row>
                 </BoxListArea>
-                <NextButtonArea key={index}>
+                <NextButtonArea key={sliderAndScreenType.concat(String(index)).concat('next')}>
                   <IoIosArrowForward
                     style={{ height: '100%' }}
                     onClick={incraseIndex}
