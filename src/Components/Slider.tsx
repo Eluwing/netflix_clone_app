@@ -96,13 +96,14 @@ const BoxArea = styled.div`
   display: flex;
   position: relative;
 `;
-const BoxListArea = styled.div``;
+const BoxListArea = styled.div`
+  width: 100%;
+`;
 
 const Row = styled(motion.div)`
   display: grid;
   gap: 5px;
   grid-template-columns: repeat(6, 1fr);
-  width: 100%;
 `;
 
 const rowVariants = {
