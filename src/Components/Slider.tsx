@@ -14,6 +14,7 @@ import {
   IGetUpcomingMoviesResult,
   IGetPopularTvResult,
   IGetCurrentOnAirTvResult,
+  IGetMoviesResult,
 } from '../api';
 import { match, useHistory, useRouteMatch } from 'react-router-dom';
 import { getSliderBoxId, getSlidersTitle, makeImagePath } from '../utils';
@@ -184,7 +185,10 @@ function Slider({
   const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> =
     sliderType === SLIDER_TYPES.NOW_PLAYING_MOVIE
       ? {
-          data: queryClient.getQueryData([SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.NOW_PLAYING]),
+          data: queryClient.getQueryData<IGetMoviesResult>([
+            SCREEN_QUERY_KEY.MOVIE,
+            SCREEN_QUERY_KEY.NOW_PLAYING,
+          ]),
           isLoading: false,
         }
       : // Movie List
