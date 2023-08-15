@@ -14,6 +14,7 @@ import {
   IGetUpcomingMoviesResult,
   IGetPopularTvResult,
   IGetCurrentOnAirTvResult,
+  IGetMoviesResult,
 } from '../api';
 import { match, useHistory, useRouteMatch } from 'react-router-dom';
 import { getSliderBoxId, getSlidersTitle, makeImagePath } from '../utils';
@@ -95,13 +96,14 @@ const BoxArea = styled.div`
   display: flex;
   position: relative;
 `;
-const BoxListArea = styled.div``;
+const BoxListArea = styled.div`
+  width: 100%;
+`;
 
 const Row = styled(motion.div)`
   display: grid;
   gap: 5px;
   grid-template-columns: repeat(6, 1fr);
-  width: 100%;
 `;
 
 const rowVariants = {
@@ -184,7 +186,10 @@ function Slider({
   const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> =
     sliderType === SLIDER_TYPES.NOW_PLAYING_MOVIE
       ? {
-          data: queryClient.getQueryData([SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.NOW_PLAYING]),
+          data: queryClient.getQueryData<IGetMoviesResult>([
+            SCREEN_QUERY_KEY.MOVIE,
+            SCREEN_QUERY_KEY.NOW_PLAYING,
+          ]),
           isLoading: false,
         }
       : // Movie List
@@ -276,7 +281,7 @@ function Slider({
             </SliderTopBar>
             <BoxArea>
               <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
-                <PrevButtonArea key={index}>
+                <PrevButtonArea key={sliderAndScreenType.concat(String(index)).concat('prev')}>
                   <IoIosArrowBack
                     style={{ height: '100%' }}
                     onClick={decreaseIndex}
@@ -289,7 +294,7 @@ function Slider({
                     animate="visible"
                     exit="exit"
                     transition={{ type: 'tween', duration: 1 }}
-                    key={index}
+                    key={sliderAndScreenType.concat(String(index)).concat('box')}
                   >
                     {data?.results
                       .slice(1)
@@ -317,7 +322,7 @@ function Slider({
                       ))}
                   </Row>
                 </BoxListArea>
-                <NextButtonArea key={index}>
+                <NextButtonArea key={sliderAndScreenType.concat(String(index)).concat('next')}>
                   <IoIosArrowForward
                     style={{ height: '100%' }}
                     onClick={incraseIndex}
