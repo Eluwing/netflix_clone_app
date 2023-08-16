@@ -4,7 +4,7 @@ import Header from './Components/Header';
 import Home from './Routes/Home';
 import Search from './Routes/Search';
 import Tv from './Routes/Tv';
-// import { ReactQueryDevtools } from 'react-query/devtools';
+import { ReactQueryDevtools } from 'react-query/devtools';
 
 function App(): JSX.Element {
   return (
@@ -21,7 +21,7 @@ function App(): JSX.Element {
           <Home />
         </Route>
       </Switch>
-      {/* <ReactQueryDevtools initialIsOpen={true} /> */}
+      <ReactQueryDevtools initialIsOpen={true} />
     </Router>
   );
 }
