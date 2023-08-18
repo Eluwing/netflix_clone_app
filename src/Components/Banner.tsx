@@ -11,6 +11,7 @@ const BannerArea = styled.div<{ bgphoto: string }>`
   background-image: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)),
     url(${(props) => props.bgphoto});
   background-size: cover;
+  min-height: 500px;
 `;
 
 const Title = styled.h2`
