@@ -9,6 +9,11 @@ export interface IMovieOrTv {
   overview: string;
 }
 
+export interface ISearchResult {
+  id: number;
+  name: string;
+}
+
 export interface IGetMoviesResult {
   dates: {
     maximum: string;
@@ -68,6 +73,13 @@ export interface IGetMostNewlyTvResult {
   total_pages: number;
   total_results: number;
 }
+
+export interface IGetKeywordSearchResult {
+  page: number;
+  results: ISearchResult[];
+  total_pages: number;
+  total_results: number;
+}
 // Movie List API
 export async function getMovies(): Promise<IGetMoviesResult> {
   return await fetch(`${BASE_PATH}/movie/now_playing?api_key=${API_KEY}&page=${GET_PAGE}`).then(
@@ -111,6 +123,12 @@ export async function getCurrentOnAirTv(): Promise<IGetCurrentOnAirTvResult> {
 }
 export async function getMostNewlyTv(): Promise<IGetMostNewlyTvResult> {
   return await fetch(`${BASE_PATH}/tv/latest?api_key=${API_KEY}&page=4`).then(
+    async (response) => await response.json(),
+  );
+}
+
+export async function getKeywordSearchResult(keyword: string): Promise<IGetKeywordSearchResult> {
+  return await fetch(`${BASE_PATH}/search/keyword?api_key=${API_KEY}&query=${keyword}&page=1`).then(
     async (response) => await response.json(),
   );
 }
