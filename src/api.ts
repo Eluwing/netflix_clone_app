@@ -9,7 +9,7 @@ export interface IMovieOrTv {
   overview: string;
 }
 
-export interface IMovieSearchResult {
+interface IMovieSearchResult {
   adult: boolean;
   backdrop_path: string;
   genre_ids: [];
@@ -22,6 +22,23 @@ export interface IMovieSearchResult {
   release_date: string;
   title: string;
   video: string;
+  vote_average: number;
+  vote_count: number;
+}
+
+interface ITvSearchResult {
+  adult: boolean;
+  backdrop_path: string;
+  genre_ids: [];
+  id: number;
+  origin_country: [];
+  original_language: string;
+  original_name: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  first_air_date: string;
+  name: string;
   vote_average: number;
   vote_count: number;
 }
@@ -92,6 +109,13 @@ export interface IGetMovieKeywordSearchResult {
   total_pages: number;
   total_results: number;
 }
+
+export interface IGetTvKeywordSearchResult {
+  page: number;
+  results: ITvSearchResult[];
+  total_pages: number;
+  total_results: number;
+}
 // Movie List API
 export async function getMovies(): Promise<IGetMoviesResult> {
   return await fetch(`${BASE_PATH}/movie/now_playing?api_key=${API_KEY}&page=${GET_PAGE}`).then(
@@ -145,5 +169,11 @@ export async function getMovieKeywordSearch(
 ): Promise<IGetMovieKeywordSearchResult> {
   return await fetch(
     `${BASE_PATH}/search/movie?api_key=${API_KEY}&query=${keyword}&include_adult=false&language=en-US&page=1`,
+  ).then(async (response) => await response.json());
+}
+
+export async function getTvKeywordSearch(keyword: string): Promise<IGetTvKeywordSearchResult> {
+  return await fetch(
+    `${BASE_PATH}/search/tv?api_key=${API_KEY}&query=${keyword}&include_adult=false&language=en-US&page=1`,
   ).then(async (response) => await response.json());
 }
