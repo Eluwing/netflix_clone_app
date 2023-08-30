@@ -1,14 +1,14 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { IGetMovieKeywordSearchResult, getMoiveKeywordSearch } from '../api';
+import { IGetMovieKeywordSearchResult, getMovieKeywordSearch } from '../api';
 import { useQuery } from 'react-query';
 
 function Search(): JSX.Element {
   const location = useLocation();
   const keyword = new URLSearchParams(location.search).get('keyword');
   const { data } = useQuery<IGetMovieKeywordSearchResult>(
-    ['Search', 'Keyword'],
-    async () => await getMoiveKeywordSearch(String(keyword)),
+    ['Search', 'Keyword', 'movie'],
+    async () => await getMovieKeywordSearch(String(keyword)),
   );
   return (
     <>

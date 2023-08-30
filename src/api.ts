@@ -140,7 +140,7 @@ export async function getMostNewlyTv(): Promise<IGetMostNewlyTvResult> {
 }
 
 // Keyword Search API
-export async function getMoiveKeywordSearch(
+export async function getMovieKeywordSearch(
   keyword: string,
 ): Promise<IGetMovieKeywordSearchResult> {
   return await fetch(
