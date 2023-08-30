@@ -9,9 +9,21 @@ export interface IMovieOrTv {
   overview: string;
 }
 
-export interface ISearchResult {
+export interface IMovieSearchResult {
+  adult: boolean;
+  backdrop_path: string;
+  genre_ids: [];
   id: number;
-  name: string;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  release_date: string;
+  title: string;
+  video: string;
+  vote_average: number;
+  vote_count: number;
 }
 
 export interface IGetMoviesResult {
@@ -74,9 +86,9 @@ export interface IGetMostNewlyTvResult {
   total_results: number;
 }
 
-export interface IGetKeywordSearchResult {
+export interface IGetMovieKeywordSearchResult {
   page: number;
-  results: ISearchResult[];
+  results: IMovieSearchResult[];
   total_pages: number;
   total_results: number;
 }
@@ -127,8 +139,11 @@ export async function getMostNewlyTv(): Promise<IGetMostNewlyTvResult> {
   );
 }
 
-export async function getKeywordSearchResult(keyword: string): Promise<IGetKeywordSearchResult> {
-  return await fetch(`${BASE_PATH}/search/keyword?api_key=${API_KEY}&query=${keyword}&page=1`).then(
-    async (response) => await response.json(),
-  );
+// Keyword Search API
+export async function getMoiveKeywordSearch(
+  keyword: string,
+): Promise<IGetMovieKeywordSearchResult> {
+  return await fetch(
+    `${BASE_PATH}/search/movie?api_key=${API_KEY}&query=${keyword}&include_adult=false&language=en-US&page=1`,
+  ).then(async (response) => await response.json());
 }
