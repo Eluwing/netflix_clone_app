@@ -8,7 +8,7 @@ import {
 import { SCREEN_TYPES } from '../Constants/Common';
 
 interface SearchResultProps {
-  keyword: string;
+  keyword: string | null;
   screenType: number;
 }
 
@@ -22,18 +22,20 @@ function SearchResult({ keyword, screenType }: SearchResultProps): JSX.Element {
         setData(async () => {
           return await getTvKeywordSearch(keyword);
         });
-      }, [data]);
-    // eslint-disable-next-line no-fallthrough
+      }, []);
+      break;
     case SCREEN_TYPES.MOVIES:
       useEffect(() => {
         setData(async () => {
           return await getMovieKeywordSearch(keyword);
         });
-      }, [data]);
-    // eslint-disable-next-line no-fallthrough
+      }, []);
+      break;
     default:
+      break;
   }
 
+  console.log({ screenType, data });
   return (
     <>
       <div>{'ScreenSearch Component'}</div>
