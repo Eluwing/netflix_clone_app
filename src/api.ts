@@ -165,15 +165,21 @@ export async function getMostNewlyTv(): Promise<IGetMostNewlyTvResult> {
 
 // Keyword Search API
 export async function getMovieKeywordSearch(
-  keyword: string,
+  keyword: string | null,
 ): Promise<IGetMovieKeywordSearchResult> {
   return await fetch(
-    `${BASE_PATH}/search/movie?api_key=${API_KEY}&query=${keyword}&include_adult=false&language=en-US&page=1`,
+    `${BASE_PATH}/search/movie?api_key=${API_KEY}&query=${
+      keyword ?? ''
+    }&include_adult=false&language=en-US&page=1`,
   ).then(async (response) => await response.json());
 }
 
-export async function getTvKeywordSearch(keyword: string): Promise<IGetTvKeywordSearchResult> {
+export async function getTvKeywordSearch(
+  keyword: string | null,
+): Promise<IGetTvKeywordSearchResult> {
   return await fetch(
-    `${BASE_PATH}/search/tv?api_key=${API_KEY}&query=${keyword}&include_adult=false&language=en-US&page=1`,
+    `${BASE_PATH}/search/tv?api_key=${API_KEY}&query=${
+      keyword ?? ''
+    }&include_adult=false&language=en-US&page=1`,
   ).then(async (response) => await response.json());
 }
