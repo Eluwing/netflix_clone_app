@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import {
-  IGetMovieKeywordSearchResult,
-  IGetTvKeywordSearchResult,
-  getMovieKeywordSearch,
-  getTvKeywordSearch,
-} from '../api';
-import { SCREEN_TYPES } from '../Constants/Common';
+import { getMovieKeywordSearch, getTvKeywordSearch } from '../api';
+import { SCREEN_TYPES, SEARCH_RESULT_INTERFACE_TYPES } from '../Constants/Common';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
+import { makeImagePath } from '../utils';
 
 interface SearchResultProps {
   keyword: string | null;
@@ -60,7 +56,7 @@ const InfoTitle = styled(motion.div)`
 `;
 
 function SearchResult({ keyword, screenType }: SearchResultProps): JSX.Element {
-  const [data, setData] = useState<IGetTvKeywordSearchResult | IGetMovieKeywordSearchResult>();
+  const [data, setData] = useState<SEARCH_RESULT_INTERFACE_TYPES>();
 
   switch (screenType) {
     case SCREEN_TYPES.TV:
@@ -90,21 +86,22 @@ function SearchResult({ keyword, screenType }: SearchResultProps): JSX.Element {
           exit="exit"
           transition={{ type: 'tween', duration: 1 }}
         >
-          {/* {data?.results
-            .map((movie) => (
-              <Box
-                key={0}
-                onClick={() => onBoxClicked(getSliderBoxId(movie.id, sliderAndScreenType))}
-                bgphoto={makeImagePath(movie.backdrop_path ?? '', 'w500')}
-              >
-                {(movie.title && movie.title) ?? (movie.name && movie.name)}
-                <Info variants={infoVariants}>
-                  <InfoTitle>
-                    {(movie.title && movie.title) ?? (movie.name && movie.name)}
-                  </InfoTitle>
-                </Info>
-              </Box>
-            ))} */}
+          {data?.results.map((screenResultData) => (
+            <Box
+              key={0}
+              // onClick={() => onBoxClicked(getSliderBoxId(movie.id, sliderAndScreenType))}
+              bgphoto={makeImagePath(screenResultData.backdrop_path ?? '', 'w500')}
+            >
+              {(screenResultData.title && screenResultData.title) ??
+                (screenResultData.name && screenResultData.name)}
+              <Info /* variants={infoVariants} */>
+                <InfoTitle>
+                  {(screenResultData.title && screenResultData.title) ??
+                    (screenResultData.name && screenResultData.name)}
+                </InfoTitle>
+              </Info>
+            </Box>
+          ))}
         </Row>
       </BoxListArea>
     </>
