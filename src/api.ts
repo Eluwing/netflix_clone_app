@@ -9,36 +9,22 @@ export interface IMovieOrTv {
   overview: string;
 }
 
-interface IMovieSearchResult {
+export interface IMovieOrTvSearch {
   adult: boolean;
   backdrop_path: string;
   genre_ids: [];
   id: number;
   original_language: string;
-  original_title: string;
+  original_title?: string;
+  original_name?: string;
   overview: string;
   popularity: number;
   poster_path: string;
-  release_date: string;
-  title: string;
-  video: string;
-  vote_average: number;
-  vote_count: number;
-}
-
-interface ITvSearchResult {
-  adult: boolean;
-  backdrop_path: string;
-  genre_ids: [];
-  id: number;
-  origin_country: [];
-  original_language: string;
-  original_name: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  first_air_date: string;
-  name: string;
+  first_air_date?: string;
+  release_date?: string;
+  title?: string;
+  name?: string;
+  video?: string;
   vote_average: number;
   vote_count: number;
 }
@@ -105,14 +91,14 @@ export interface IGetMostNewlyTvResult {
 
 export interface IGetMovieKeywordSearchResult {
   page: number;
-  results: IMovieSearchResult[];
+  results: IMovieOrTvSearch[];
   total_pages: number;
   total_results: number;
 }
 
 export interface IGetTvKeywordSearchResult {
   page: number;
-  results: ITvSearchResult[];
+  results: IMovieOrTvSearch[];
   total_pages: number;
   total_results: number;
 }
