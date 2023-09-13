@@ -3,7 +3,7 @@ import { getMovieKeywordSearch, getTvKeywordSearch } from '../api';
 import { SCREEN_TYPES, SEARCH_RESULT_INTERFACE_TYPES } from '../Constants/Common';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import { makeImagePath } from '../utils';
+import { getScreenTitle, getSlidersTitle, makeImagePath } from '../utils';
 
 interface SearchResultProps {
   keyword: string | null;
@@ -55,8 +55,14 @@ const InfoTitle = styled(motion.div)`
   font-size: 18px;
 `;
 
+const SearchResultTitleArea = styled.div`
+  font-size: 20px;
+  font-weight: 1000;
+`;
+
 function SearchResult({ keyword, screenType }: SearchResultProps): JSX.Element {
   const [data, setData] = useState<SEARCH_RESULT_INTERFACE_TYPES>();
+  const screenTitle = getScreenTitle(screenType);
 
   switch (screenType) {
     case SCREEN_TYPES.TV:
@@ -80,6 +86,7 @@ function SearchResult({ keyword, screenType }: SearchResultProps): JSX.Element {
   return (
     <>
       <BoxListArea>
+        <SearchResultTitleArea>{screenTitle}</SearchResultTitleArea>
         <Row
           initial="hidden"
           animate="visible"
