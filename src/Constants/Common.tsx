@@ -40,6 +40,11 @@ export const enum SLIDER_TITLE {
   MOST_NEWLY_TV = 'Most Newly Tv Shows',
 }
 
+export const enum SEARCH_RESULT_TITLE {
+  MOVIE_RESULT = 'Search Result of Movie',
+  TV_RESULT = 'Search Result of Tv',
+}
+
 export const enum SCREEN_TYPES {
   TV = 1,
   MOVIES = 2,
