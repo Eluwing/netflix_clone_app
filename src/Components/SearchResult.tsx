@@ -3,12 +3,7 @@ import { getMovieKeywordSearch, getTvKeywordSearch } from '../api';
 import { SCREEN_TYPES, SEARCH_RESULT_INTERFACE_TYPES } from '../Constants/Common';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import { getScreenTitle, getSlidersTitle, makeImagePath } from '../utils';
-
-interface SearchResultProps {
-  keyword: string | null;
-  screenType: number;
-}
+import { getScreenTitle, makeImagePath } from '../utils';
 
 const Box = styled(motion.div)<{ bgphoto: string }>`
   background-color: white;
@@ -32,6 +27,7 @@ const Row = styled(motion.div)`
 
 const BoxListArea = styled.div`
   width: 100%;
+  margin-top: 60px;
 `;
 
 const Info = styled(motion.div)`
@@ -58,7 +54,13 @@ const InfoTitle = styled(motion.div)`
 const SearchResultTitleArea = styled.div`
   font-size: 20px;
   font-weight: 1000;
+  margin-bottom: 10px;
 `;
+
+interface SearchResultProps {
+  keyword: string | null;
+  screenType: number;
+}
 
 function SearchResult({ keyword, screenType }: SearchResultProps): JSX.Element {
   const [data, setData] = useState<SEARCH_RESULT_INTERFACE_TYPES>();
@@ -94,14 +96,10 @@ function SearchResult({ keyword, screenType }: SearchResultProps): JSX.Element {
           transition={{ type: 'tween', duration: 1 }}
         >
           {data?.results.map((screenResultData) => (
-            <Box
-              key={0}
-              // onClick={() => onBoxClicked(getSliderBoxId(movie.id, sliderAndScreenType))}
-              bgphoto={makeImagePath(screenResultData.backdrop_path ?? '', 'w500')}
-            >
+            <Box key={0} bgphoto={makeImagePath(screenResultData.backdrop_path ?? '', 'w500')}>
               {(screenResultData.title && screenResultData.title) ??
                 (screenResultData.name && screenResultData.name)}
-              <Info /* variants={infoVariants} */>
+              <Info>
                 <InfoTitle>
                   {(screenResultData.title && screenResultData.title) ??
                     (screenResultData.name && screenResultData.name)}
