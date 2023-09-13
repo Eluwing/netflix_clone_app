@@ -1,4 +1,10 @@
-import { SCREEN_QUERY_KEY, SLIDER_TITLE, SLIDER_TYPES } from './Constants/Common';
+import {
+  SCREEN_QUERY_KEY,
+  SCREEN_TYPES,
+  SEARCH_RESULT_TITLE,
+  SLIDER_TITLE,
+  SLIDER_TYPES,
+} from './Constants/Common';
 
 export function makeImagePath(id?: string, format?: string): string {
   return `https://image.tmdb.org/t/p/${format !== undefined ? format : 'original'}/${id ?? ''}`;
@@ -63,5 +69,13 @@ export function getSlidersTitle(sliderType: string): string {
     ? SLIDER_TITLE.CURRENT_ON_AIR_TV
     : sliderType === SLIDER_TYPES.MOST_NEWLY_TV
     ? SLIDER_TITLE.MOST_NEWLY_TV
+    : '';
+}
+
+export function getScreenTitle(screenType: number): string {
+  return screenType === SCREEN_TYPES.MOVIES
+    ? SEARCH_RESULT_TITLE.MOVIE_RESULT
+    : screenType === SCREEN_TYPES.TV
+    ? SEARCH_RESULT_TITLE.TV_RESULT
     : '';
 }
