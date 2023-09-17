@@ -62,15 +62,20 @@ interface SearchResultProps {
   screenType: number;
 }
 
+const BOX_OFFSET = 24;
+
 function SearchResult({ keyword, screenType }: SearchResultProps): JSX.Element {
   const [data, setData] = useState<SEARCH_RESULT_INTERFACE_TYPES>();
+  const [totalSearchResult, setTotalSearchResult] = useState<number>(0);
   const screenTitle = getScreenTitle(screenType);
+  const totalPages = Math.ceil(totalSearchResult / BOX_OFFSET);
 
   switch (screenType) {
     case SCREEN_TYPES.TV:
       useEffect(() => {
         void getTvKeywordSearch(keyword).then((data) => {
           setData(data);
+          setTotalSearchResult(data.total_results);
         });
       }, []);
       break;
@@ -78,6 +83,7 @@ function SearchResult({ keyword, screenType }: SearchResultProps): JSX.Element {
       useEffect(() => {
         void getMovieKeywordSearch(keyword).then((data) => {
           setData(data);
+          setTotalSearchResult(data.total_results);
         });
       }, []);
       break;
