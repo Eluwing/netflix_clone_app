@@ -9,6 +9,26 @@ export interface IMovieOrTv {
   overview: string;
 }
 
+export interface IMovieOrTvSearch {
+  adult: boolean;
+  backdrop_path: string;
+  genre_ids: [];
+  id: number;
+  original_language: string;
+  original_title?: string;
+  original_name?: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  first_air_date?: string;
+  release_date?: string;
+  title?: string;
+  name?: string;
+  video?: string;
+  vote_average: number;
+  vote_count: number;
+}
+
 export interface IGetMoviesResult {
   dates: {
     maximum: string;
@@ -68,6 +88,20 @@ export interface IGetMostNewlyTvResult {
   total_pages: number;
   total_results: number;
 }
+
+export interface IGetMovieKeywordSearchResult {
+  page: number;
+  results: IMovieOrTvSearch[];
+  total_pages: number;
+  total_results: number;
+}
+
+export interface IGetTvKeywordSearchResult {
+  page: number;
+  results: IMovieOrTvSearch[];
+  total_pages: number;
+  total_results: number;
+}
 // Movie List API
 export async function getMovies(): Promise<IGetMoviesResult> {
   return await fetch(`${BASE_PATH}/movie/now_playing?api_key=${API_KEY}&page=${GET_PAGE}`).then(
@@ -113,4 +147,25 @@ export async function getMostNewlyTv(): Promise<IGetMostNewlyTvResult> {
   return await fetch(`${BASE_PATH}/tv/latest?api_key=${API_KEY}&page=4`).then(
     async (response) => await response.json(),
   );
+}
+
+// Keyword Search API
+export async function getMovieKeywordSearch(
+  keyword: string | null,
+): Promise<IGetMovieKeywordSearchResult> {
+  return await fetch(
+    `${BASE_PATH}/search/movie?api_key=${API_KEY}&query=${
+      keyword ?? ''
+    }&include_adult=false&language=en-US&page=1`,
+  ).then(async (response) => await response.json());
+}
+
+export async function getTvKeywordSearch(
+  keyword: string | null,
+): Promise<IGetTvKeywordSearchResult> {
+  return await fetch(
+    `${BASE_PATH}/search/tv?api_key=${API_KEY}&query=${
+      keyword ?? ''
+    }&include_adult=false&language=en-US&page=1`,
+  ).then(async (response) => await response.json());
 }

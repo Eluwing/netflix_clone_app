@@ -7,6 +7,8 @@ import {
   IGetPopularTvResult,
   IGetCurrentOnAirTvResult,
   IGetMostNewlyTvResult,
+  IGetMovieKeywordSearchResult,
+  IGetTvKeywordSearchResult,
 } from '../api';
 
 export const API_KEY = '9d9e113697aea324490c0ee7b9da45dd';
@@ -38,6 +40,11 @@ export const enum SLIDER_TITLE {
   MOST_NEWLY_TV = 'Most Newly Tv Shows',
 }
 
+export const enum SEARCH_RESULT_TITLE {
+  MOVIE_RESULT = 'Search Result of Movie',
+  TV_RESULT = 'Search Result of Tv',
+}
+
 export const enum SCREEN_TYPES {
   TV = 1,
   MOVIES = 2,
@@ -54,6 +61,10 @@ export type API_INTERFACE_TYPES =
   | IGetCurrentOnAirTvResult
   | IGetMostNewlyTvResult;
 
+// Add Me : if create new interface type of search result interface type, Add interface name
+export type SEARCH_RESULT_INTERFACE_TYPES =
+  | IGetMovieKeywordSearchResult
+  | IGetTvKeywordSearchResult;
 // Add Me : if create new useQuery Key type, Add key name
 export const enum SCREEN_QUERY_KEY {
   MOVIE = 'movie',
