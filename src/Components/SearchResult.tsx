@@ -69,6 +69,10 @@ function SearchResult({ keyword, screenType }: SearchResultProps): JSX.Element {
   const [totalSearchResult, setTotalSearchResult] = useState<number>(0);
   const screenTitle = getScreenTitle(screenType);
   const totalPages = Math.ceil(totalSearchResult / BOX_OFFSET);
+  const currentIndex = (currentPage: number): number => {
+    const firstIndex = (currentPage - 1) * BOX_OFFSET;
+    return firstIndex;
+  };
 
   switch (screenType) {
     case SCREEN_TYPES.TV:
