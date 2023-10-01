@@ -152,11 +152,12 @@ export async function getMostNewlyTv(): Promise<IGetMostNewlyTvResult> {
 // Keyword Search API
 export async function getMovieKeywordSearch(
   keyword: string | null,
+  page: number,
 ): Promise<IGetMovieKeywordSearchResult> {
   return await fetch(
     `${BASE_PATH}/search/movie?api_key=${API_KEY}&query=${
       keyword ?? ''
-    }&include_adult=false&language=en-US&page=1`,
+    }&include_adult=false&language=en-US&page=${page}`,
   ).then(async (response) => await response.json());
 }
 
@@ -168,4 +169,20 @@ export async function getTvKeywordSearch(
       keyword ?? ''
     }&include_adult=false&language=en-US&page=1`,
   ).then(async (response) => await response.json());
+}
+
+export async function getTotalMovieKeywordSearch(
+  keyword: string | null,
+  startPage: number,
+  endPage: number,
+): Promise<[IMovieOrTvSearch[]]> {
+  const totalSearchResult: [IMovieOrTvSearch[]] = [[]];
+
+  for (let i = startPage; i < endPage; i++) {
+    const getSearchResult: IMovieOrTvSearch[] = await (
+      await getMovieKeywordSearch(keyword, i)
+    ).results;
+    totalSearchResult.push(getSearchResult);
+  }
+  return totalSearchResult;
 }
