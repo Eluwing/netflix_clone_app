@@ -3,6 +3,7 @@ import {
   IMovieOrTvSearch,
   getMovieKeywordSearch,
   getTotalMovieKeywordSearch,
+  getTotalTvKeywordSearch,
   getTvKeywordSearch,
 } from '../api';
 import { SCREEN_TYPES, SEARCH_RESULT_INTERFACE_TYPES } from '../Constants/Common';
@@ -73,21 +74,21 @@ function SearchResult({ keyword, screenType }: SearchResultProps): JSX.Element {
   const emptyInitialObject: IMovieOrTvSearch = {} as any;
   const [data, setData] = useState<[IMovieOrTvSearch]>([emptyInitialObject]);
   const [totalSearchResult, setTotalSearchResult] = useState<number>(0);
+  const [firstIndex, setFirstIndex] = useState<number>(0);
   const screenTitle = getScreenTitle(screenType);
   const totalPages = Math.ceil(totalSearchResult / BOX_OFFSET);
-  const currentIndex = (currentPage: number): number => {
-    const firstIndex = (currentPage - 1) * BOX_OFFSET;
-    return firstIndex;
+  const currentIndex = (currentPage: number): void => {
+    setFirstIndex((currentPage - 1) * BOX_OFFSET);
   };
 
   switch (screenType) {
     case SCREEN_TYPES.TV:
-      // useEffect(() => {
-      //   void getTvKeywordSearch(keyword).then((data) => {
-      //     setData1(data);
-      //     setTotalSearchResult(data.total_results);
-      //   });
-      // }, []);
+      useEffect(() => {
+        void getTotalTvKeywordSearch(keyword, 1, 10).then((data) => {
+          setData(data);
+          setTotalSearchResult(data.length);
+        });
+      }, []);
       break;
     case SCREEN_TYPES.MOVIES:
       useEffect(() => {

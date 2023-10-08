@@ -163,11 +163,12 @@ export async function getMovieKeywordSearch(
 
 export async function getTvKeywordSearch(
   keyword: string | null,
+  page: number,
 ): Promise<IGetTvKeywordSearchResult> {
   return await fetch(
     `${BASE_PATH}/search/tv?api_key=${API_KEY}&query=${
       keyword ?? ''
-    }&include_adult=false&language=en-US&page=1`,
+    }&include_adult=false&language=en-US&page=${page}`,
   ).then(async (response) => await response.json());
 }
 
@@ -183,6 +184,26 @@ export async function getTotalMovieKeywordSearch(
   for (let i = startPage; i < endPage; i++) {
     const getSearchResult: IMovieOrTvSearch[] = await (
       await getMovieKeywordSearch(keyword, i)
+    ).results;
+    getSearchResult.forEach((data) => {
+      totalSearchResult.push(data);
+    });
+  }
+  return totalSearchResult;
+}
+
+export async function getTotalTvKeywordSearch(
+  keyword: string | null,
+  startPage: number,
+  endPage: number,
+): Promise<[IMovieOrTvSearch]> {
+  // Set initial IMovieOrTvSearch Interface for avoid debug error
+  const emptyInterfaceObject: IMovieOrTvSearch = {} as any;
+  const totalSearchResult: [IMovieOrTvSearch] = [emptyInterfaceObject];
+
+  for (let i = startPage; i < endPage; i++) {
+    const getSearchResult: IMovieOrTvSearch[] = await (
+      await getTvKeywordSearch(keyword, i)
     ).results;
     getSearchResult.forEach((data) => {
       totalSearchResult.push(data);
