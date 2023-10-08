@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { getMovieKeywordSearch, getTvKeywordSearch } from '../api';
+import {
+  IMovieOrTvSearch,
+  getMovieKeywordSearch,
+  getTotalMovieKeywordSearch,
+  getTvKeywordSearch,
+} from '../api';
 import { SCREEN_TYPES, SEARCH_RESULT_INTERFACE_TYPES } from '../Constants/Common';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
@@ -65,7 +70,8 @@ interface SearchResultProps {
 const BOX_OFFSET = 24;
 
 function SearchResult({ keyword, screenType }: SearchResultProps): JSX.Element {
-  const [data, setData] = useState<SEARCH_RESULT_INTERFACE_TYPES>();
+  const emptyInitialObject: IMovieOrTvSearch = {} as any;
+  const [data, setData] = useState<[IMovieOrTvSearch]>([emptyInitialObject]);
   const [totalSearchResult, setTotalSearchResult] = useState<number>(0);
   const screenTitle = getScreenTitle(screenType);
   const totalPages = Math.ceil(totalSearchResult / BOX_OFFSET);
@@ -76,18 +82,18 @@ function SearchResult({ keyword, screenType }: SearchResultProps): JSX.Element {
 
   switch (screenType) {
     case SCREEN_TYPES.TV:
-      useEffect(() => {
-        void getTvKeywordSearch(keyword).then((data) => {
-          setData(data);
-          setTotalSearchResult(data.total_results);
-        });
-      }, []);
+      // useEffect(() => {
+      //   void getTvKeywordSearch(keyword).then((data) => {
+      //     setData1(data);
+      //     setTotalSearchResult(data.total_results);
+      //   });
+      // }, []);
       break;
     case SCREEN_TYPES.MOVIES:
       useEffect(() => {
-        void getMovieKeywordSearch(keyword).then((data) => {
+        void getTotalMovieKeywordSearch(keyword, 1, 10).then((data) => {
           setData(data);
-          setTotalSearchResult(data.total_results);
+          setTotalSearchResult(data.length);
         });
       }, []);
       break;
@@ -105,7 +111,7 @@ function SearchResult({ keyword, screenType }: SearchResultProps): JSX.Element {
           exit="exit"
           transition={{ type: 'tween', duration: 1 }}
         >
-          {data?.results.map((screenResultData) => (
+          {data.map((screenResultData) => (
             <Box key={0} bgphoto={makeImagePath(screenResultData.backdrop_path ?? '', 'w500')}>
               {(screenResultData.title && screenResultData.title) ??
                 (screenResultData.name && screenResultData.name)}
