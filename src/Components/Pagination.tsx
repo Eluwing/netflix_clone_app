@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 interface paginationProps {
   currPage: number;
-  setCurrPage: React.SetStateAction<number>;
+  setCurrPage: Dispatch<SetStateAction<number>>;
   totalPages: number;
 }
 function Pagination({ currPage, setCurrPage, totalPages }: paginationProps): JSX.Element {
