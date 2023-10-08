@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-  IMovieOrTvSearch,
-  getMovieKeywordSearch,
-  getTotalMovieKeywordSearch,
-  getTotalTvKeywordSearch,
-  getTvKeywordSearch,
-} from '../api';
-import { SCREEN_TYPES, SEARCH_RESULT_INTERFACE_TYPES } from '../Constants/Common';
+import { IMovieOrTvSearch, getTotalMovieKeywordSearch, getTotalTvKeywordSearch } from '../api';
+import { SCREEN_TYPES } from '../Constants/Common';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { getScreenTitle, makeImagePath } from '../utils';
@@ -71,6 +65,8 @@ interface SearchResultProps {
 const BOX_OFFSET = 24;
 
 function SearchResult({ keyword, screenType }: SearchResultProps): JSX.Element {
+  // Set initial IMovieOrTvSearch Interface for avoid debug error
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const emptyInitialObject: IMovieOrTvSearch = {} as any;
   const [data, setData] = useState<[IMovieOrTvSearch]>([emptyInitialObject]);
   const [totalSearchResult, setTotalSearchResult] = useState<number>(0);

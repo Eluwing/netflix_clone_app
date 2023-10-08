@@ -178,6 +178,7 @@ export async function getTotalMovieKeywordSearch(
   endPage: number,
 ): Promise<[IMovieOrTvSearch]> {
   // Set initial IMovieOrTvSearch Interface for avoid debug error
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const emptyInterfaceObject: IMovieOrTvSearch = {} as any;
   const totalSearchResult: [IMovieOrTvSearch] = [emptyInterfaceObject];
 
@@ -198,6 +199,7 @@ export async function getTotalTvKeywordSearch(
   endPage: number,
 ): Promise<[IMovieOrTvSearch]> {
   // Set initial IMovieOrTvSearch Interface for avoid debug error
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const emptyInterfaceObject: IMovieOrTvSearch = {} as any;
   const totalSearchResult: [IMovieOrTvSearch] = [emptyInterfaceObject];
 
