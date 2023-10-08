@@ -175,14 +175,18 @@ export async function getTotalMovieKeywordSearch(
   keyword: string | null,
   startPage: number,
   endPage: number,
-): Promise<[IMovieOrTvSearch[]]> {
-  const totalSearchResult: [IMovieOrTvSearch[]] = [[]];
+): Promise<[IMovieOrTvSearch]> {
+  // Set initial IMovieOrTvSearch Interface for avoid debug error
+  const emptyInterfaceObject: IMovieOrTvSearch = {} as any;
+  const totalSearchResult: [IMovieOrTvSearch] = [emptyInterfaceObject];
 
   for (let i = startPage; i < endPage; i++) {
     const getSearchResult: IMovieOrTvSearch[] = await (
       await getMovieKeywordSearch(keyword, i)
     ).results;
-    totalSearchResult.push(getSearchResult);
+    getSearchResult.forEach((data) => {
+      totalSearchResult.push(data);
+    });
   }
   return totalSearchResult;
 }
