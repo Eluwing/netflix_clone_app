@@ -4,6 +4,7 @@ import { SCREEN_TYPES } from '../Constants/Common';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { getScreenTitle, makeImagePath } from '../utils';
+import Pagination from './Pagination';
 
 const Box = styled(motion.div)<{ bgphoto: string }>`
   background-color: white;
@@ -70,17 +71,15 @@ function SearchResult({ keyword, screenType }: SearchResultProps): JSX.Element {
   const emptyInitialObject: IMovieOrTvSearch = {} as any;
   const [data, setData] = useState<[IMovieOrTvSearch]>([emptyInitialObject]);
   const [totalSearchResult, setTotalSearchResult] = useState<number>(0);
-  const [firstIndex, setFirstIndex] = useState<number>(0);
   const screenTitle = getScreenTitle(screenType);
+  const [currPage, setCurrPage] = useState<number>(1);
   const totalPages = Math.ceil(totalSearchResult / BOX_OFFSET);
-  const currentIndex = (currentPage: number): void => {
-    setFirstIndex((currentPage - 1) * BOX_OFFSET);
-  };
+  const firstIndexCurrPage = (currPage - 1) * BOX_OFFSET;
 
   switch (screenType) {
     case SCREEN_TYPES.TV:
       useEffect(() => {
-        void getTotalTvKeywordSearch(keyword, 1, 10).then((data) => {
+        void getTotalTvKeywordSearch(keyword, 1, 3).then((data) => {
           setData(data);
           setTotalSearchResult(data.length);
         });
@@ -88,7 +87,7 @@ function SearchResult({ keyword, screenType }: SearchResultProps): JSX.Element {
       break;
     case SCREEN_TYPES.MOVIES:
       useEffect(() => {
-        void getTotalMovieKeywordSearch(keyword, 1, 10).then((data) => {
+        void getTotalMovieKeywordSearch(keyword, 1, 3).then((data) => {
           setData(data);
           setTotalSearchResult(data.length);
         });
@@ -108,20 +107,26 @@ function SearchResult({ keyword, screenType }: SearchResultProps): JSX.Element {
           exit="exit"
           transition={{ type: 'tween', duration: 1 }}
         >
-          {data.map((screenResultData) => (
-            <Box key={0} bgphoto={makeImagePath(screenResultData.backdrop_path ?? '', 'w500')}>
-              {(screenResultData.title && screenResultData.title) ??
-                (screenResultData.name && screenResultData.name)}
-              <Info>
-                <InfoTitle>
-                  {(screenResultData.title && screenResultData.title) ??
-                    (screenResultData.name && screenResultData.name)}
-                </InfoTitle>
-              </Info>
-            </Box>
-          ))}
+          {data
+            .slice(firstIndexCurrPage, firstIndexCurrPage + BOX_OFFSET)
+            .map((screenResultData, index) => (
+              <Box
+                key={index}
+                bgphoto={makeImagePath(screenResultData.backdrop_path ?? '', 'w500')}
+              >
+                {(screenResultData.title && screenResultData.title) ??
+                  (screenResultData.name && screenResultData.name)}
+                <Info>
+                  <InfoTitle>
+                    {(screenResultData.title && screenResultData.title) ??
+                      (screenResultData.name && screenResultData.name)}
+                  </InfoTitle>
+                </Info>
+              </Box>
+            ))}
         </Row>
       </BoxListArea>
+      <Pagination currPage={currPage} setCurrPage={setCurrPage} totalPages={totalPages} />
     </>
   );
 }
