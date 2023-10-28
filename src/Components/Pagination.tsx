@@ -1,4 +1,3 @@
-/* eslint-disable array-callback-return */
 import React, { Dispatch, SetStateAction } from 'react';
 
 interface paginationProps {
