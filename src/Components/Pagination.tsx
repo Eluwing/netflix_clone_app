@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { Dispatch, SetStateAction } from 'react';
 
 interface paginationProps {
@@ -6,6 +7,16 @@ interface paginationProps {
   totalPages: number;
 }
 function Pagination({ currPage, setCurrPage, totalPages }: paginationProps): JSX.Element {
-  return <>{'Pagination'}</>;
+  return (
+    <>
+      <button>{'<'}</button>
+      {Array(totalPages)
+        .fill(0)
+        .map((_, i) => {
+          return <button key={i + 1}>{i + 1}</button>;
+        })}
+      <button>{'>'}</button>
+    </>
+  );
 }
 export default Pagination;
