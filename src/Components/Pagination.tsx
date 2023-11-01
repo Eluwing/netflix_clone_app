@@ -31,7 +31,7 @@ const Button = styled.button`
   }
 
   &[aria-current] {
-    background: deeppink;
+    background: rgb(229, 9, 20);
     font-weight: bold;
     cursor: revert;
     transform: revert;
