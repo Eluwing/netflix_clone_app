@@ -53,7 +53,11 @@ function Pagination({ currPage, setCurrPage, totalPages }: paginationProps): JSX
         .fill(0)
         .map((_, i) => {
           return (
-            <Button key={i + 1} onClick={() => setCurrPage(i + 1)}>
+            <Button
+              key={i + 1}
+              onClick={() => setCurrPage(i + 1)}
+              aria-current={currPage === i + 1 ? 'page' : undefined}
+            >
               {i + 1}
             </Button>
           );
