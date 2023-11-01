@@ -46,13 +46,21 @@ interface paginationProps {
 function Pagination({ currPage, setCurrPage, totalPages }: paginationProps): JSX.Element {
   return (
     <PaginationPanel>
-      <Button>{'<'}</Button>
+      <Button onClick={() => setCurrPage((prev) => prev - 1)} disabled={currPage === 1}>
+        {'<'}
+      </Button>
       {Array(totalPages)
         .fill(0)
         .map((_, i) => {
-          return <Button key={i + 1}>{i + 1}</Button>;
+          return (
+            <Button key={i + 1} onClick={() => setCurrPage(i + 1)}>
+              {i + 1}
+            </Button>
+          );
         })}
-      <Button>{'>'}</Button>
+      <Button onClick={() => setCurrPage((prev) => prev + 1)} disabled={currPage === totalPages}>
+        {'>'}
+      </Button>
     </PaginationPanel>
   );
 }
