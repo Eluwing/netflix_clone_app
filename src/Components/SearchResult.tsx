@@ -63,7 +63,7 @@ interface SearchResultProps {
   screenType: number;
 }
 
-const BOX_OFFSET = 24;
+const BOX_OFFSET = 16;
 
 function SearchResult({ keyword, screenType }: SearchResultProps): JSX.Element {
   // Set initial IMovieOrTvSearch Interface for avoid debug error
