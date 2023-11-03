@@ -7,7 +7,11 @@ import {
 } from './Constants/Common';
 
 export function makeImagePath(id?: string, format?: string): string {
-  return `https://image.tmdb.org/t/p/${format !== undefined ? format : 'original'}/${id ?? ''}`;
+  if (!id) {
+    return 'image/not-found-image.jpg';
+  } else {
+    return `https://image.tmdb.org/t/p/${format !== undefined ? format : 'original'}/${id ?? ''}`;
+  }
 }
 
 // Generator Slider Box Id because avoid duplicate slider box layouts Id
