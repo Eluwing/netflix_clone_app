@@ -17,7 +17,7 @@ https://eluwing.github.io/netflix_clone_app/
 9. Movie list next button animation in Slider component(2023.08.09 Complete)
 10. Fix a bug where some movie image width settings in slide components were set incorrectly(2023.08.15 Complete)
 11. Add Search Feature by entering the keyword(2023.09.17 Complete)
-12. Add Pagination feature in display Search Result Component
+12. Add Pagination feature in display Search Result Component(2023.11.03 Complete)
 13. Improve moive detail modal
 14. Fix Slider Animation Bug
 15. Other Netflix like features
