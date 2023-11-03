@@ -152,20 +152,64 @@ export async function getMostNewlyTv(): Promise<IGetMostNewlyTvResult> {
 // Keyword Search API
 export async function getMovieKeywordSearch(
   keyword: string | null,
+  page: number,
 ): Promise<IGetMovieKeywordSearchResult> {
   return await fetch(
     `${BASE_PATH}/search/movie?api_key=${API_KEY}&query=${
       keyword ?? ''
-    }&include_adult=false&language=en-US&page=1`,
+    }&include_adult=false&language=en-US&page=${page}`,
   ).then(async (response) => await response.json());
 }
 
 export async function getTvKeywordSearch(
   keyword: string | null,
+  page: number,
 ): Promise<IGetTvKeywordSearchResult> {
   return await fetch(
     `${BASE_PATH}/search/tv?api_key=${API_KEY}&query=${
       keyword ?? ''
-    }&include_adult=false&language=en-US&page=1`,
+    }&include_adult=false&language=en-US&page=${page}`,
   ).then(async (response) => await response.json());
+}
+
+export async function getTotalMovieKeywordSearch(
+  keyword: string | null,
+  startPage: number,
+  endPage: number,
+): Promise<[IMovieOrTvSearch]> {
+  // Set initial IMovieOrTvSearch Interface for avoid debug error
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const emptyInterfaceObject: IMovieOrTvSearch = {} as any;
+  const totalSearchResult: [IMovieOrTvSearch] = [emptyInterfaceObject];
+
+  for (let i = startPage; i < endPage; i++) {
+    const getSearchResult: IMovieOrTvSearch[] = await (
+      await getMovieKeywordSearch(keyword, i)
+    ).results;
+    getSearchResult.forEach((data) => {
+      totalSearchResult.push(data);
+    });
+  }
+  return totalSearchResult;
+}
+
+export async function getTotalTvKeywordSearch(
+  keyword: string | null,
+  startPage: number,
+  endPage: number,
+): Promise<[IMovieOrTvSearch]> {
+  // Set initial IMovieOrTvSearch Interface for avoid debug error
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const emptyInterfaceObject: IMovieOrTvSearch = {} as any;
+  const totalSearchResult: [IMovieOrTvSearch] = [emptyInterfaceObject];
+
+  for (let i = startPage; i < endPage; i++) {
+    const getSearchResult: IMovieOrTvSearch[] = await (
+      await getTvKeywordSearch(keyword, i)
+    ).results;
+    getSearchResult.forEach((data) => {
+      totalSearchResult.push(data);
+    });
+  }
+  return totalSearchResult;
 }

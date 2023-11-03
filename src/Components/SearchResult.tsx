@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { getMovieKeywordSearch, getTvKeywordSearch } from '../api';
-import { SCREEN_TYPES, SEARCH_RESULT_INTERFACE_TYPES } from '../Constants/Common';
+import { IMovieOrTvSearch, getTotalMovieKeywordSearch, getTotalTvKeywordSearch } from '../api';
+import { SCREEN_TYPES } from '../Constants/Common';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { getScreenTitle, makeImagePath } from '../utils';
+import Pagination from './Pagination';
 
 const Box = styled(motion.div)<{ bgphoto: string }>`
   background-color: white;
@@ -62,22 +63,33 @@ interface SearchResultProps {
   screenType: number;
 }
 
+const BOX_OFFSET = 18;
+
 function SearchResult({ keyword, screenType }: SearchResultProps): JSX.Element {
-  const [data, setData] = useState<SEARCH_RESULT_INTERFACE_TYPES>();
+  // Set initial IMovieOrTvSearch Interface for avoid debug error
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const emptyInitialObject: IMovieOrTvSearch = {} as any;
+  const [data, setData] = useState<[IMovieOrTvSearch]>([emptyInitialObject]);
+  const [totalSearchResult, setTotalSearchResult] = useState<number>(0);
   const screenTitle = getScreenTitle(screenType);
+  const [currPage, setCurrPage] = useState<number>(1);
+  const totalPages = Math.ceil(totalSearchResult / BOX_OFFSET);
+  const firstIndexCurrPage = (currPage - 1) * BOX_OFFSET;
 
   switch (screenType) {
     case SCREEN_TYPES.TV:
       useEffect(() => {
-        void getTvKeywordSearch(keyword).then((data) => {
+        void getTotalTvKeywordSearch(keyword, 1, 3).then((data) => {
           setData(data);
+          setTotalSearchResult(data.length);
         });
       }, []);
       break;
     case SCREEN_TYPES.MOVIES:
       useEffect(() => {
-        void getMovieKeywordSearch(keyword).then((data) => {
+        void getTotalMovieKeywordSearch(keyword, 1, 3).then((data) => {
           setData(data);
+          setTotalSearchResult(data.length);
         });
       }, []);
       break;
@@ -95,20 +107,26 @@ function SearchResult({ keyword, screenType }: SearchResultProps): JSX.Element {
           exit="exit"
           transition={{ type: 'tween', duration: 1 }}
         >
-          {data?.results.map((screenResultData) => (
-            <Box key={0} bgphoto={makeImagePath(screenResultData.backdrop_path ?? '', 'w500')}>
-              {(screenResultData.title && screenResultData.title) ??
-                (screenResultData.name && screenResultData.name)}
-              <Info>
-                <InfoTitle>
-                  {(screenResultData.title && screenResultData.title) ??
-                    (screenResultData.name && screenResultData.name)}
-                </InfoTitle>
-              </Info>
-            </Box>
-          ))}
+          {data
+            .slice(firstIndexCurrPage, firstIndexCurrPage + BOX_OFFSET)
+            .map((screenResultData, index) => (
+              <Box
+                key={index}
+                bgphoto={makeImagePath(screenResultData.backdrop_path ?? '', 'w500')}
+              >
+                {(screenResultData.title && screenResultData.title) ??
+                  (screenResultData.name && screenResultData.name)}
+                <Info>
+                  <InfoTitle>
+                    {(screenResultData.title && screenResultData.title) ??
+                      (screenResultData.name && screenResultData.name)}
+                  </InfoTitle>
+                </Info>
+              </Box>
+            ))}
         </Row>
       </BoxListArea>
+      <Pagination currPage={currPage} setCurrPage={setCurrPage} totalPages={totalPages} />
     </>
   );
 }
