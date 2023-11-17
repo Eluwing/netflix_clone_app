@@ -55,7 +55,7 @@ const HoverButton = styled(motion.div)`
 
 interface HoverDetailProps {
   backdropPath: string;
-  title: string;
+  title: string | undefined;
 }
 
 function HoverDetail({ backdropPath, title }: HoverDetailProps): JSX.Element {
