@@ -26,9 +26,9 @@ import {
 } from '../Constants/Common';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
-const Box = styled(motion.div)<{ bgphoto: string }>`
+const Box = styled(motion.div)<{ bgPhoto: string }>`
   background-color: white;
-  background-image: url(${(props) => props.bgphoto});
+  background-image: url(${(props) => props.bgPhoto});
   background-size: cover;
   background-position: center center;
   height: 200px;
@@ -38,27 +38,6 @@ const Box = styled(motion.div)<{ bgphoto: string }>`
   &:last-child {
     transform-origin: center right;
   }
-`;
-
-const Info = styled(motion.div)`
-  padding: 20px;
-  background-color: ${(props) => props.theme.black.lighter};
-  opacity: 0;
-  position: absolute;
-  width: -webkit-fill-available;
-  bottom: 0;
-  &:first-child {
-    padding-left: 10px;
-    padding-right: 20px;
-    padding-top: 20px;
-    padding-bottom: 20px;
-  }
-`;
-
-const InfoTitle = styled(motion.div)`
-  padding-left: 10px;
-  text-align: center;
-  font-size: 18px;
 `;
 
 const SliderArea = styled.div``;
@@ -100,6 +79,16 @@ const BoxListArea = styled.div`
   width: 100%;
 `;
 
+const HoverArea = styled(motion.div)`
+  /* background-color: ${(props) => props.theme.black.lighter}; */
+  background-color: #141414;
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+`;
+
 const Row = styled(motion.div)`
   display: grid;
   gap: 5px;
@@ -132,7 +121,7 @@ const BoxVariants = {
   },
 };
 
-const infoVariants = {
+const HoverVariants = {
   hover: {
     opacity: 1,
     transition: {
@@ -310,14 +299,10 @@ function Slider({
                             onBoxClicked(getSliderBoxId(movie.id, sliderAndScreenType))
                           }
                           transition={{ type: 'tween' }}
-                          bgphoto={makeImagePath(movie.backdrop_path ?? '', 'w500')}
+                          bgPhoto={makeImagePath(movie.backdrop_path ?? '', 'w500')}
                         >
                           {(movie.title && movie.title) ?? (movie.name && movie.name)}
-                          <Info variants={infoVariants}>
-                            <InfoTitle>
-                              {(movie.title && movie.title) ?? (movie.name && movie.name)}
-                            </InfoTitle>
-                          </Info>
+                          <HoverArea variants={HoverVariants}>{/* 컴포넌트 분리 */}</HoverArea>
                         </Box>
                       ))}
                   </Row>
