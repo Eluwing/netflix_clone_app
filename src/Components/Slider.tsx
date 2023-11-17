@@ -25,6 +25,7 @@ import {
   SLIDER_TYPES,
 } from '../Constants/Common';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+import HoverDetail from './HoverDetail';
 
 const Box = styled(motion.div)<{ bgPhoto: string }>`
   background-color: white;
@@ -302,7 +303,12 @@ function Slider({
                           bgPhoto={makeImagePath(movie.backdrop_path ?? '', 'w500')}
                         >
                           {(movie.title && movie.title) ?? (movie.name && movie.name)}
-                          <HoverArea variants={HoverVariants}>{/* 컴포넌트 분리 */}</HoverArea>
+                          <HoverArea variants={HoverVariants}>
+                            <HoverDetail
+                              backdropPath={movie.backdrop_path}
+                              title={(movie.title && movie.title) ?? (movie.name && movie.name)}
+                            />
+                          </HoverArea>
                         </Box>
                       ))}
                   </Row>
