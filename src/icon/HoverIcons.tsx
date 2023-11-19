@@ -56,7 +56,7 @@ export const PlayIcon = (): JSX.Element => {
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"
-      fill="none"
+      fill="currentColor"
       viewBox="0 0 24 24"
     >
       <path d="M21.44 10.72L5.96 2.98A1.38 1.38 0 004 4.213v15.474a1.373 1.373 0 002 1.233l15.44-7.74a1.38 1.38 0 000-2.467v.007z" />
@@ -71,7 +71,7 @@ export const PlusIcon = (): JSX.Element => {
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"
-      fill="none"
+      fill="currentColor"
       viewBox="0 0 24 24"
     >
       <path d="M12 0a1.5 1.5 0 011.5 1.5v9h9a1.5 1.5 0 110 3h-9v9a1.5 1.5 0 11-3 0v-9h-9a1.5 1.5 0 110-3h9v-9A1.5 1.5 0 0112 0z" />
