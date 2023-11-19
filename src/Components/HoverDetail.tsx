@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { makeImagePath } from '../utils';
-import { DetailIcon, PlayIcon, PlusIcon } from '../icon/HoverIcons';
+import { DetailIcon, DislikeIcon, LikeIcon, PlayIcon, PlusIcon } from '../icon/HoverIcons';
 
 const HoverCover = styled(motion.div)<{ bgCoverPhoto: string }>`
   width: 100%;
@@ -23,30 +23,23 @@ const HoverButtonArea = styled(motion.div)`
   padding: 1rem;
   background-color: #1c1c1c;
   border-radius: 0 0 15px 15px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 `;
 const HoverButton = styled(motion.div)`
-  padding: 0.5rem;
+  padding: 0.4rem;
+  margin-right: 0.4rem;
   display: inline-flex;
   justify-content: center;
   align-items: center;
   border: 2px solid rgba(255, 255, 255, 0.5);
   cursor: pointer;
   transition: all 250ms;
-
-  &--transparent {
-    background: transparent;
-  }
-
-  &--circle {
-    border-radius: 50%;
-  }
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  fill: currentColor;
 
   &:hover {
     background: white;
-
     .card__icon {
       fill: #141414;
     }
@@ -61,7 +54,9 @@ interface HoverDetailProps {
 function HoverDetail({ backdropPath, title }: HoverDetailProps): JSX.Element {
   return (
     <>
-      <HoverCover bgCoverPhoto={makeImagePath(backdropPath ?? '', 'w500')}></HoverCover>
+      <HoverCover bgCoverPhoto={makeImagePath(backdropPath ?? '', 'w500')}>
+        <HoverTitle>{title}</HoverTitle>
+      </HoverCover>
       <HoverButtonArea>
         <HoverButton>
           <PlayIcon />
@@ -70,10 +65,15 @@ function HoverDetail({ backdropPath, title }: HoverDetailProps): JSX.Element {
           <PlusIcon />
         </HoverButton>
         <HoverButton>
+          <LikeIcon />
+        </HoverButton>
+        <HoverButton>
+          <DislikeIcon />
+        </HoverButton>
+        <HoverButton>
           <DetailIcon />
         </HoverButton>
       </HoverButtonArea>
-      <HoverTitle>{title}</HoverTitle>
     </>
   );
 }
