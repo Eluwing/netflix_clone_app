@@ -1,16 +1,26 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { makeImagePath } from '../utils';
 import { DetailIcon, DislikeIcon, LikeIcon, PlayIcon, PlusIcon } from '../icon/HoverIcons';
 
-const HoverCover = styled(motion.div)<{ bgCoverPhoto: string }>`
-  width: 100%;
-  height: 100px;
+// const HoverCover = styled(motion.div)<{ bgCoverPhoto: string }>`
+//   width: 100%;
+//   height: 100px;
+//   border-radius: 10px 10px 0 0;
+//   background-image: url(${(props) => props.bgCoverPhoto});
+//   background-size: cover;
+//   background-position: center;
+// `;
+
+// const Wrapper = styled.div`
+//   border-radius: 10px 10px 0 0;
+// `;
+
+const HoverVideoCover = styled(motion.video)`
+  height: auto;
   border-radius: 10px 10px 0 0;
-  background-image: url(${(props) => props.bgCoverPhoto});
-  background-size: cover;
-  background-position: center;
+  max-width: 100%;
 `;
 
 const HoverTitle = styled(motion.div)`
@@ -52,11 +62,59 @@ interface HoverDetailProps {
 }
 
 function HoverDetail({ backdropPath, title }: HoverDetailProps): JSX.Element {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  // // If want get Video to URL
+  // const stopMovie = async (): Promise<void> => {
+  //   if (videoRef.current) {
+  //     try {
+  //       await videoRef.current.pause();
+  //     } catch (error) {
+  //       throw new Error('Error hover stopMoive component', error || '');
+  //     }
+  //   }
+  // };
+  // const playMoive = async (): Promise<void> => {
+  //   if (videoRef.current) {
+  //     if (videoRef.current) {
+  //       try {
+  //         await videoRef.current.play();
+  //       } catch (error) {
+  //         throw new Error('Error hover playMoive component', error || '');
+  //       }
+  //     }
+  //   }
+  // If want get Video to public folder
+  const stopMovie = (): void => {
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
+  };
+  const playMoive = (): void => {
+    if (videoRef.current) {
+      // Because mute promises error
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      videoRef.current.play();
+    }
+  };
   return (
     <>
-      <HoverCover bgCoverPhoto={makeImagePath(backdropPath ?? '', 'w500')}>
-        <HoverTitle>{title}</HoverTitle>
-      </HoverCover>
+      {/* If want get Video to URL */}
+      {/* <HoverVideoCover
+        ref={videoRef}
+        onMouseOver={async () => await playMoive()}
+        onMouseOut={async () => await stopMovie()}
+        src="https://s3.amazonaws.com/codecademy-content/courses/React/react_video-cute.mp4"
+      /> */}
+      {/* If want get Video to public folder */}
+      <HoverVideoCover
+        ref={videoRef}
+        onMouseOver={() => playMoive()}
+        onMouseOut={() => stopMovie()}
+        muted
+      >
+        <source src="videos/sample_hover_video.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </HoverVideoCover>
       <HoverButtonArea>
         <HoverButton>
           <PlayIcon />
