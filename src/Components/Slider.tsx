@@ -96,6 +96,18 @@ const HoverArea = styled(motion.div)`
   }
 `;
 
+const HoverTextOverlay = styled.div`
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-weight: 800;
+  font-size: 18px;
+  text-align: center;
+  pointer-events: none; /* Ensures the text doesn't interfere with mouse events */
+`;
+
 const Row = styled(motion.div)`
   display: grid;
   gap: 5px;
@@ -314,6 +326,7 @@ function Slider({
                               backdropPath={movie.backdrop_path}
                               title={(movie.title && movie.title) ?? (movie.name && movie.name)}
                             />
+                            <HoverTextOverlay>Sample</HoverTextOverlay>
                           </HoverArea>
                         </Box>
                       ))}
