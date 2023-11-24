@@ -1,32 +1,12 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { makeImagePath } from '../utils';
 import { DetailIcon, DislikeIcon, LikeIcon, PlayIcon, PlusIcon } from '../icon/HoverIcons';
-
-// const HoverCover = styled(motion.div)<{ bgCoverPhoto: string }>`
-//   width: 100%;
-//   height: 100px;
-//   border-radius: 10px 10px 0 0;
-//   background-image: url(${(props) => props.bgCoverPhoto});
-//   background-size: cover;
-//   background-position: center;
-// `;
-
-// const Wrapper = styled.div`
-//   border-radius: 10px 10px 0 0;
-// `;
 
 const HoverVideoCover = styled(motion.video)`
   height: auto;
   border-radius: 10px 10px 0 0;
   max-width: 100%;
-`;
-
-const HoverTitle = styled(motion.div)`
-  padding-left: 10px;
-  text-align: center;
-  font-size: 18px;
 `;
 
 const HoverButtonArea = styled(motion.div)`
