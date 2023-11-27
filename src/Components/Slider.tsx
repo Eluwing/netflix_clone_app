@@ -84,8 +84,7 @@ const BoxListArea = styled.div`
 `;
 
 const HoverArea = styled(motion.div)`
-  /* background-color: ${(props) => props.theme.black.lighter}; */
-  background-color: #141414;
+  background-color: ${(props) => props.theme.black.veryDark};
   opacity: 0;
   position: absolute;
   width: 100%;
@@ -105,7 +104,8 @@ const HoverTextOverlay = styled.div`
   font-weight: 800;
   font-size: 18px;
   text-align: center;
-  pointer-events: none; /* Ensures the text doesn't interfere with mouse events */
+  /* Ensures the text doesn't interfere with mouse events */
+  pointer-events: none;
 `;
 
 const Row = styled(motion.div)`
