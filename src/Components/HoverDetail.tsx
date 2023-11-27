@@ -1,20 +1,24 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { DetailIcon, DislikeIcon, LikeIcon, PlayIcon, PlusIcon } from '../icon/HoverIcons';
+import { DetailIcon, PlayIcon, PlusIcon } from '../icon/HoverIcons';
 
-const HoverVideoCover = styled(motion.video)`
+const VideoCover = styled(motion.video)`
   height: auto;
   border-radius: 10px 10px 0 0;
   max-width: 100%;
 `;
 
-const HoverButtonArea = styled(motion.div)`
+const VideoPlayTools = styled(motion.div)``;
+
+const ButtonArea = styled(motion.div)`
   padding: 1rem;
   background-color: #1c1c1c;
   border-radius: 0 0 15px 15px;
+  display: flex;
+  justify-content: space-between;
 `;
-const HoverButton = styled(motion.div)`
+const CommonButton = styled(motion.div)`
   padding: 0.4rem;
   margin-right: 0.4rem;
   display: inline-flex;
@@ -24,8 +28,8 @@ const HoverButton = styled(motion.div)`
   cursor: pointer;
   transition: all 250ms;
   border-radius: 50%;
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   fill: currentColor;
 
   &:hover {
@@ -35,6 +39,21 @@ const HoverButton = styled(motion.div)`
     }
   }
 `;
+const DetailButton = styled(CommonButton)``;
+
+const VideoDetail = styled.div``;
+
+const TopPannel = styled.div``;
+
+const BottomPannel = styled.div``;
+
+const MatchArea = styled.div``;
+
+const GenreArea = styled.div``;
+
+const AgeCategoryArea = styled.div``;
+
+const VideoQuality = styled.div``;
 
 interface HoverDetailProps {
   backdropPath: string;
@@ -86,7 +105,7 @@ function HoverDetail({ backdropPath, title }: HoverDetailProps): JSX.Element {
         src="https://s3.amazonaws.com/codecademy-content/courses/React/react_video-cute.mp4"
       /> */}
       {/* If want get Video to public folder */}
-      <HoverVideoCover
+      <VideoCover
         ref={videoRef}
         onMouseOver={() => playMoive()}
         onMouseOut={() => stopMovie()}
@@ -94,24 +113,30 @@ function HoverDetail({ backdropPath, title }: HoverDetailProps): JSX.Element {
       >
         <source src="videos/sample_hover_video.mp4" type="video/mp4" />
         Your browser does not support the video tag.
-      </HoverVideoCover>
-      <HoverButtonArea>
-        <HoverButton>
-          <PlayIcon />
-        </HoverButton>
-        <HoverButton>
-          <PlusIcon />
-        </HoverButton>
-        <HoverButton>
-          <LikeIcon />
-        </HoverButton>
-        <HoverButton>
-          <DislikeIcon />
-        </HoverButton>
-        <HoverButton>
+      </VideoCover>
+      <ButtonArea>
+        <VideoPlayTools>
+          <CommonButton>
+            <PlayIcon />
+          </CommonButton>
+          <CommonButton>
+            <PlusIcon />
+          </CommonButton>
+        </VideoPlayTools>
+        <DetailButton>
           <DetailIcon />
-        </HoverButton>
-      </HoverButtonArea>
+        </DetailButton>
+      </ButtonArea>
+      <VideoDetail>
+        <TopPannel>
+          <MatchArea></MatchArea>
+          <AgeCategoryArea></AgeCategoryArea>
+          <VideoQuality></VideoQuality>
+        </TopPannel>
+        <BottomPannel>
+          <GenreArea></GenreArea>
+        </BottomPannel>
+      </VideoDetail>
     </>
   );
 }
