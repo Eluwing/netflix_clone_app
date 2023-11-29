@@ -103,7 +103,7 @@ export interface IGetTvKeywordSearchResult {
   total_results: number;
 }
 
-export interface IGenres {
+interface IGenres {
   id: number;
   name: string;
 }
