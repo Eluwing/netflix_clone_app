@@ -77,4 +77,5 @@ export const enum SCREEN_QUERY_KEY {
   AIRING_TODAY = 'airing_today',
   CURRENT_ON_AIR = 'current_on_air',
   MOST_NEWLY = 'most_newly',
+  GENRES = 'genres',
 }
