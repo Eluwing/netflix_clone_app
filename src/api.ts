@@ -102,6 +102,20 @@ export interface IGetTvKeywordSearchResult {
   total_pages: number;
   total_results: number;
 }
+
+export interface IGenres {
+  id: number;
+  name: string;
+}
+
+export interface IGetTvGenre {
+  genres: IGenres[];
+}
+
+export interface IGetMovieGenre {
+  genres: IGenres[];
+}
+
 // Movie List API
 export async function getMovies(): Promise<IGetMoviesResult> {
   return await fetch(`${BASE_PATH}/movie/now_playing?api_key=${API_KEY}&page=${GET_PAGE}`).then(
@@ -212,4 +226,16 @@ export async function getTotalTvKeywordSearch(
     });
   }
   return totalSearchResult;
+}
+
+export async function getTvGenreList(): Promise<IGetTvGenre> {
+  return await fetch(`${BASE_PATH}/genre/tv/list?api_key=${API_KEY}&language=en-US`).then(
+    async (response) => await response.json(),
+  );
+}
+
+export async function getMovieGenreList(): Promise<IGetMovieGenre> {
+  return await fetch(`${BASE_PATH}/genre/movie/list?api_key=${API_KEY}&language=en-US`).then(
+    async (response) => await response.json(),
+  );
 }
