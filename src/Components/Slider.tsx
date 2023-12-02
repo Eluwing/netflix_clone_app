@@ -15,6 +15,7 @@ import {
   IGetPopularTvResult,
   IGetCurrentOnAirTvResult,
   IGetMoviesResult,
+  IGetMostNewlyTvResult,
 } from '../api';
 import { match, useHistory, useRouteMatch } from 'react-router-dom';
 import { getSliderBoxId, getSlidersTitle, makeImagePath } from '../utils';
@@ -191,53 +192,56 @@ function Slider({
     isLoading: true,
   };
   const queryClient = useQueryClient();
-  const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> =
-    sliderType === SLIDER_TYPES.NOW_PLAYING_MOVIE
-      ? {
+  const getQueryOptions = (sliderTypeProp: string): useQueryType<API_INTERFACE_TYPES> => {
+    switch (sliderTypeProp) {
+      case SLIDER_TYPES.NOW_PLAYING_MOVIE:
+        return {
           data: queryClient.getQueryData<IGetMoviesResult>([
             SCREEN_QUERY_KEY.MOVIE,
             SCREEN_QUERY_KEY.NOW_PLAYING,
           ]),
           isLoading: false,
-        }
-      : // Movie List
-      sliderType === SLIDER_TYPES.POPULAR_MOVIE
-      ? useQuery<IGetPopularMoviesResult>({
+        };
+      case SLIDER_TYPES.POPULAR_MOVIE:
+        return useQuery<IGetPopularMoviesResult>({
           queryKey: [SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.POPULAR],
           queryFn: getPopularMovies,
-        })
-      : sliderType === SLIDER_TYPES.TOP_RATED_MOVIE
-      ? useQuery<IGetTopRatedMoviesResult>({
+        });
+      case SLIDER_TYPES.TOP_RATED_MOVIE:
+        return useQuery<IGetTopRatedMoviesResult>({
           queryKey: [SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.TOP_RATED],
           queryFn: getTopRatedMovies,
-        })
-      : sliderType === SLIDER_TYPES.UPCOMING_MOVIE
-      ? useQuery<IGetUpcomingMoviesResult>({
+        });
+      case SLIDER_TYPES.UPCOMING_MOVIE:
+        return useQuery<IGetUpcomingMoviesResult>({
           queryKey: [SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.UPCOMING],
           queryFn: getUpcomingMovies,
-        })
-      : // TV List
-      sliderType === SLIDER_TYPES.AIRING_TODAY_TV
-      ? {
+        });
+      case SLIDER_TYPES.AIRING_TODAY_TV:
+        return {
           data: queryClient.getQueryData([SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.AIRING_TODAY]),
           isLoading: false,
-        }
-      : sliderType === SLIDER_TYPES.POPULAR_TV
-      ? useQuery<IGetPopularTvResult>({
+        };
+      case SLIDER_TYPES.POPULAR_TV:
+        return useQuery<IGetPopularTvResult>({
           queryKey: [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.POPULAR],
           queryFn: getPopularTv,
-        })
-      : sliderType === SLIDER_TYPES.CURRENT_ON_AIR_TV
-      ? useQuery<IGetCurrentOnAirTvResult>({
+        });
+      case SLIDER_TYPES.CURRENT_ON_AIR_TV:
+        return useQuery<IGetCurrentOnAirTvResult>({
           queryKey: [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.CURRENT_ON_AIR],
           queryFn: getCurrentOnAirTv,
-        })
-      : sliderType === SLIDER_TYPES.MOST_NEWLY_TV
-      ? useQuery<IGetPopularMoviesResult>({
+        });
+      case SLIDER_TYPES.MOST_NEWLY_TV:
+        return useQuery<IGetMostNewlyTvResult>({
           queryKey: [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.UPCOMING],
           queryFn: getMostNewlyTv,
-        })
-      : emptyData;
+        });
+      default:
+        return emptyData;
+    }
+  };
+  const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> = getQueryOptions(sliderType);
   const incraseIndex = (): void => {
     if (data != null) {
       if (leaving) return;
