@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import { getMovieGenreList, getMovies, getTvGenreList, IGetMoviesResult } from '../api';
+import { getMovieGenreList, getMovies, IGetMoviesResult } from '../api';
 import Slider from '../Components/Slider';
 import {
   GENRES_LIST_INTERFACE_TYPES,
@@ -11,7 +11,6 @@ import {
 } from '../Constants/Common';
 import Banner from '../Components/Banner';
 import Popup from '../Components/Popup';
-import { promises } from 'dns';
 
 const Wrapper = styled.div`
   background: black;
@@ -32,11 +31,6 @@ function Home(): JSX.Element {
   const { data, isLoading } = useQuery<IGetMoviesResult>(
     [SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.NOW_PLAYING],
     getMovies,
-  );
-  // Use the useQuery hook to fetch TV genre list
-  useQuery<GENRES_LIST_INTERFACE_TYPES>(
-    [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.GENRES],
-    getTvGenreList,
   );
 
   // Use the useQuery hook to fetch movie genre list

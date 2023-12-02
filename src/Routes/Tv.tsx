@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { IGetAiringTodayTvResult, getAiringTodayTv } from '../api';
+import { IGetAiringTodayTvResult, getAiringTodayTv, getTvGenreList } from '../api';
 import Banner from '../Components/Banner';
 import { useQuery } from 'react-query';
-import { SCREEN_QUERY_KEY, SCREEN_TYPES, SLIDER_TYPES } from '../Constants/Common';
+import {
+  GENRES_LIST_INTERFACE_TYPES,
+  SCREEN_QUERY_KEY,
+  SCREEN_TYPES,
+  SLIDER_TYPES,
+} from '../Constants/Common';
 import Slider from '../Components/Slider';
 import Popup from '../Components/Popup';
 
@@ -29,6 +34,11 @@ function Tv(): JSX.Element {
   );
   const [isBoxPopUp, isSetBoxPopUp] = useState(false);
   const [screenId, setScreenId] = useState<string>();
+  // Use the useQuery hook to fetch TV genre list
+  useQuery<GENRES_LIST_INTERFACE_TYPES>(
+    [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.GENRES],
+    getTvGenreList,
+  );
   return (
     <Wrapper>
       {isLoading ? (
