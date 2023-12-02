@@ -2,9 +2,6 @@ import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { DetailIcon, PlayIcon, PlusIcon } from '../icon/HoverIcons';
-import { GENRES_LIST_INTERFACE_TYPES, SCREEN_QUERY_KEY } from '../Constants/Common';
-import { useQuery } from 'react-query';
-import { getMovieGenreList, getTvGenreList } from '../api';
 
 const VideoCover = styled(motion.video)`
   height: auto;
@@ -98,18 +95,6 @@ function HoverDetail({ backdropPath, title }: HoverDetailProps): JSX.Element {
       videoRef.current.play();
     }
   };
-  // Use the useQuery hook to fetch TV genre list
-  const tvGenresQuery = useQuery<GENRES_LIST_INTERFACE_TYPES>(
-    [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.GENRES],
-    getTvGenreList,
-  );
-
-  // Use the useQuery hook to fetch movie genre list
-  const movieGenresQuery = useQuery<GENRES_LIST_INTERFACE_TYPES>(
-    [SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.GENRES],
-    getMovieGenreList,
-  );
-
   return (
     <>
       {/* If want get Video to URL */}

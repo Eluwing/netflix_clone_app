@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import { getMovies, IGetMoviesResult } from '../api';
+import { getMovieGenreList, getMovies, getTvGenreList, IGetMoviesResult } from '../api';
 import Slider from '../Components/Slider';
-import { SCREEN_QUERY_KEY, SCREEN_TYPES, SLIDER_TYPES } from '../Constants/Common';
+import {
+  GENRES_LIST_INTERFACE_TYPES,
+  SCREEN_QUERY_KEY,
+  SCREEN_TYPES,
+  SLIDER_TYPES,
+} from '../Constants/Common';
 import Banner from '../Components/Banner';
 import Popup from '../Components/Popup';
+import { promises } from 'dns';
 
 const Wrapper = styled.div`
   background: black;
@@ -27,8 +33,20 @@ function Home(): JSX.Element {
     [SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.NOW_PLAYING],
     getMovies,
   );
+  // Use the useQuery hook to fetch TV genre list
+  useQuery<GENRES_LIST_INTERFACE_TYPES>(
+    [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.GENRES],
+    getTvGenreList,
+  );
+
+  // Use the useQuery hook to fetch movie genre list
+  useQuery<GENRES_LIST_INTERFACE_TYPES>(
+    [SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.GENRES],
+    getMovieGenreList,
+  );
   const [isBoxPopUp, isSetBoxPopUp] = useState(false);
   const [screenId, setScreenId] = useState<string>();
+
   return (
     <Wrapper>
       {isLoading ? (
