@@ -56,11 +56,10 @@ const AgeCategoryArea = styled.div``;
 const VideoQuality = styled.div``;
 
 interface HoverDetailProps {
-  backdropPath: string;
-  title: string | undefined;
+  backdropMoviePath: string;
 }
 
-function HoverDetail({ backdropPath, title }: HoverDetailProps): JSX.Element {
+function HoverDetail({ backdropMoviePath }: HoverDetailProps): JSX.Element {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   // // If want get Video to URL
   // const stopMovie = async (): Promise<void> => {
@@ -111,7 +110,11 @@ function HoverDetail({ backdropPath, title }: HoverDetailProps): JSX.Element {
         onMouseOut={() => stopMovie()}
         muted
       >
-        <source src="videos/sample_hover_video.mp4" type="video/mp4" />
+        {backdropMoviePath ? (
+          <source src={backdropMoviePath} type="video/mp4" />
+        ) : (
+          <source src="videos/sample_hover_video.mp4" type="video/mp4" />
+        )}
         Your browser does not support the video tag.
       </VideoCover>
       <ButtonArea>
