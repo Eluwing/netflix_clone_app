@@ -116,54 +116,92 @@ export interface IGetMovieGenre {
   genres: IGenres[];
 }
 
-// Movie List API
+/**
+ * Fetches now playing movies.
+ * @returns {Promise<IGetMoviesResult>}
+ */
 export async function getMovies(): Promise<IGetMoviesResult> {
   return await fetch(`${BASE_PATH}/movie/now_playing?api_key=${API_KEY}&page=${GET_PAGE}`).then(
     async (response) => await response.json(),
   );
 }
 
+/**
+ * Fetches popular movies.
+ * @returns {Promise<IGetPopularMoviesResult>}
+ */
 export async function getPopularMovies(): Promise<IGetPopularMoviesResult> {
   return await fetch(`${BASE_PATH}/movie/popular?api_key=${API_KEY}&page=${GET_PAGE}`).then(
     async (response) => await response.json(),
   );
 }
 
+/**
+ * Fetches top-rated movies.
+ * @returns {Promise<IGetTopRatedMoviesResult>}
+ */
 export async function getTopRatedMovies(): Promise<IGetTopRatedMoviesResult> {
   return await fetch(`${BASE_PATH}/movie/top_rated?api_key=${API_KEY}&page=${GET_PAGE}`).then(
     async (response) => await response.json(),
   );
 }
 
+/**
+ * Fetches upcoming movies.
+ * @returns {Promise<IGetUpcomingMoviesResult>}
+ */
 export async function getUpcomingMovies(): Promise<IGetUpcomingMoviesResult> {
   return await fetch(`${BASE_PATH}/movie/upcoming?api_key=${API_KEY}`).then(
     async (response) => await response.json(),
   );
 }
 
-// TV List API
+/**
+ * Fetches TV shows airing today.
+ * @returns {Promise<IGetAiringTodayTvResult>}
+ */
 export async function getAiringTodayTv(): Promise<IGetAiringTodayTvResult> {
   return await fetch(`${BASE_PATH}/tv/airing_today?api_key=${API_KEY}&page=${GET_PAGE}`).then(
     async (response) => await response.json(),
   );
 }
+
+/**
+ * Fetches popular TV shows.
+ * @returns {Promise<IGetPopularTvResult>}
+ */
 export async function getPopularTv(): Promise<IGetPopularTvResult> {
   return await fetch(`${BASE_PATH}/tv/popular?api_key=${API_KEY}&page=2`).then(
     async (response) => await response.json(),
   );
 }
+
+/**
+ * Fetches currently on air TV shows.
+ * @returns {Promise<IGetCurrentOnAirTvResult>}
+ */
 export async function getCurrentOnAirTv(): Promise<IGetCurrentOnAirTvResult> {
   return await fetch(`${BASE_PATH}/tv/on_the_air?api_key=${API_KEY}&page=3`).then(
     async (response) => await response.json(),
   );
 }
+
+/**
+ * Fetches most newly added TV shows.
+ * @returns {Promise<IGetMostNewlyTvResult>}
+ */
 export async function getMostNewlyTv(): Promise<IGetMostNewlyTvResult> {
   return await fetch(`${BASE_PATH}/tv/latest?api_key=${API_KEY}&page=4`).then(
     async (response) => await response.json(),
   );
 }
 
-// Keyword Search API
+/**
+ * Searches for movies based on a keyword.
+ * @param {string | null} keyword - The search keyword.
+ * @param {number} page - The page number.
+ * @returns {Promise<IGetMovieKeywordSearchResult>}
+ */
 export async function getMovieKeywordSearch(
   keyword: string | null,
   page: number,
@@ -175,6 +213,12 @@ export async function getMovieKeywordSearch(
   ).then(async (response) => await response.json());
 }
 
+/**
+ * Searches for TV shows based on a keyword.
+ * @param {string | null} keyword - The search keyword.
+ * @param {number} page - The page number.
+ * @returns {Promise<IGetTvKeywordSearchResult>}
+ */
 export async function getTvKeywordSearch(
   keyword: string | null,
   page: number,
@@ -186,6 +230,13 @@ export async function getTvKeywordSearch(
   ).then(async (response) => await response.json());
 }
 
+/**
+ * Fetches total search results for movies based on a keyword.
+ * @param {string | null} keyword - The search keyword.
+ * @param {number} startPage - The starting page number.
+ * @param {number} endPage - The ending page number.
+ * @returns {Promise<[IMovieOrTvSearch]>}
+ */
 export async function getTotalMovieKeywordSearch(
   keyword: string | null,
   startPage: number,
@@ -207,6 +258,13 @@ export async function getTotalMovieKeywordSearch(
   return totalSearchResult;
 }
 
+/**
+ * Fetches total search results for TV shows based on a keyword.
+ * @param {string | null} keyword - The search keyword.
+ * @param {number} startPage - The starting page number.
+ * @param {number} endPage - The ending page number.
+ * @returns {Promise<[IMovieOrTvSearch]>}
+ */
 export async function getTotalTvKeywordSearch(
   keyword: string | null,
   startPage: number,
@@ -228,12 +286,20 @@ export async function getTotalTvKeywordSearch(
   return totalSearchResult;
 }
 
+/**
+ * Fetches TV genres.
+ * @returns {Promise<IGetTvGenre>}
+ */
 export async function getTvGenreList(): Promise<IGetTvGenre> {
   return await fetch(`${BASE_PATH}/genre/tv/list?api_key=${API_KEY}&language=en-US`).then(
     async (response) => await response.json(),
   );
 }
 
+/**
+ * Fetches movie genres.
+ * @returns {Promise<IGetMovieGenre>}
+ */
 export async function getMovieGenreList(): Promise<IGetMovieGenre> {
   return await fetch(`${BASE_PATH}/genre/movie/list?api_key=${API_KEY}&language=en-US`).then(
     async (response) => await response.json(),
