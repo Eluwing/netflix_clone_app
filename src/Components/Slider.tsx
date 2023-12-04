@@ -326,10 +326,8 @@ function Slider({
                         >
                           {(movie.title && movie.title) ?? (movie.name && movie.name)}
                           <HoverArea variants={HoverVariants}>
-                            <HoverDetail
-                              backdropPath={movie.backdrop_path}
-                              title={(movie.title && movie.title) ?? (movie.name && movie.name)}
-                            />
+                            {/* if have movie, need modify code that variable in parameter value  */}
+                            <HoverDetail backdropMoviePath={''} />
                             <HoverTextOverlay>Sample</HoverTextOverlay>
                           </HoverArea>
                         </Box>
