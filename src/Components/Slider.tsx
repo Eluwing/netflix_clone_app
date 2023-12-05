@@ -181,9 +181,15 @@ function Slider({
   screenId,
 }: ISliderProps): JSX.Element {
   const history = useHistory();
+  /**
+   * Concatenates the slider type and screen type to create a unique identifier.
+   */
   const sliderAndScreenType = sliderType.concat(String(screenType));
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
+  /**
+   * State hook for managing the popup movie match.
+   */
   const [, setPopUpMovieMatch] = useState<match<{ screenId: string }> | null>();
   const emptyData: useQueryType<API_INTERFACE_TYPES> = {
     // Because it is not possible to set an empty object in TypeScript
@@ -297,7 +303,13 @@ function Slider({
       history.push('/');
     }
   };
+  /**
+   * Retrieves the title for the sliders based on the specified slider type.
+   */
   const slidersTitle = getSlidersTitle(sliderType);
+  /**
+   * Configures the popup movie match based on the screen type and ID.
+   */
   useEffect(() => {
     if (screenType === SCREEN_TYPES.MOVIES) {
       setPopUpMovieMatch((prev) => useRouteMatch<{ screenId: string }>('/movies/:screenId'));
