@@ -1,5 +1,8 @@
 import React from 'react';
-// fun fact: `viewBox` has always been camel-cased.
+/**
+ * SVG Icon component for detail view.
+ * @returns {JSX.Element} Detail icon SVG.
+ */
 export const DetailIcon = (): JSX.Element => {
   return (
     <svg
@@ -19,6 +22,10 @@ export const DetailIcon = (): JSX.Element => {
   );
 };
 
+/**
+ * SVG Icon component for dislike action.
+ * @returns {JSX.Element} Dislike icon SVG.
+ */
 export const DislikeIcon = (): JSX.Element => {
   return (
     <svg
@@ -34,6 +41,10 @@ export const DislikeIcon = (): JSX.Element => {
   );
 };
 
+/**
+ * SVG Icon component for like action.
+ * @returns {JSX.Element} Like icon SVG.
+ */
 export const LikeIcon = (): JSX.Element => {
   return (
     <svg
@@ -49,6 +60,10 @@ export const LikeIcon = (): JSX.Element => {
   );
 };
 
+/**
+ * SVG Icon component for play action.
+ * @returns {JSX.Element} Play icon SVG.
+ */
 export const PlayIcon = (): JSX.Element => {
   return (
     <svg
@@ -64,6 +79,10 @@ export const PlayIcon = (): JSX.Element => {
   );
 };
 
+/**
+ * SVG Icon component for plus action.
+ * @returns {JSX.Element} Plus icon SVG.
+ */
 export const PlusIcon = (): JSX.Element => {
   return (
     <svg
