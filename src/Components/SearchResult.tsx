@@ -70,12 +70,18 @@ function SearchResult({ keyword, screenType }: SearchResultProps): JSX.Element {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const emptyInitialObject: IMovieOrTvSearch = {} as any;
   const [data, setData] = useState<[IMovieOrTvSearch]>([emptyInitialObject]);
+  /**
+   * State hook for managing the total number of search results.
+   */
   const [totalSearchResult, setTotalSearchResult] = useState<number>(0);
+  /**
+   * Retrieves the screen title based on the specified screen type.
+   */
   const screenTitle = getScreenTitle(screenType);
   const [currPage, setCurrPage] = useState<number>(1);
   const totalPages = Math.ceil(totalSearchResult / BOX_OFFSET);
   const firstIndexCurrPage = (currPage - 1) * BOX_OFFSET;
-
+  // Fetch data based on the screen type
   switch (screenType) {
     case SCREEN_TYPES.TV:
       useEffect(() => {
