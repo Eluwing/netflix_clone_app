@@ -15,6 +15,7 @@ import {
   IGetPopularTvResult,
   IGetCurrentOnAirTvResult,
   IGetMoviesResult,
+  IGetMostNewlyTvResult,
 } from '../api';
 import { match, useHistory, useRouteMatch } from 'react-router-dom';
 import { getSliderBoxId, getSlidersTitle, makeImagePath } from '../utils';
@@ -25,10 +26,11 @@ import {
   SLIDER_TYPES,
 } from '../Constants/Common';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+import HoverDetail from './HoverDetail';
 
-const Box = styled(motion.div)<{ bgphoto: string }>`
+const Box = styled(motion.div)<{ bgPhoto: string }>`
   background-color: white;
-  background-image: url(${(props) => props.bgphoto});
+  background-image: url(${(props) => props.bgPhoto});
   background-size: cover;
   background-position: center center;
   height: 200px;
@@ -38,27 +40,9 @@ const Box = styled(motion.div)<{ bgphoto: string }>`
   &:last-child {
     transform-origin: center right;
   }
-`;
-
-const Info = styled(motion.div)`
-  padding: 20px;
-  background-color: ${(props) => props.theme.black.lighter};
-  opacity: 0;
-  position: absolute;
-  width: -webkit-fill-available;
-  bottom: 0;
-  &:first-child {
-    padding-left: 10px;
-    padding-right: 20px;
-    padding-top: 20px;
-    padding-bottom: 20px;
+  &:hover {
+    border-radius: 10px 10px 0 0;
   }
-`;
-
-const InfoTitle = styled(motion.div)`
-  padding-left: 10px;
-  text-align: center;
-  font-size: 18px;
 `;
 
 const SliderArea = styled.div``;
@@ -100,6 +84,31 @@ const BoxListArea = styled.div`
   width: 100%;
 `;
 
+const HoverArea = styled(motion.div)`
+  background-color: ${(props) => props.theme.black.veryDark};
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  &:hover {
+    border-radius: 10px 10px 0 0;
+  }
+`;
+
+const HoverTextOverlay = styled.div`
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-weight: 800;
+  font-size: 18px;
+  text-align: center;
+  /* Ensures the text doesn't interfere with mouse events */
+  pointer-events: none;
+`;
+
 const Row = styled(motion.div)`
   display: grid;
   gap: 5px;
@@ -132,7 +141,7 @@ const BoxVariants = {
   },
 };
 
-const infoVariants = {
+const HoverVariants = {
   hover: {
     opacity: 1,
     transition: {
@@ -183,53 +192,56 @@ function Slider({
     isLoading: true,
   };
   const queryClient = useQueryClient();
-  const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> =
-    sliderType === SLIDER_TYPES.NOW_PLAYING_MOVIE
-      ? {
+  const getQueryOptions = (sliderTypeProp: string): useQueryType<API_INTERFACE_TYPES> => {
+    switch (sliderTypeProp) {
+      case SLIDER_TYPES.NOW_PLAYING_MOVIE:
+        return {
           data: queryClient.getQueryData<IGetMoviesResult>([
             SCREEN_QUERY_KEY.MOVIE,
             SCREEN_QUERY_KEY.NOW_PLAYING,
           ]),
           isLoading: false,
-        }
-      : // Movie List
-      sliderType === SLIDER_TYPES.POPULAR_MOVIE
-      ? useQuery<IGetPopularMoviesResult>({
+        };
+      case SLIDER_TYPES.POPULAR_MOVIE:
+        return useQuery<IGetPopularMoviesResult>({
           queryKey: [SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.POPULAR],
           queryFn: getPopularMovies,
-        })
-      : sliderType === SLIDER_TYPES.TOP_RATED_MOVIE
-      ? useQuery<IGetTopRatedMoviesResult>({
+        });
+      case SLIDER_TYPES.TOP_RATED_MOVIE:
+        return useQuery<IGetTopRatedMoviesResult>({
           queryKey: [SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.TOP_RATED],
           queryFn: getTopRatedMovies,
-        })
-      : sliderType === SLIDER_TYPES.UPCOMING_MOVIE
-      ? useQuery<IGetUpcomingMoviesResult>({
+        });
+      case SLIDER_TYPES.UPCOMING_MOVIE:
+        return useQuery<IGetUpcomingMoviesResult>({
           queryKey: [SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.UPCOMING],
           queryFn: getUpcomingMovies,
-        })
-      : // TV List
-      sliderType === SLIDER_TYPES.AIRING_TODAY_TV
-      ? {
+        });
+      case SLIDER_TYPES.AIRING_TODAY_TV:
+        return {
           data: queryClient.getQueryData([SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.AIRING_TODAY]),
           isLoading: false,
-        }
-      : sliderType === SLIDER_TYPES.POPULAR_TV
-      ? useQuery<IGetPopularTvResult>({
+        };
+      case SLIDER_TYPES.POPULAR_TV:
+        return useQuery<IGetPopularTvResult>({
           queryKey: [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.POPULAR],
           queryFn: getPopularTv,
-        })
-      : sliderType === SLIDER_TYPES.CURRENT_ON_AIR_TV
-      ? useQuery<IGetCurrentOnAirTvResult>({
+        });
+      case SLIDER_TYPES.CURRENT_ON_AIR_TV:
+        return useQuery<IGetCurrentOnAirTvResult>({
           queryKey: [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.CURRENT_ON_AIR],
           queryFn: getCurrentOnAirTv,
-        })
-      : sliderType === SLIDER_TYPES.MOST_NEWLY_TV
-      ? useQuery<IGetPopularMoviesResult>({
+        });
+      case SLIDER_TYPES.MOST_NEWLY_TV:
+        return useQuery<IGetMostNewlyTvResult>({
           queryKey: [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.UPCOMING],
           queryFn: getMostNewlyTv,
-        })
-      : emptyData;
+        });
+      default:
+        return emptyData;
+    }
+  };
+  const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> = getQueryOptions(sliderType);
   const incraseIndex = (): void => {
     if (data != null) {
       if (leaving) return;
@@ -310,14 +322,14 @@ function Slider({
                             onBoxClicked(getSliderBoxId(movie.id, sliderAndScreenType))
                           }
                           transition={{ type: 'tween' }}
-                          bgphoto={makeImagePath(movie.backdrop_path ?? '', 'w500')}
+                          bgPhoto={makeImagePath(movie.backdrop_path ?? '', 'w500')}
                         >
                           {(movie.title && movie.title) ?? (movie.name && movie.name)}
-                          <Info variants={infoVariants}>
-                            <InfoTitle>
-                              {(movie.title && movie.title) ?? (movie.name && movie.name)}
-                            </InfoTitle>
-                          </Info>
+                          <HoverArea variants={HoverVariants}>
+                            {/* if have movie, need modify code that variable in parameter value  */}
+                            <HoverDetail backdropMoviePath={''} />
+                            <HoverTextOverlay>Sample</HoverTextOverlay>
+                          </HoverArea>
                         </Box>
                       ))}
                   </Row>

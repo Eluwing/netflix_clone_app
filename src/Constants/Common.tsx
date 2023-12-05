@@ -9,6 +9,8 @@ import {
   IGetMostNewlyTvResult,
   IGetMovieKeywordSearchResult,
   IGetTvKeywordSearchResult,
+  IGetTvGenre,
+  IGetMovieGenre,
 } from '../api';
 
 export const API_KEY = '9d9e113697aea324490c0ee7b9da45dd';
@@ -65,6 +67,10 @@ export type API_INTERFACE_TYPES =
 export type SEARCH_RESULT_INTERFACE_TYPES =
   | IGetMovieKeywordSearchResult
   | IGetTvKeywordSearchResult;
+
+// Add Me : if create new interface type of search result interface type, Add interface name
+export type GENRES_LIST_INTERFACE_TYPES = IGetTvGenre | IGetMovieGenre;
+
 // Add Me : if create new useQuery Key type, Add key name
 export const enum SCREEN_QUERY_KEY {
   MOVIE = 'movie',
@@ -77,4 +83,5 @@ export const enum SCREEN_QUERY_KEY {
   AIRING_TODAY = 'airing_today',
   CURRENT_ON_AIR = 'current_on_air',
   MOST_NEWLY = 'most_newly',
+  GENRES = 'genres',
 }
