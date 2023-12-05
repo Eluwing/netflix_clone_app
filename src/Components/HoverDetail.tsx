@@ -59,6 +59,12 @@ interface HoverDetailProps {
   backdropMoviePath: string;
 }
 
+/**
+ * HoverDetail component for displaying hover details,
+ * including video playback and additional information.
+ * @param {string} backdropMoviePath - The path to the backdrop video file.
+ * @returns {JSX.Element} - HoverDetail component.
+ */
 function HoverDetail({ backdropMoviePath }: HoverDetailProps): JSX.Element {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   // // If want get Video to URL
@@ -82,14 +88,20 @@ function HoverDetail({ backdropMoviePath }: HoverDetailProps): JSX.Element {
   //     }
   //   }
   // If want get Video to public folder
+  /**
+   * Pauses the video playback.
+   */
   const stopMovie = (): void => {
     if (videoRef.current) {
       videoRef.current.pause();
     }
   };
+  /**
+   * Initiates video playback.
+   */
   const playMoive = (): void => {
     if (videoRef.current) {
-      // Because mute promises error
+      // Add comment Because mute promises error
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       videoRef.current.play();
     }
