@@ -28,15 +28,15 @@ const SliderArea = styled.div`
 `;
 
 function Tv(): JSX.Element {
-  // fetch data for TV shows airing today.
+  // Save to Cache and data Variable for fetch data TV shows airing today.
   const { data, isLoading } = useQuery<IGetAiringTodayTvResult>(
     [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.AIRING_TODAY],
-    // The getAiringTodayTv function is the query function responsible for fetching the data.
+    // fetch data for TV shows airing today.
     getAiringTodayTv,
   );
   const [isBoxPopUp, isSetBoxPopUp] = useState(false);
   const [screenId, setScreenId] = useState<string>();
-  // Use the useQuery hook to fetch TV genre list
+  // Save to Cache for fetch data TV shows airing today.
   useQuery<GENRES_LIST_INTERFACE_TYPES>(
     [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.GENRES],
     getTvGenreList,
