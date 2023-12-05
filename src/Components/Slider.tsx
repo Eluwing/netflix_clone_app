@@ -192,6 +192,11 @@ function Slider({
     isLoading: true,
   };
   const queryClient = useQueryClient();
+  /**
+   * Retrieves query options based on the specified slider type.
+   * @param {string} sliderTypeProp - The type of slider.
+   * @returns {useQueryType<API_INTERFACE_TYPES>} - Query options for the specified slider type.
+   */
   const getQueryOptions = (sliderTypeProp: string): useQueryType<API_INTERFACE_TYPES> => {
     switch (sliderTypeProp) {
       case SLIDER_TYPES.NOW_PLAYING_MOVIE:
@@ -241,7 +246,13 @@ function Slider({
         return emptyData;
     }
   };
+  /**
+   * Fetches data and loading state based on the specified slider type.
+   */
   const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> = getQueryOptions(sliderType);
+  /**
+   * Increases the index for the slider.
+   */
   const incraseIndex = (): void => {
     if (data != null) {
       if (leaving) return;
@@ -251,6 +262,9 @@ function Slider({
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
   };
+  /**
+   * Decreases the index for the slider.
+   */
   const decreaseIndex = (): void => {
     if (data != null) {
       if (leaving) return;
@@ -260,8 +274,18 @@ function Slider({
       setIndex((prev) => (prev === maxIndex ? 0 : prev - 1));
     }
   };
+  /**
+   * Toggles the leaving state.
+   */
   const toggleLeaving = (): void => setLeaving((prev) => !prev);
+  /**
+   * Toggles the box popup state.
+   */
   const toggleBox = (): void => isSetBoxPopUp((prev) => !prev);
+  /**
+   * Handles box click event.
+   * @param {string} screenId - The screen ID.
+   */
   const onBoxClicked = (screenId: string): void => {
     toggleBox();
     setScreenId(screenId);
