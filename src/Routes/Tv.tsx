@@ -28,8 +28,10 @@ const SliderArea = styled.div`
 `;
 
 function Tv(): JSX.Element {
+  // fetch data for TV shows airing today.
   const { data, isLoading } = useQuery<IGetAiringTodayTvResult>(
     [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.AIRING_TODAY],
+    // The getAiringTodayTv function is the query function responsible for fetching the data.
     getAiringTodayTv,
   );
   const [isBoxPopUp, isSetBoxPopUp] = useState(false);
