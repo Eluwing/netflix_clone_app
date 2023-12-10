@@ -362,8 +362,12 @@ function Slider({
                         >
                           {(movie.title && movie.title) ?? (movie.name && movie.name)}
                           <HoverArea variants={HoverVariants}>
-                            {/* if have movie, need modify code that variable in parameter value  */}
-                            <HoverDetail backdropMoviePath={''} />
+                            <HoverDetail
+                              screenId={getSliderBoxId(movie.id, sliderAndScreenType)}
+                              /* if have movie, need modify code that variable in parameter value  */
+                              backdropMoviePath={''}
+                              screenType={screenType}
+                            />
                             <HoverTextOverlay>Sample</HoverTextOverlay>
                           </HoverArea>
                         </Box>

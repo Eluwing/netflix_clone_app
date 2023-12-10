@@ -57,6 +57,8 @@ const VideoQuality = styled.div``;
 
 interface HoverDetailProps {
   backdropMoviePath: string;
+  screenId: string;
+  screenType: number;
 }
 
 /**
