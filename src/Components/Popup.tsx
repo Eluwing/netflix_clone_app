@@ -72,14 +72,24 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
   const history = useHistory();
   const { scrollY } = useScroll();
   const [currentScrollY, setCurrentScrollY] = useState<number>(0);
+  /**
+   * Toggles the box popup state.
+   */
   const toggleBox = (): void => isSetBoxPopUp((prev) => !prev);
   const queryClient = useQueryClient();
   const [clickedScreen, setClickedScreen] = useState<IMovieOrTv | null>();
+  /**
+   * State hook for managing the query key set for display to data.
+   */
   const [queryKeySet, setQueryKeySet] = useState<string[]>(['', '']);
+  // Save to data in Cache and data Variable for seleted screen
   const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> = {
     data: queryClient.getQueryData([queryKeySet[0], queryKeySet[1]]),
     isLoading: false,
   };
+  /**
+   * Handles overlay click event and navigates based on the screen type.
+   */
   const onOverlayClick = (): void => {
     toggleBox();
     if (screenType === SCREEN_TYPES.MOVIES) {
@@ -90,16 +100,20 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
       history.push('/');
     }
   };
+
+  // Updates the clicked screen data when the data changes.
   useEffect(() => {
     setClickedScreen(
       data?.results.find((movie: { id: number }) => screenId?.includes(String(movie.id))),
     );
   }, [data]);
 
+  // Sets the query key set based on the slider type and screen ID.
   useEffect(() => {
     setQueryKeySet(getSliderTypeKey(screenId));
   }, [screenId]);
 
+  // Listens to the scrollY motion value and updates the current scroll position.
   useMotionValueEvent(scrollY, 'change', (latest: number) => {
     setCurrentScrollY(latest + 20);
   });

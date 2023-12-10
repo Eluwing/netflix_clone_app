@@ -181,9 +181,15 @@ function Slider({
   screenId,
 }: ISliderProps): JSX.Element {
   const history = useHistory();
+  /**
+   * Concatenates the slider type and screen type to create a unique identifier.
+   */
   const sliderAndScreenType = sliderType.concat(String(screenType));
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
+  /**
+   * State hook for managing the popup movie match.
+   */
   const [, setPopUpMovieMatch] = useState<match<{ screenId: string }> | null>();
   const emptyData: useQueryType<API_INTERFACE_TYPES> = {
     // Because it is not possible to set an empty object in TypeScript
@@ -192,6 +198,11 @@ function Slider({
     isLoading: true,
   };
   const queryClient = useQueryClient();
+  /**
+   * Retrieves query options based on the specified slider type.
+   * @param {string} sliderTypeProp - The type of slider.
+   * @returns {useQueryType<API_INTERFACE_TYPES>} - Query options for the specified slider type.
+   */
   const getQueryOptions = (sliderTypeProp: string): useQueryType<API_INTERFACE_TYPES> => {
     switch (sliderTypeProp) {
       case SLIDER_TYPES.NOW_PLAYING_MOVIE:
@@ -241,7 +252,13 @@ function Slider({
         return emptyData;
     }
   };
+  /**
+   * Fetches data and loading state based on the specified slider type.
+   */
   const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> = getQueryOptions(sliderType);
+  /**
+   * Increases the index for the slider.
+   */
   const incraseIndex = (): void => {
     if (data != null) {
       if (leaving) return;
@@ -251,6 +268,9 @@ function Slider({
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
   };
+  /**
+   * Decreases the index for the slider.
+   */
   const decreaseIndex = (): void => {
     if (data != null) {
       if (leaving) return;
@@ -260,8 +280,18 @@ function Slider({
       setIndex((prev) => (prev === maxIndex ? 0 : prev - 1));
     }
   };
+  /**
+   * Toggles the leaving state.
+   */
   const toggleLeaving = (): void => setLeaving((prev) => !prev);
+  /**
+   * Toggles the box popup state.
+   */
   const toggleBox = (): void => isSetBoxPopUp((prev) => !prev);
+  /**
+   * Handles box click event.
+   * @param {string} screenId - The screen ID.
+   */
   const onBoxClicked = (screenId: string): void => {
     toggleBox();
     setScreenId(screenId);
@@ -273,7 +303,13 @@ function Slider({
       history.push('/');
     }
   };
+  /**
+   * Retrieves the title for the sliders based on the specified slider type.
+   */
   const slidersTitle = getSlidersTitle(sliderType);
+  /**
+   * Configures the popup movie match based on the screen type and ID.
+   */
   useEffect(() => {
     if (screenType === SCREEN_TYPES.MOVIES) {
       setPopUpMovieMatch((prev) => useRouteMatch<{ screenId: string }>('/movies/:screenId'));

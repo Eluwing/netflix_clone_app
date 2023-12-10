@@ -5,6 +5,7 @@ import { SCREEN_TYPES } from '../Constants/Common';
 
 function Search(): JSX.Element {
   const location = useLocation();
+  // Extracts the 'keyword' parameter from the current URL's query string.
   const keyword = new URLSearchParams(location.search).get('keyword');
   return (
     <>

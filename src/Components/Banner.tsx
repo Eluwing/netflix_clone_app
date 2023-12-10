@@ -30,9 +30,17 @@ interface IBannerProps {
   overview: string | undefined;
 }
 
+/**
+ * Banner component for displaying a banner with background image, title, and overview.
+ * @param {string} backgroundImagePath - The path to the background image file.
+ * @param {string} title - The title to be displayed on the banner.
+ * @param {string} overview - The overview or description to be displayed on the banner.
+ * @returns {JSX.Element} - Banner component.
+ */
 function Banner({ backgroundImagePath, title, overview }: IBannerProps): JSX.Element {
   return (
     <>
+      {/* Banner area with background image */}
       <BannerArea bgphoto={makeImagePath(backgroundImagePath ?? '')}>
         <Title>{title}</Title>
         <OverView>{overview}</OverView>

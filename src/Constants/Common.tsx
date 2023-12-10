@@ -30,6 +30,7 @@ export enum SLIDER_TYPES {
   MOST_NEWLY_TV = 'MNT',
 }
 
+// Add Me : if create new Silder Type, Add key name
 export const enum SLIDER_TITLE {
   NOW_PLAYING_MOVIE = 'New Movies in Theaters',
   POPULAR_MOVIE = 'Popular Movies',
@@ -42,6 +43,7 @@ export const enum SLIDER_TITLE {
   MOST_NEWLY_TV = 'Most Newly Tv Shows',
 }
 
+// Add Me : if create new Title, Add key name
 export const enum SEARCH_RESULT_TITLE {
   MOVIE_RESULT = 'Search Result of Movie',
   TV_RESULT = 'Search Result of Tv',

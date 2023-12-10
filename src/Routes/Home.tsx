@@ -28,14 +28,17 @@ const SliderArea = styled.div`
 `;
 
 function Home(): JSX.Element {
+  // Save to data in Cache and data Variable for TV now playing movie list
   const { data, isLoading } = useQuery<IGetMoviesResult>(
     [SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.NOW_PLAYING],
+    // fetch data for TV now playing movie list
     getMovies,
   );
 
-  // Use the useQuery hook to fetch movie genre list
+  // Save to data in Cache for Movie genre list
   useQuery<GENRES_LIST_INTERFACE_TYPES>(
     [SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.GENRES],
+    // fetches data for movie genre list
     getMovieGenreList,
   );
   const [isBoxPopUp, isSetBoxPopUp] = useState(false);
