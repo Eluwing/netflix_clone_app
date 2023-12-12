@@ -67,7 +67,6 @@ interface useQueryType<TInterface> {
 interface HoverDetailProps {
   backdropMoviePath: string;
   screenId: string;
-  screenType: number;
 }
 
 /**
@@ -76,7 +75,7 @@ interface HoverDetailProps {
  * @param {string} backdropMoviePath - The path to the backdrop video file.
  * @returns {JSX.Element} - HoverDetail component.
  */
-function HoverDetail({ backdropMoviePath, screenId, screenType }: HoverDetailProps): JSX.Element {
+function HoverDetail({ backdropMoviePath, screenId }: HoverDetailProps): JSX.Element {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const queryClient = useQueryClient();
   /**
