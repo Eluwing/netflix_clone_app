@@ -366,7 +366,6 @@ function Slider({
                               screenId={getSliderBoxId(movie.id, sliderAndScreenType)}
                               /* if have movie, need modify code that variable in parameter value  */
                               backdropMoviePath={''}
-                              screenType={screenType}
                             />
                             <HoverTextOverlay>Sample</HoverTextOverlay>
                           </HoverArea>
