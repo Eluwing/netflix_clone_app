@@ -1,7 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { DetailIcon, PlayIcon, PlusIcon } from '../icon/HoverIcons';
+import { getSliderTypeKey } from '../utils';
+import { useQueryClient } from 'react-query';
+import { API_INTERFACE_TYPES } from '../Constants/Common';
+import { IMovieOrTv } from '../api';
 
 const VideoCover = styled(motion.video)`
   height: auto;
@@ -55,6 +59,11 @@ const AgeCategoryArea = styled.div``;
 
 const VideoQuality = styled.div``;
 
+interface useQueryType<TInterface> {
+  data: TInterface | undefined;
+  isLoading: boolean;
+}
+
 interface HoverDetailProps {
   backdropMoviePath: string;
   screenId: string;
@@ -67,8 +76,20 @@ interface HoverDetailProps {
  * @param {string} backdropMoviePath - The path to the backdrop video file.
  * @returns {JSX.Element} - HoverDetail component.
  */
-function HoverDetail({ backdropMoviePath }: HoverDetailProps): JSX.Element {
+function HoverDetail({ backdropMoviePath, screenId, screenType }: HoverDetailProps): JSX.Element {
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const queryClient = useQueryClient();
+  /**
+   * State hook for managing the query key set for display to data.
+   */
+  const [queryKeySet, setQueryKeySet] = useState<string[]>(['', '']);
+  const [clickedScreen, setClickedScreen] = useState<IMovieOrTv | null>();
+
+  // Save to data in Cache and data Variable for seleted screen
+  const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> = {
+    data: queryClient.getQueryData([queryKeySet[0], queryKeySet[1]]),
+    isLoading: false,
+  };
   // // If want get Video to URL
   // const stopMovie = async (): Promise<void> => {
   //   if (videoRef.current) {
@@ -108,6 +129,18 @@ function HoverDetail({ backdropMoviePath }: HoverDetailProps): JSX.Element {
       videoRef.current.play();
     }
   };
+
+  // Sets the query key set based on the slider type and screen ID.
+  useEffect(() => {
+    setQueryKeySet(getSliderTypeKey(screenId));
+  }, [screenId]);
+
+  // Updates the clicked screen data when the data changes.
+  useEffect(() => {
+    setClickedScreen(
+      data?.results.find((movie: { id: number }) => screenId?.includes(String(movie.id))),
+    );
+  }, [data]);
   return (
     <>
       {/* If want get Video to URL */}
