@@ -66,7 +66,7 @@ interface useQueryType<TInterface> {
 
 interface HoverDetailProps {
   backdropMoviePath: string;
-  screenId: string;
+  sliderBoxId: string | undefined; // the Box key id in slider component
 }
 
 /**
@@ -75,14 +75,14 @@ interface HoverDetailProps {
  * @param {string} backdropMoviePath - The path to the backdrop video file.
  * @returns {JSX.Element} - HoverDetail component.
  */
-function HoverDetail({ backdropMoviePath, screenId }: HoverDetailProps): JSX.Element {
+function HoverDetail({ backdropMoviePath, sliderBoxId }: HoverDetailProps): JSX.Element {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const queryClient = useQueryClient();
   /**
    * State hook for managing the query key set for display to data.
    */
   const [queryKeySet, setQueryKeySet] = useState<string[]>(['', '']);
-  const [clickedScreen, setClickedScreen] = useState<IMovieOrTv | null>();
+  const [hoveredScreen, setHoveredScreen] = useState<IMovieOrTv | null>();
 
   // Save to data in Cache and data Variable for seleted screen
   const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> = {
@@ -129,17 +129,17 @@ function HoverDetail({ backdropMoviePath, screenId }: HoverDetailProps): JSX.Ele
     }
   };
 
-  // Sets the query key set based on the slider type and screen ID.
+  // Sets the query key set based on the Box key id in slider component
   useEffect(() => {
-    setQueryKeySet(getSliderTypeKey(screenId));
-  }, [screenId]);
+    setQueryKeySet(getSliderTypeKey(sliderBoxId));
+  }, [sliderBoxId]);
 
-  // Updates the clicked screen data when the data changes.
+  // Updates the hovered screen detail data when the screend id changes.
   useEffect(() => {
-    setClickedScreen(
-      data?.results.find((movie: { id: number }) => screenId?.includes(String(movie.id))),
+    setHoveredScreen(
+      data?.results.find((movie: { id: number }) => sliderBoxId?.includes(String(movie.id))),
     );
-  }, [data]);
+  }, [sliderBoxId]);
   return (
     <>
       {/* If want get Video to URL */}
