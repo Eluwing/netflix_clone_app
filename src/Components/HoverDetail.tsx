@@ -6,6 +6,7 @@ import { getSliderTypeKey } from '../utils';
 import { useQueryClient } from 'react-query';
 import { API_INTERFACE_TYPES } from '../Constants/Common';
 import { IMovieOrTv } from '../api';
+import Loading from './Loading';
 
 const VideoCover = styled(motion.video)`
   height: auto;
@@ -142,50 +143,56 @@ function HoverDetail({ backdropMoviePath, sliderBoxId }: HoverDetailProps): JSX.
   }, [sliderBoxId]);
   return (
     <>
-      {/* If want get Video to URL */}
-      {/* <HoverVideoCover
-        ref={videoRef}
-        onMouseOver={async () => await playMoive()}
-        onMouseOut={async () => await stopMovie()}
-        src="https://s3.amazonaws.com/codecademy-content/courses/React/react_video-cute.mp4"
-      /> */}
-      {/* If want get Video to public folder */}
-      <VideoCover
-        ref={videoRef}
-        onMouseOver={() => playMoive()}
-        onMouseOut={() => stopMovie()}
-        muted
-      >
-        {backdropMoviePath ? (
-          <source src={backdropMoviePath} type="video/mp4" />
-        ) : (
-          <source src="videos/sample_hover_video.mp4" type="video/mp4" />
-        )}
-        Your browser does not support the video tag.
-      </VideoCover>
-      <ButtonArea>
-        <VideoPlayTools>
-          <CommonButton>
-            <PlayIcon />
-          </CommonButton>
-          <CommonButton>
-            <PlusIcon />
-          </CommonButton>
-        </VideoPlayTools>
-        <DetailButton>
-          <DetailIcon />
-        </DetailButton>
-      </ButtonArea>
-      <VideoDetail>
-        <TopPannel>
-          <MatchArea></MatchArea>
-          <AgeCategoryArea></AgeCategoryArea>
-          <VideoQuality></VideoQuality>
-        </TopPannel>
-        <BottomPannel>
-          <GenreArea></GenreArea>
-        </BottomPannel>
-      </VideoDetail>
+      {isLoading ? (
+        <Loading isLoading={isLoading} loadingText={'Data Loading...'} />
+      ) : (
+        <>
+          {/* If want get Video to URL */}
+          {/* <VideoCover
+            ref={videoRef}
+            onMouseOver={async () => await playMoive()}
+            onMouseOut={async () => await stopMovie()}
+            src="https://s3.amazonaws.com/codecademy-content/courses/React/react_video-cute.mp4"
+          /> */}
+          {/* If want get Video to public folder */}
+          <VideoCover
+            ref={videoRef}
+            onMouseOver={() => playMoive()}
+            onMouseOut={() => stopMovie()}
+            muted
+          >
+            {backdropMoviePath ? (
+              <source src={backdropMoviePath} type="video/mp4" />
+            ) : (
+              <source src="videos/sample_hover_video.mp4" type="video/mp4" />
+            )}
+            Your browser does not support the video tag.
+          </VideoCover>
+          <ButtonArea>
+            <VideoPlayTools>
+              <CommonButton>
+                <PlayIcon />
+              </CommonButton>
+              <CommonButton>
+                <PlusIcon />
+              </CommonButton>
+            </VideoPlayTools>
+            <DetailButton>
+              <DetailIcon />
+            </DetailButton>
+          </ButtonArea>
+          <VideoDetail>
+            <TopPannel>
+              <MatchArea></MatchArea>
+              <AgeCategoryArea></AgeCategoryArea>
+              <VideoQuality></VideoQuality>
+            </TopPannel>
+            <BottomPannel>
+              <GenreArea></GenreArea>
+            </BottomPannel>
+          </VideoDetail>
+        </>
+      )}
     </>
   );
 }
