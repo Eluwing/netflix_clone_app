@@ -1,21 +1,19 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
-import SearchResult from '../Components/SearchResult';
-import { SCREEN_TYPES } from '../Constants/Common';
+import styled from 'styled-components';
+
+const Loader = styled.div`
+  height: 20vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 interface loadingProps {
   isLoading: boolean;
+  loadingText: string;
 }
 
-function Loading({ isLoading }: loadingProps): JSX.Element {
-  const location = useLocation();
-  // Extracts the 'keyword' parameter from the current URL's query string.
-  const keyword = new URLSearchParams(location.search).get('keyword');
-  return (
-    <>
-      <SearchResult keyword={keyword} screenType={SCREEN_TYPES.TV} />
-      <SearchResult keyword={keyword} screenType={SCREEN_TYPES.MOVIES} />
-    </>
-  );
+function Loading({ isLoading, loadingText }: loadingProps): JSX.Element {
+  return <>{isLoading ? <Loader>{loadingText}</Loader> : <>{null}</>}</>;
 }
 export default Loading;
