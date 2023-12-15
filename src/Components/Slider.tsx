@@ -304,6 +304,15 @@ function Slider({
     }
   };
   /**
+   * Handles the hover event on a box, updating the screenId state.
+   *
+   * @param {string} screenId - The identifier of the screen associated with the hovered box.
+   * @returns {void}
+   */
+  const onBoxHovered = (screenId: string): void => {
+    setScreenId(screenId);
+  };
+  /**
    * Retrieves the title for the sliders based on the specified slider type.
    */
   const slidersTitle = getSlidersTitle(sliderType);
@@ -357,13 +366,19 @@ function Slider({
                           onClick={() =>
                             onBoxClicked(getSliderBoxId(movie.id, sliderAndScreenType))
                           }
+                          onHoverStart={() =>
+                            onBoxHovered(getSliderBoxId(movie.id, sliderAndScreenType))
+                          }
                           transition={{ type: 'tween' }}
                           bgPhoto={makeImagePath(movie.backdrop_path ?? '', 'w500')}
                         >
                           {(movie.title && movie.title) ?? (movie.name && movie.name)}
                           <HoverArea variants={HoverVariants}>
-                            {/* if have movie, need modify code that variable in parameter value  */}
-                            <HoverDetail backdropMoviePath={''} />
+                            <HoverDetail
+                              sliderBoxId={screenId}
+                              /* if have movie, need modify code that variable in parameter value  */
+                              backdropMoviePath={''}
+                            />
                             <HoverTextOverlay>Sample</HoverTextOverlay>
                           </HoverArea>
                         </Box>

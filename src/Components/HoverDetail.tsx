@@ -1,7 +1,13 @@
-import React, { useRef } from 'react';
+/* eslint-disable array-callback-return */
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { DetailIcon, PlayIcon, PlusIcon } from '../icon/HoverIcons';
+import { getSliderTypeKey } from '../utils';
+import { useQueryClient } from 'react-query';
+import { API_INTERFACE_TYPES } from '../Constants/Common';
+import { IMovieOrTv } from '../api';
+import Loading from './Loading';
 
 const VideoCover = styled(motion.video)`
   height: auto;
@@ -13,8 +19,6 @@ const VideoPlayTools = styled(motion.div)``;
 
 const ButtonArea = styled(motion.div)`
   padding: 1rem;
-  background-color: #1c1c1c;
-  border-radius: 0 0 15px 15px;
   display: flex;
   justify-content: space-between;
 `;
@@ -39,24 +43,69 @@ const CommonButton = styled(motion.div)`
     }
   }
 `;
+
+const Wapper = styled.div`
+  background-color: #1c1c1c;
+  border-radius: 0 0 15px 15px;
+`;
+
 const DetailButton = styled(CommonButton)``;
 
-const VideoDetail = styled.div``;
+const VideoDetail = styled.div`
+  padding: 0rem 1rem 1rem 1rem;
+  font-size: 10px;
+`;
 
-const TopPannel = styled.div``;
+const TopPannel = styled.div`
+  display: flex;
+  margin-bottom: 5px;
+`;
 
-const BottomPannel = styled.div``;
+const BottomPannel = styled.div`
+  display: flex;
+`;
 
-const MatchArea = styled.div``;
+const MatchArea = styled.div`
+  color: green;
+  font-weight: bold;
+  margin-right: 5px;
+`;
 
-const GenreArea = styled.div``;
+const GenreArea = styled.div`
+  display: flex;
+`;
 
-const AgeCategoryArea = styled.div``;
+const GenreItem = styled.li``;
 
-const VideoQuality = styled.div``;
+const AgeCategoryArea = styled.div`
+  border: 0.1px solid gray;
+  padding: 1px 2px;
+  margin-right: 5px;
+`;
+
+const VideoQualityArea = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const VideoQualityItem = styled.div`
+  display: flex;
+  align-items: center;
+  border: 0.1px solid gray;
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-size: 7px;
+  margin-right: 5px;
+`;
+
+interface useQueryType<TInterface> {
+  data: TInterface | undefined;
+  isLoading: boolean;
+}
 
 interface HoverDetailProps {
   backdropMoviePath: string;
+  sliderBoxId: string | undefined; // the Box key id in slider component
 }
 
 /**
@@ -65,8 +114,20 @@ interface HoverDetailProps {
  * @param {string} backdropMoviePath - The path to the backdrop video file.
  * @returns {JSX.Element} - HoverDetail component.
  */
-function HoverDetail({ backdropMoviePath }: HoverDetailProps): JSX.Element {
+function HoverDetail({ backdropMoviePath, sliderBoxId }: HoverDetailProps): JSX.Element {
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const queryClient = useQueryClient();
+  /**
+   * State hook for managing the query key set for display to data.
+   */
+  const [queryKeySet, setQueryKeySet] = useState<string[]>(['', '']);
+  const [hoveredScreen, setHoveredScreen] = useState<IMovieOrTv | null>();
+
+  // Save to data in Cache and data Variable for seleted screen
+  const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> = {
+    data: queryClient.getQueryData([queryKeySet[0], queryKeySet[1]]),
+    isLoading: false,
+  };
   // // If want get Video to URL
   // const stopMovie = async (): Promise<void> => {
   //   if (videoRef.current) {
@@ -106,53 +167,77 @@ function HoverDetail({ backdropMoviePath }: HoverDetailProps): JSX.Element {
       videoRef.current.play();
     }
   };
+
+  // Sets the query key set based on the Box key id in slider component
+  useEffect(() => {
+    setQueryKeySet(getSliderTypeKey(sliderBoxId));
+  }, [sliderBoxId]);
+
+  // Updates the hovered screen detail data when the screend id changes.
+  useEffect(() => {
+    setHoveredScreen(
+      data?.results.find((movie: { id: number }) => sliderBoxId?.includes(String(movie.id))),
+    );
+  }, [sliderBoxId]);
   return (
-    <>
-      {/* If want get Video to URL */}
-      {/* <HoverVideoCover
-        ref={videoRef}
-        onMouseOver={async () => await playMoive()}
-        onMouseOut={async () => await stopMovie()}
-        src="https://s3.amazonaws.com/codecademy-content/courses/React/react_video-cute.mp4"
-      /> */}
-      {/* If want get Video to public folder */}
-      <VideoCover
-        ref={videoRef}
-        onMouseOver={() => playMoive()}
-        onMouseOut={() => stopMovie()}
-        muted
-      >
-        {backdropMoviePath ? (
-          <source src={backdropMoviePath} type="video/mp4" />
-        ) : (
-          <source src="videos/sample_hover_video.mp4" type="video/mp4" />
-        )}
-        Your browser does not support the video tag.
-      </VideoCover>
-      <ButtonArea>
-        <VideoPlayTools>
-          <CommonButton>
-            <PlayIcon />
-          </CommonButton>
-          <CommonButton>
-            <PlusIcon />
-          </CommonButton>
-        </VideoPlayTools>
-        <DetailButton>
-          <DetailIcon />
-        </DetailButton>
-      </ButtonArea>
-      <VideoDetail>
-        <TopPannel>
-          <MatchArea></MatchArea>
-          <AgeCategoryArea></AgeCategoryArea>
-          <VideoQuality></VideoQuality>
-        </TopPannel>
-        <BottomPannel>
-          <GenreArea></GenreArea>
-        </BottomPannel>
-      </VideoDetail>
-    </>
+    <Wapper>
+      {isLoading ? (
+        <Loading isLoading={isLoading} loadingText={'Data Loading...'} />
+      ) : (
+        <>
+          {/* If want get Video to URL */}
+          {/* <VideoCover
+            ref={videoRef}
+            onMouseOver={async () => await playMoive()}
+            onMouseOut={async () => await stopMovie()}
+            src="https://s3.amazonaws.com/codecademy-content/courses/React/react_video-cute.mp4"
+          /> */}
+          {/* If want get Video to public folder */}
+          <VideoCover
+            ref={videoRef}
+            onMouseOver={() => playMoive()}
+            onMouseOut={() => stopMovie()}
+            muted
+          >
+            {backdropMoviePath ? (
+              <source src={backdropMoviePath} type="video/mp4" />
+            ) : (
+              <source src="videos/sample_hover_video.mp4" type="video/mp4" />
+            )}
+            Your browser does not support the video tag.
+          </VideoCover>
+          <ButtonArea>
+            <VideoPlayTools>
+              <CommonButton>
+                <PlayIcon />
+              </CommonButton>
+              <CommonButton>
+                <PlusIcon />
+              </CommonButton>
+            </VideoPlayTools>
+            <DetailButton>
+              <DetailIcon />
+            </DetailButton>
+          </ButtonArea>
+          <VideoDetail>
+            <TopPannel>
+              <MatchArea>{'98%' + 'Match'}</MatchArea>
+              <AgeCategoryArea>{hoveredScreen?.adult ? '18+' : '15+'}</AgeCategoryArea>
+              <VideoQualityArea>
+                <VideoQualityItem>{'HD'}</VideoQualityItem>
+              </VideoQualityArea>
+            </TopPannel>
+            <BottomPannel>
+              <GenreArea>
+                {hoveredScreen?.genre_ids.map((genre, idx) => {
+                  return <GenreItem key={idx}>{genre}</GenreItem>;
+                })}
+              </GenreArea>
+            </BottomPannel>
+          </VideoDetail>
+        </>
+      )}
+    </Wapper>
   );
 }
 export default HoverDetail;
