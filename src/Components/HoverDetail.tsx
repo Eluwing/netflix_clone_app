@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
@@ -18,8 +19,6 @@ const VideoPlayTools = styled(motion.div)``;
 
 const ButtonArea = styled(motion.div)`
   padding: 1rem;
-  background-color: #1c1c1c;
-  border-radius: 0 0 15px 15px;
   display: flex;
   justify-content: space-between;
 `;
@@ -44,21 +43,60 @@ const CommonButton = styled(motion.div)`
     }
   }
 `;
+
+const Wapper = styled.div`
+  background-color: #1c1c1c;
+  border-radius: 0 0 15px 15px;
+`;
+
 const DetailButton = styled(CommonButton)``;
 
-const VideoDetail = styled.div``;
+const VideoDetail = styled.div`
+  padding: 0rem 1rem 1rem 1rem;
+  font-size: 10px;
+`;
 
-const TopPannel = styled.div``;
+const TopPannel = styled.div`
+  display: flex;
+  margin-bottom: 5px;
+`;
 
-const BottomPannel = styled.div``;
+const BottomPannel = styled.div`
+  display: flex;
+`;
 
-const MatchArea = styled.div``;
+const MatchArea = styled.div`
+  color: green;
+  font-weight: bold;
+  margin-right: 5px;
+`;
 
-const GenreArea = styled.div``;
+const GenreArea = styled.div`
+  display: flex;
+`;
 
-const AgeCategoryArea = styled.div``;
+const GenreItem = styled.li``;
 
-const VideoQuality = styled.div``;
+const AgeCategoryArea = styled.div`
+  border: 0.1px solid gray;
+  padding: 1px 2px;
+  margin-right: 5px;
+`;
+
+const VideoQualityArea = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const VideoQualityItem = styled.div`
+  display: flex;
+  align-items: center;
+  border: 0.1px solid gray;
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-size: 7px;
+  margin-right: 5px;
+`;
 
 interface useQueryType<TInterface> {
   data: TInterface | undefined;
@@ -142,7 +180,7 @@ function HoverDetail({ backdropMoviePath, sliderBoxId }: HoverDetailProps): JSX.
     );
   }, [sliderBoxId]);
   return (
-    <>
+    <Wapper>
       {isLoading ? (
         <Loading isLoading={isLoading} loadingText={'Data Loading...'} />
       ) : (
@@ -183,17 +221,23 @@ function HoverDetail({ backdropMoviePath, sliderBoxId }: HoverDetailProps): JSX.
           </ButtonArea>
           <VideoDetail>
             <TopPannel>
-              <MatchArea></MatchArea>
-              <AgeCategoryArea></AgeCategoryArea>
-              <VideoQuality></VideoQuality>
+              <MatchArea>{'98%' + 'Match'}</MatchArea>
+              <AgeCategoryArea>{hoveredScreen?.adult ? '18+' : '15+'}</AgeCategoryArea>
+              <VideoQualityArea>
+                <VideoQualityItem>{'HD'}</VideoQualityItem>
+              </VideoQualityArea>
             </TopPannel>
             <BottomPannel>
-              <GenreArea></GenreArea>
+              <GenreArea>
+                {hoveredScreen?.genre_ids.map((genre, idx) => {
+                  return <GenreItem key={idx}>{genre}</GenreItem>;
+                })}
+              </GenreArea>
             </BottomPannel>
           </VideoDetail>
         </>
       )}
-    </>
+    </Wapper>
   );
 }
 export default HoverDetail;
