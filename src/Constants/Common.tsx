@@ -71,7 +71,7 @@ export type SEARCH_RESULT_INTERFACE_TYPES =
   | IGetTvKeywordSearchResult;
 
 // Add Me : if create new interface type of search result interface type, Add interface name
-export type GENRES_LIST_INTERFACE_TYPES = IGetTvGenre | IGetMovieGenre;
+export type GENRES_INTERFACE_TYPES = IGetTvGenre | IGetMovieGenre;
 
 // Add Me : if create new useQuery Key type, Add key name
 export const enum SCREEN_QUERY_KEY {
