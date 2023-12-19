@@ -5,8 +5,8 @@ import { motion } from 'framer-motion';
 import { DetailIcon, PlayIcon, PlusIcon } from '../icon/HoverIcons';
 import { getSliderTypeKey } from '../utils';
 import { useQueryClient } from 'react-query';
-import { API_INTERFACE_TYPES } from '../Constants/Common';
-import { IMovieOrTv } from '../api';
+import { API_INTERFACE_TYPES, GENRES_INTERFACE_TYPES, SCREEN_QUERY_KEY } from '../Constants/Common';
+import { IGenres, IMovieOrTv } from '../api';
 import Loading from './Loading';
 
 const VideoCover = styled(motion.video)`
@@ -103,6 +103,11 @@ interface useQueryType<TInterface> {
   isLoading: boolean;
 }
 
+interface GenreQueryType<TInterface> {
+  genreData: TInterface | undefined;
+  genreIsLoading: boolean;
+}
+
 interface HoverDetailProps {
   backdropMoviePath: string;
   sliderBoxId: string | undefined; // the Box key id in slider component
@@ -127,6 +132,10 @@ function HoverDetail({ backdropMoviePath, sliderBoxId }: HoverDetailProps): JSX.
   const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> = {
     data: queryClient.getQueryData([queryKeySet[0], queryKeySet[1]]),
     isLoading: false,
+  };
+  const { genreData, genreIsLoading }: GenreQueryType<GENRES_INTERFACE_TYPES> = {
+    genreData: queryClient.getQueryData([queryKeySet[0], SCREEN_QUERY_KEY.GENRES]),
+    genreIsLoading: false,
   };
   // // If want get Video to URL
   // const stopMovie = async (): Promise<void> => {
@@ -167,7 +176,9 @@ function HoverDetail({ backdropMoviePath, sliderBoxId }: HoverDetailProps): JSX.
       videoRef.current.play();
     }
   };
-
+  const getGenreName = (genreId: number): IGenres | undefined => {
+    return genreData?.genres.find((genre: IGenres) => genre.id === genreId);
+  };
   // Sets the query key set based on the Box key id in slider component
   useEffect(() => {
     setQueryKeySet(getSliderTypeKey(sliderBoxId));
@@ -230,7 +241,7 @@ function HoverDetail({ backdropMoviePath, sliderBoxId }: HoverDetailProps): JSX.
             <BottomPannel>
               <GenreArea>
                 {hoveredScreen?.genre_ids.map((genre, idx) => {
-                  return <GenreItem key={idx}>{genre}</GenreItem>;
+                  return <GenreItem key={idx}>{getGenreName(genre)?.name}</GenreItem>;
                 })}
               </GenreArea>
             </BottomPannel>
