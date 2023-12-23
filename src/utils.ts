@@ -4,6 +4,8 @@ import {
   SEARCH_RESULT_TITLE,
   SLIDER_TITLE,
   SLIDER_TYPES,
+  VIDEO_QUALITY,
+  VIDEO_QUALITY_NAME,
 } from './Constants/Common';
 
 export function makeImagePath(id?: string, format?: string): string {
@@ -101,5 +103,21 @@ export function getScreenTitle(screenType: number): string {
     ? SEARCH_RESULT_TITLE.MOVIE_RESULT
     : screenType === SCREEN_TYPES.TV
     ? SEARCH_RESULT_TITLE.TV_RESULT
+    : '';
+}
+
+export function getVideoQualityTitle(qualityNum: number): string {
+  return qualityNum === VIDEO_QUALITY.SD
+    ? VIDEO_QUALITY_NAME.SD
+    : qualityNum === VIDEO_QUALITY.HD
+    ? VIDEO_QUALITY_NAME.HD
+    : qualityNum === VIDEO_QUALITY.FHD
+    ? VIDEO_QUALITY_NAME.FHD
+    : qualityNum === VIDEO_QUALITY.QUAD_HD
+    ? VIDEO_QUALITY_NAME.QUAD_HD
+    : qualityNum === VIDEO_QUALITY.UHD
+    ? VIDEO_QUALITY_NAME.UHD
+    : qualityNum === VIDEO_QUALITY.OCTUPLE_HD
+    ? VIDEO_QUALITY_NAME.OCTUPLE_HD
     : '';
 }
