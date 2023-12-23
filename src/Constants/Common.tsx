@@ -71,7 +71,7 @@ export type SEARCH_RESULT_INTERFACE_TYPES =
   | IGetTvKeywordSearchResult;
 
 // Add Me : if create new interface type of search result interface type, Add interface name
-export type GENRES_LIST_INTERFACE_TYPES = IGetTvGenre | IGetMovieGenre;
+export type GENRES_INTERFACE_TYPES = IGetTvGenre | IGetMovieGenre;
 
 // Add Me : if create new useQuery Key type, Add key name
 export const enum SCREEN_QUERY_KEY {
@@ -86,4 +86,22 @@ export const enum SCREEN_QUERY_KEY {
   CURRENT_ON_AIR = 'current_on_air',
   MOST_NEWLY = 'most_newly',
   GENRES = 'genres',
+}
+
+export const enum VIDEO_QUALITY {
+  SD = 0,
+  HD = 1,
+  FHD = 2,
+  QUAD_HD = 3,
+  UHD = 4,
+  OCTUPLE_HD = 5,
+}
+
+export const enum VIDEO_QUALITY_NAME {
+  SD = 'SD',
+  HD = 'HD',
+  FHD = 'FHD',
+  QUAD_HD = '4K',
+  UHD = 'UHD',
+  OCTUPLE_HD = '8k',
 }

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { getMovieGenreList, getMovies, IGetMoviesResult } from '../api';
 import Slider from '../Components/Slider';
 import {
-  GENRES_LIST_INTERFACE_TYPES,
+  GENRES_INTERFACE_TYPES,
   SCREEN_QUERY_KEY,
   SCREEN_TYPES,
   SLIDER_TYPES,
@@ -36,7 +36,7 @@ function Home(): JSX.Element {
   );
 
   // Save to data in Cache for Movie genre list
-  useQuery<GENRES_LIST_INTERFACE_TYPES>(
+  useQuery<GENRES_INTERFACE_TYPES>(
     [SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.GENRES],
     // fetches data for movie genre list
     getMovieGenreList,

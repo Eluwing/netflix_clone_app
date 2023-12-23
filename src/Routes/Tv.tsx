@@ -4,7 +4,7 @@ import { IGetAiringTodayTvResult, getAiringTodayTv, getTvGenreList } from '../ap
 import Banner from '../Components/Banner';
 import { useQuery } from 'react-query';
 import {
-  GENRES_LIST_INTERFACE_TYPES,
+  GENRES_INTERFACE_TYPES,
   SCREEN_QUERY_KEY,
   SCREEN_TYPES,
   SLIDER_TYPES,
@@ -37,7 +37,7 @@ function Tv(): JSX.Element {
   const [isBoxPopUp, isSetBoxPopUp] = useState(false);
   const [screenId, setScreenId] = useState<string>();
   // Save to data in Cache for TV genre list
-  useQuery<GENRES_LIST_INTERFACE_TYPES>(
+  useQuery<GENRES_INTERFACE_TYPES>(
     [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.GENRES],
     // fetch data for TV genre list
     getTvGenreList,

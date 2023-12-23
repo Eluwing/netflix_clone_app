@@ -118,7 +118,7 @@ export interface IGetTvKeywordSearchResult {
   total_results: number;
 }
 
-interface IGenres {
+export interface IGenres {
   id: number;
   name: string;
 }
