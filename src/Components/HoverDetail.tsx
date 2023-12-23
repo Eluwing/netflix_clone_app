@@ -248,7 +248,7 @@ function HoverDetail({ backdropMoviePath, sliderBoxId }: HoverDetailProps): JSX.
           <VideoDetail>
             <TopPannel>
               {/* Fix me: if get data, Match value for API */}
-              <MatchArea>{getRandVal(90, 100) + 'Match'}</MatchArea>
+              <MatchArea>{getRandVal(90, 100) + '%Match'}</MatchArea>
               {/* Fix me: if get data, Match value for API */}
               <AgeCategoryArea>{hoveredScreen?.adult ? '18+' : '15+'}</AgeCategoryArea>
               <VideoQualityArea>
