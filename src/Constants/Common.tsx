@@ -87,3 +87,21 @@ export const enum SCREEN_QUERY_KEY {
   MOST_NEWLY = 'most_newly',
   GENRES = 'genres',
 }
+
+export const enum VIDEO_QUALITY {
+  SD = 0,
+  HD = 1,
+  FHD = 2,
+  QUAD_HD = 3,
+  UHD = 4,
+  OCTUPLE_HD = 5,
+}
+
+export const enum VIDEO_QUALITY_NAME {
+  SD = 'SD',
+  HD = 'HD',
+  FHD = 'FHD',
+  QUAD_HD = '4K',
+  UHD = 'UHD',
+  OCTUPLE_HD = '8k',
+}
