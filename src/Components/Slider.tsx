@@ -378,6 +378,10 @@ function Slider({
                               sliderBoxId={screenId}
                               /* if have movie, need modify code that variable in parameter value  */
                               backdropMoviePath={''}
+                              isSetBoxPopUp={isSetBoxPopUp}
+                              setScreenId={setScreenId}
+                              screenId={screenId}
+                              screenType={screenType}
                             />
                             <HoverTextOverlay>Sample</HoverTextOverlay>
                           </HoverArea>
