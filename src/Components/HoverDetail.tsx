@@ -1,13 +1,19 @@
 /* eslint-disable array-callback-return */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { DetailIcon, PlayIcon, PlusIcon } from '../icon/HoverIcons';
 import { getSliderTypeKey, getVideoQualityTitle } from '../utils';
 import { useQueryClient } from 'react-query';
-import { API_INTERFACE_TYPES, GENRES_INTERFACE_TYPES, SCREEN_QUERY_KEY } from '../Constants/Common';
+import {
+  API_INTERFACE_TYPES,
+  GENRES_INTERFACE_TYPES,
+  SCREEN_QUERY_KEY,
+  SCREEN_TYPES,
+} from '../Constants/Common';
 import { IGenres, IMovieOrTv } from '../api';
 import Loading from './Loading';
+import { useHistory } from 'react-router-dom';
 
 const VideoCover = styled(motion.video)`
   height: auto;
@@ -114,6 +120,10 @@ interface GenreQueryType<TInterface> {
 interface HoverDetailProps {
   backdropMoviePath: string;
   sliderBoxId: string | undefined; // the Box key id in slider component
+  isSetBoxPopUp: Dispatch<SetStateAction<boolean>>;
+  setScreenId: Dispatch<SetStateAction<string | undefined>>;
+  screenId: string | undefined;
+  screenType: number;
 }
 
 /**
@@ -122,14 +132,24 @@ interface HoverDetailProps {
  * @param {string} backdropMoviePath - The path to the backdrop video file.
  * @returns {JSX.Element} - HoverDetail component.
  */
-function HoverDetail({ backdropMoviePath, sliderBoxId }: HoverDetailProps): JSX.Element {
+function HoverDetail({
+  backdropMoviePath,
+  sliderBoxId,
+  isSetBoxPopUp,
+  setScreenId,
+  screenId,
+  screenType,
+}: HoverDetailProps): JSX.Element {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const queryClient = useQueryClient();
+  const history = useHistory();
   /**
    * State hook for managing the query key set for display to data.
    */
   const [queryKeySet, setQueryKeySet] = useState<string[]>(['', '']);
   const [hoveredScreen, setHoveredScreen] = useState<IMovieOrTv | null>();
+  const [matchRandNum, setMatchRandNum] = useState<string>();
+  const [videoQuality, setVideoQuality] = useState<string>();
 
   // Save to data in Cache and data Variable for seleted screen
   const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> = {
@@ -194,16 +214,42 @@ function HoverDetail({ backdropMoviePath, sliderBoxId }: HoverDetailProps): JSX.
     const calRand = String(Math.floor(Math.random() * calMax) + calMin);
     return calRand;
   };
-  // Sets the query key set based on the Box key id in slider component
-  useEffect(() => {
-    setQueryKeySet(getSliderTypeKey(sliderBoxId));
-  }, [sliderBoxId]);
+  /**
+   * Toggles the box popup state.
+   */
+  const toggleBox = (): void => isSetBoxPopUp((prev) => !prev);
 
-  // Updates the hovered screen detail data when the screend id changes.
+  /**
+   * Handles box click event.
+   * @param {string} screenId - The screen ID.
+   */
+  const onBoxClicked = (screenId: string | undefined): void => {
+    if (!screenId) {
+      return;
+    }
+    toggleBox();
+    setScreenId(screenId);
+    if (screenType === SCREEN_TYPES.MOVIES) {
+      history.push(`/movies/${screenId}`);
+    } else if (screenType === SCREEN_TYPES.TV) {
+      history.push(`/tv/${screenId}`);
+    } else {
+      history.push('/');
+    }
+  };
+
   useEffect(() => {
+    // Sets the query key set based on the Box key id in slider component
+    setQueryKeySet(getSliderTypeKey(sliderBoxId));
+    // Updates the hovered screen detail data when the screend id changes.
     setHoveredScreen(
       data?.results.find((movie: { id: number }) => sliderBoxId?.includes(String(movie.id))),
     );
+  }, [sliderBoxId]);
+
+  useEffect(() => {
+    setMatchRandNum(getRandVal(90, 100));
+    setVideoQuality(getVideoQualityTitle(Number(getRandVal(0, 10))));
   }, [sliderBoxId]);
   return (
     <Wapper>
@@ -241,21 +287,19 @@ function HoverDetail({ backdropMoviePath, sliderBoxId }: HoverDetailProps): JSX.
                 <PlusIcon />
               </CommonButton>
             </VideoPlayTools>
-            <DetailButton>
+            <DetailButton onClick={() => onBoxClicked(screenId)}>
               <DetailIcon />
             </DetailButton>
           </ButtonArea>
           <VideoDetail>
             <TopPannel>
               {/* Fix me: if get data, Match value for API */}
-              <MatchArea>{getRandVal(90, 100) + '%Match'}</MatchArea>
+              <MatchArea>{matchRandNum?.concat('%Match')}</MatchArea>
               {/* Fix me: if get data, Match value for API */}
               <AgeCategoryArea>{hoveredScreen?.adult ? '18+' : '15+'}</AgeCategoryArea>
               <VideoQualityArea>
                 {/* Fix me: if get data, Match value for API */}
-                <VideoQualityItem>
-                  {getVideoQualityTitle(Number(getRandVal(0, 10)))}
-                </VideoQualityItem>
+                <VideoQualityItem>{videoQuality}</VideoQualityItem>
               </VideoQualityArea>
             </TopPannel>
             <BottomPannel>
