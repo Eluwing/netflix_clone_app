@@ -17,7 +17,7 @@ import {
   IGetMoviesResult,
   IGetMostNewlyTvResult,
 } from '../api';
-import { match, useHistory, useRouteMatch } from 'react-router-dom';
+import { match, useRouteMatch } from 'react-router-dom';
 import { getSliderBoxId, getSlidersTitle, makeImagePath } from '../utils';
 import {
   API_INTERFACE_TYPES,
@@ -180,7 +180,6 @@ function Slider({
   setScreenId,
   screenId,
 }: ISliderProps): JSX.Element {
-  const history = useHistory();
   /**
    * Concatenates the slider type and screen type to create a unique identifier.
    */
@@ -284,25 +283,7 @@ function Slider({
    * Toggles the leaving state.
    */
   const toggleLeaving = (): void => setLeaving((prev) => !prev);
-  /**
-   * Toggles the box popup state.
-   */
-  const toggleBox = (): void => isSetBoxPopUp((prev) => !prev);
-  /**
-   * Handles box click event.
-   * @param {string} screenId - The screen ID.
-   */
-  const onBoxClicked = (screenId: string): void => {
-    toggleBox();
-    setScreenId(screenId);
-    if (screenType === SCREEN_TYPES.MOVIES) {
-      history.push(`/movies/${screenId}`);
-    } else if (screenType === SCREEN_TYPES.TV) {
-      history.push(`/tv/${screenId}`);
-    } else {
-      history.push('/');
-    }
-  };
+
   /**
    * Handles the hover event on a box, updating the screenId state.
    *
@@ -363,9 +344,6 @@ function Slider({
                           variants={BoxVariants}
                           whileHover="hover"
                           initial="normal"
-                          onClick={() =>
-                            onBoxClicked(getSliderBoxId(movie.id, sliderAndScreenType))
-                          }
                           onHoverStart={() =>
                             onBoxHovered(getSliderBoxId(movie.id, sliderAndScreenType))
                           }
