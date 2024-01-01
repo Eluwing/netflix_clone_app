@@ -90,7 +90,7 @@ export function getSlidersTitle(sliderType: string): string {
     ? SLIDER_TITLE.CURRENT_ON_AIR_TV
     : sliderType === SLIDER_TYPES.MOST_NEWLY_TV
     ? SLIDER_TITLE.MOST_NEWLY_TV
-    : '';
+    : 'Not Defiend';
 }
 
 /**
@@ -103,7 +103,7 @@ export function getScreenTitle(screenType: number): string {
     ? SEARCH_RESULT_TITLE.MOVIE_RESULT
     : screenType === SCREEN_TYPES.TV
     ? SEARCH_RESULT_TITLE.TV_RESULT
-    : '';
+    : 'Not Defiend';
 }
 
 export function getVideoQualityTitle(qualityNum: number): string {
@@ -119,5 +119,5 @@ export function getVideoQualityTitle(qualityNum: number): string {
     ? VIDEO_QUALITY_NAME.UHD
     : qualityNum === VIDEO_QUALITY.OCTUPLE_HD
     ? VIDEO_QUALITY_NAME.OCTUPLE_HD
-    : '';
+    : 'Not Defiend';
 }

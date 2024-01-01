@@ -59,6 +59,7 @@ function Home(): JSX.Element {
             <Slider
               sliderType={SLIDER_TYPES.NOW_PLAYING_MOVIE}
               screenType={SCREEN_TYPES.MOVIES}
+              isBoxPopUp={isBoxPopUp}
               isSetBoxPopUp={isSetBoxPopUp}
               setScreenId={setScreenId}
               screenId={screenId}
@@ -68,6 +69,7 @@ function Home(): JSX.Element {
             <Slider
               sliderType={SLIDER_TYPES.POPULAR_MOVIE}
               screenType={SCREEN_TYPES.MOVIES}
+              isBoxPopUp={isBoxPopUp}
               isSetBoxPopUp={isSetBoxPopUp}
               setScreenId={setScreenId}
               screenId={screenId}
@@ -77,6 +79,7 @@ function Home(): JSX.Element {
             <Slider
               sliderType={SLIDER_TYPES.TOP_RATED_MOVIE}
               screenType={SCREEN_TYPES.MOVIES}
+              isBoxPopUp={isBoxPopUp}
               isSetBoxPopUp={isSetBoxPopUp}
               setScreenId={setScreenId}
               screenId={screenId}
@@ -86,6 +89,7 @@ function Home(): JSX.Element {
             <Slider
               sliderType={SLIDER_TYPES.UPCOMING_MOVIE}
               screenType={SCREEN_TYPES.MOVIES}
+              isBoxPopUp={isBoxPopUp}
               isSetBoxPopUp={isSetBoxPopUp}
               setScreenId={setScreenId}
               screenId={screenId}
