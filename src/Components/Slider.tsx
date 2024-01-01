@@ -163,6 +163,7 @@ const offset = 6;
 interface ISliderProps {
   sliderType: string;
   screenType: number;
+  isBoxPopUp: SetStateAction<boolean>;
   isSetBoxPopUp: Dispatch<SetStateAction<boolean>>;
   setScreenId: Dispatch<SetStateAction<string | undefined>>;
   screenId: string | undefined;
@@ -176,6 +177,7 @@ interface useQueryType<TInterface> {
 function Slider({
   sliderType,
   screenType,
+  isBoxPopUp,
   isSetBoxPopUp,
   setScreenId,
   screenId,
@@ -356,6 +358,7 @@ function Slider({
                               sliderBoxId={screenId}
                               /* if have movie, need modify code that variable in parameter value  */
                               backdropMoviePath={''}
+                              isBoxPopUp={isBoxPopUp}
                               isSetBoxPopUp={isSetBoxPopUp}
                               setScreenId={setScreenId}
                               screenId={screenId}

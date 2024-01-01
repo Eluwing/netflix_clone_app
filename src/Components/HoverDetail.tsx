@@ -120,6 +120,7 @@ interface GenreQueryType<TInterface> {
 interface HoverDetailProps {
   backdropMoviePath: string;
   sliderBoxId: string | undefined; // the Box key id in slider component
+  isBoxPopUp: SetStateAction<boolean>;
   isSetBoxPopUp: Dispatch<SetStateAction<boolean>>;
   setScreenId: Dispatch<SetStateAction<string | undefined>>;
   screenId: string | undefined;
@@ -135,6 +136,7 @@ interface HoverDetailProps {
 function HoverDetail({
   backdropMoviePath,
   sliderBoxId,
+  isBoxPopUp,
   isSetBoxPopUp,
   setScreenId,
   screenId,
@@ -156,7 +158,7 @@ function HoverDetail({
     data: queryClient.getQueryData([queryKeySet[0], queryKeySet[1]]),
     isLoading: false,
   };
-  const { genreData, genreIsLoading }: GenreQueryType<GENRES_INTERFACE_TYPES> = {
+  const { genreData }: GenreQueryType<GENRES_INTERFACE_TYPES> = {
     genreData: queryClient.getQueryData([queryKeySet[0], SCREEN_QUERY_KEY.GENRES]),
     genreIsLoading: false,
   };
@@ -247,10 +249,11 @@ function HoverDetail({
     );
   }, [sliderBoxId]);
 
+  // if get Match and Video Quality data for API, delete this code
   useEffect(() => {
     setMatchRandNum(getRandVal(90, 100));
-    setVideoQuality(getVideoQualityTitle(Number(getRandVal(0, 10))));
-  }, [sliderBoxId]);
+    setVideoQuality(getVideoQualityTitle(Number(getRandVal(0, 5))));
+  }, [isBoxPopUp === true]);
   return (
     <Wapper>
       {isLoading ? (
