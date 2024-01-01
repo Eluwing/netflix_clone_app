@@ -158,7 +158,7 @@ function HoverDetail({
     data: queryClient.getQueryData([queryKeySet[0], queryKeySet[1]]),
     isLoading: false,
   };
-  const { genreData, genreIsLoading }: GenreQueryType<GENRES_INTERFACE_TYPES> = {
+  const { genreData }: GenreQueryType<GENRES_INTERFACE_TYPES> = {
     genreData: queryClient.getQueryData([queryKeySet[0], SCREEN_QUERY_KEY.GENRES]),
     genreIsLoading: false,
   };
