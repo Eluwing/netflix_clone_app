@@ -81,31 +81,6 @@ const BoxListArea = styled.div`
   width: 100%;
 `;
 
-const HoverArea = styled(motion.div)`
-  background-color: ${(props) => props.theme.black.veryDark};
-  opacity: 0;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  bottom: 0;
-  &:hover {
-    border-radius: 10px 10px 0 0;
-  }
-`;
-
-const HoverTextOverlay = styled.div`
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  font-weight: 800;
-  font-size: 18px;
-  text-align: center;
-  /* Ensures the text doesn't interfere with mouse events */
-  pointer-events: none;
-`;
-
 const Row = styled(motion.div)`
   display: grid;
   gap: 5px;
@@ -131,16 +106,6 @@ const BoxVariants = {
   hover: {
     scale: 1.3,
     y: -50,
-    transition: {
-      delay: 0.5,
-      type: 'tween',
-    },
-  },
-};
-
-const HoverVariants = {
-  hover: {
-    opacity: 1,
     transition: {
       delay: 0.5,
       type: 'tween',
@@ -174,8 +139,8 @@ interface useQueryType<TInterface> {
 function Slider({
   sliderType,
   screenType,
-  isBoxPopUp,
   isSetBoxPopUp,
+  isBoxPopUp,
   setScreenId,
   screenId,
 }: ISliderProps): JSX.Element {
@@ -343,14 +308,19 @@ function Slider({
                           variants={BoxVariants}
                           whileHover="hover"
                           initial="normal"
+                          // onClick={() =>
+                          //   onBoxHovered(getSliderBoxId(movie.id, sliderAndScreenType))
+                          // }
                           onHoverStart={() =>
                             onBoxHovered(getSliderBoxId(movie.id, sliderAndScreenType))
                           }
+                          // onHoverStart={() => setIsBoxHover(true)}
+                          // onHoverEnd={() => setIsBoxHover(false)}
                           transition={{ type: 'tween' }}
                           bgPhoto={makeImagePath(movie.backdrop_path ?? '', 'w500')}
                         >
                           {(movie.title && movie.title) ?? (movie.name && movie.name)}
-                          <HoverArea variants={HoverVariants}>
+                          <>
                             <HoverDetail
                               sliderBoxId={screenId}
                               /* if have movie, need modify code that variable in parameter value  */
@@ -361,8 +331,7 @@ function Slider({
                               screenId={screenId}
                               screenType={screenType}
                             />
-                            <HoverTextOverlay>Sample</HoverTextOverlay>
-                          </HoverArea>
+                          </>
                         </Box>
                       ))}
                   </Row>
