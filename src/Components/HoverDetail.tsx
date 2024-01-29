@@ -62,7 +62,6 @@ const VideoDetail = styled.div`
 
 const TopPannel = styled.div`
   display: flex;
-  margin-bottom: 5px;
 `;
 
 const BottomPannel = styled.div`
@@ -112,6 +111,7 @@ const HoverArea = styled(motion.div)`
   width: 100%;
   height: 100%;
   bottom: 0;
+  display: none;
   &:hover {
     border-radius: 10px 10px 0 0;
   }
@@ -124,6 +124,7 @@ const HoverVariants = {
       delay: 0.5,
       type: 'tween',
     },
+    display: 'block',
   },
 };
 
