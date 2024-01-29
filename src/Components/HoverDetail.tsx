@@ -50,9 +50,7 @@ const CommonButton = styled(motion.div)`
   }
 `;
 
-const Wapper = styled.div`
-  border-radius: 0 0 15px 15px;
-`;
+const Wapper = styled.div``;
 
 const DetailButton = styled(CommonButton)``;
 

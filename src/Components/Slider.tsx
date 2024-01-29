@@ -40,6 +40,9 @@ const Box = styled(motion.div)<{ bgPhoto: string }>`
   &:last-child {
     transform-origin: center right;
   }
+  &:hover {
+    border-radius: 10px 10px 0px 0px;
+  }
 `;
 
 const SliderArea = styled.div``;
