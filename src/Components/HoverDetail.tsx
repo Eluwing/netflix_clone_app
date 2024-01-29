@@ -1,7 +1,7 @@
 /* eslint-disable array-callback-return */
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { DetailIcon, PlayIcon, PlusIcon } from '../icon/HoverIcons';
 import { getSliderTypeKey, getVideoQualityTitle } from '../utils';
 import { useQueryClient } from 'react-query';
@@ -15,7 +15,7 @@ import { IGenres, IMovieOrTv } from '../api';
 import Loading from './Loading';
 import { useHistory } from 'react-router-dom';
 
-const VideoCover = styled(motion.video)`
+const VideoCoverArea = styled(motion.video)`
   height: auto;
   border-radius: 10px 10px 0 0;
   max-width: 100%;
@@ -38,8 +38,8 @@ const CommonButton = styled(motion.div)`
   cursor: pointer;
   transition: all 250ms;
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
+  width: 30px;
+  height: 30px;
   fill: currentColor;
 
   &:hover {
@@ -50,21 +50,18 @@ const CommonButton = styled(motion.div)`
   }
 `;
 
-const Wapper = styled.div`
-  background-color: #1c1c1c;
-  border-radius: 0 0 15px 15px;
-`;
+const Wapper = styled.div``;
 
 const DetailButton = styled(CommonButton)``;
 
 const VideoDetail = styled.div`
   padding: 0rem 1rem 1rem 1rem;
   font-size: 10px;
+  background-color: #141414;
 `;
 
 const TopPannel = styled.div`
   display: flex;
-  margin-bottom: 5px;
 `;
 
 const BottomPannel = styled.div`
@@ -105,6 +102,43 @@ const VideoQualityItem = styled.div`
   padding: 1px 5px;
   font-size: 7px;
   margin-right: 5px;
+`;
+
+const HoverArea = styled(motion.div)`
+  background-color: ${(props) => props.theme.black.veryDark};
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  display: none;
+  &:hover {
+    border-radius: 10px 10px 0 0;
+  }
+`;
+
+const HoverVariants = {
+  hover: {
+    opacity: 1,
+    transition: {
+      delay: 0.5,
+      type: 'tween',
+    },
+    display: 'block',
+  },
+};
+
+const HoverTextOverlay = styled.div`
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-weight: 800;
+  font-size: 18px;
+  text-align: center;
+  /* Ensures the text doesn't interfere with mouse events */
+  pointer-events: none;
 `;
 
 interface useQueryType<TInterface> {
@@ -253,66 +287,71 @@ function HoverDetail({
   useEffect(() => {
     setMatchRandNum(getRandVal(90, 100));
     setVideoQuality(getVideoQualityTitle(Number(getRandVal(0, 5))));
-  }, [isBoxPopUp === true]);
+  }, []);
   return (
     <Wapper>
       {isLoading ? (
         <Loading isLoading={isLoading} loadingText={'Data Loading...'} />
       ) : (
         <>
-          {/* If want get Video to URL */}
-          {/* <VideoCover
+          <AnimatePresence>
+            <HoverArea variants={HoverVariants}>
+              {/* If want get Video to URL */}
+              {/* <VideoCover
             ref={videoRef}
             onMouseOver={async () => await playMoive()}
             onMouseOut={async () => await stopMovie()}
             src="https://s3.amazonaws.com/codecademy-content/courses/React/react_video-cute.mp4"
           /> */}
-          {/* If want get Video to public folder */}
-          <VideoCover
-            ref={videoRef}
-            onMouseOver={() => playMoive()}
-            onMouseOut={() => stopMovie()}
-            muted
-          >
-            {backdropMoviePath ? (
-              <source src={backdropMoviePath} type="video/mp4" />
-            ) : (
-              <source src="videos/sample_hover_video.mp4" type="video/mp4" />
-            )}
-            Your browser does not support the video tag.
-          </VideoCover>
-          <ButtonArea>
-            <VideoPlayTools>
-              <CommonButton>
-                <PlayIcon />
-              </CommonButton>
-              <CommonButton>
-                <PlusIcon />
-              </CommonButton>
-            </VideoPlayTools>
-            <DetailButton onClick={() => onBoxClicked(screenId)}>
-              <DetailIcon />
-            </DetailButton>
-          </ButtonArea>
-          <VideoDetail>
-            <TopPannel>
-              {/* Fix me: if get data, Match value for API */}
-              <MatchArea>{matchRandNum?.concat('%Match')}</MatchArea>
-              {/* Fix me: if get data, Match value for API */}
-              <AgeCategoryArea>{hoveredScreen?.adult ? '18+' : '15+'}</AgeCategoryArea>
-              <VideoQualityArea>
-                {/* Fix me: if get data, Match value for API */}
-                <VideoQualityItem>{videoQuality}</VideoQualityItem>
-              </VideoQualityArea>
-            </TopPannel>
-            <BottomPannel>
-              <GenreArea>
-                {hoveredScreen?.genre_ids.map((genre, idx) => {
-                  return <GenreItem key={idx}>{getGenreName(genre)?.name}</GenreItem>;
-                })}
-              </GenreArea>
-            </BottomPannel>
-          </VideoDetail>
+              {/* If want get Video to public folder */}
+              <VideoCoverArea
+                ref={videoRef}
+                onMouseOver={() => playMoive()}
+                onMouseOut={() => stopMovie()}
+                muted
+              >
+                {backdropMoviePath ? (
+                  <source src={backdropMoviePath} type="video/mp4" />
+                ) : (
+                  <source src="videos/sample_hover_video.mp4" type="video/mp4" />
+                )}
+                Your browser does not support the video tag.
+              </VideoCoverArea>
+              <HoverTextOverlay>Sample</HoverTextOverlay>
+              <ButtonArea>
+                <VideoPlayTools>
+                  <CommonButton>
+                    <PlayIcon />
+                  </CommonButton>
+                  <CommonButton>
+                    <PlusIcon />
+                  </CommonButton>
+                </VideoPlayTools>
+                <DetailButton onClick={() => onBoxClicked(screenId)}>
+                  <DetailIcon />
+                </DetailButton>
+              </ButtonArea>
+              <VideoDetail>
+                <TopPannel>
+                  {/* Fix me: if get data, Match value for API */}
+                  <MatchArea>{matchRandNum?.concat('%Match')}</MatchArea>
+                  {/* Fix me: if get data, Match value for API */}
+                  <AgeCategoryArea>{hoveredScreen?.adult ? '18+' : '15+'}</AgeCategoryArea>
+                  <VideoQualityArea>
+                    {/* Fix me: if get data, Match value for API */}
+                    <VideoQualityItem>{videoQuality}</VideoQualityItem>
+                  </VideoQualityArea>
+                </TopPannel>
+                <BottomPannel>
+                  <GenreArea>
+                    {hoveredScreen?.genre_ids.map((genre, idx) => {
+                      return <GenreItem key={idx}>{getGenreName(genre)?.name}</GenreItem>;
+                    })}
+                  </GenreArea>
+                </BottomPannel>
+              </VideoDetail>
+            </HoverArea>
+          </AnimatePresence>
         </>
       )}
     </Wapper>
