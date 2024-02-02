@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom';
 import { getSliderTypeKey, makeImagePath } from '../utils';
 import { IMovieOrTv } from '../api';
 import { useQueryClient } from 'react-query';
+import { LikeIcon, PlayIcon, PlusIcon } from '../icon/PopupIcons';
 
 const PopUpArea = styled(motion.div)`
   position: absolute;
@@ -55,6 +56,12 @@ const Loader = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const ButtonArea = styled(motion.div)`
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
 `;
 
 interface useQueryType<TInterface> {
@@ -133,7 +140,13 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
                     'w500',
                   )})`,
                 }}
-              ></PopUpCover>
+              >
+                <ButtonArea>
+                  <PlayIcon></PlayIcon>
+                  <PlusIcon></PlusIcon>
+                  <LikeIcon></LikeIcon>
+                </ButtonArea>
+              </PopUpCover>
               <PopUpTitle>
                 {(clickedScreen?.title && clickedScreen.title) ??
                   (clickedScreen?.name && clickedScreen.name)}
