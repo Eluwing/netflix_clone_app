@@ -32,14 +32,13 @@ const PopUpTitle = styled.h3`
   padding: 10px;
   font-size: 26px;
   position: relative;
-  top: -60px;
+  top: 40%;
+  font-weight: 900;
 `;
 
 const PopUpOverview = styled.p`
   padding: 20px;
-  position: relative;
   color: ${(props) => props.theme.white.lighter};
-  top: -60px;
 `;
 
 const Overlay = styled(motion.div)`
@@ -61,7 +60,9 @@ const Loader = styled.div`
 const ButtonArea = styled(motion.div)`
   padding: 1rem;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  position: relative;
+  top: 70%;
 `;
 
 interface useQueryType<TInterface> {
@@ -146,11 +147,11 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
                   <PlusIcon></PlusIcon>
                   <LikeIcon></LikeIcon>
                 </ButtonArea>
+                <PopUpTitle>
+                  {(clickedScreen?.title && clickedScreen.title) ??
+                    (clickedScreen?.name && clickedScreen.name)}
+                </PopUpTitle>
               </PopUpCover>
-              <PopUpTitle>
-                {(clickedScreen?.title && clickedScreen.title) ??
-                  (clickedScreen?.name && clickedScreen.name)}
-              </PopUpTitle>
               <PopUpOverview>{clickedScreen?.overview}</PopUpOverview>
             </>
           )}
