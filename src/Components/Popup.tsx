@@ -17,14 +17,16 @@ const PopUpArea = styled(motion.div)`
   margin: 0 auto;
   border-radius: 15px;
   overflow: hidden;
-  background-color: ${(props) => props.theme.black.lighter};
+  /* background-color: ${(props) => props.theme.black.lighter}; */
+  background-color: #141414;
 `;
 
 const PopUpCover = styled.div`
   width: 100%;
   background-size: cover;
   background-position: center center;
-  height: 400px;
+  height: 60%;
+  padding: 0 20px;
 `;
 
 const PopUpTitle = styled.h3`
@@ -32,13 +34,17 @@ const PopUpTitle = styled.h3`
   padding: 10px;
   font-size: 26px;
   position: relative;
-  top: 40%;
+  top: 30%;
   font-weight: 900;
 `;
 
 const PopUpOverview = styled.p`
   padding: 20px;
   color: ${(props) => props.theme.white.lighter};
+`;
+
+const PopUpMovieInfo = styled.div`
+  padding: 0 20px;
 `;
 
 const Overlay = styled(motion.div)`
@@ -152,7 +158,9 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
                     (clickedScreen?.name && clickedScreen.name)}
                 </PopUpTitle>
               </PopUpCover>
-              <PopUpOverview>{clickedScreen?.overview}</PopUpOverview>
+              <PopUpMovieInfo>
+                <PopUpOverview>{clickedScreen?.overview}</PopUpOverview>
+              </PopUpMovieInfo>
             </>
           )}
         </PopUpArea>
