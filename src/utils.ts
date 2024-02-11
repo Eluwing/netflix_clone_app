@@ -121,3 +121,16 @@ export function getVideoQualityTitle(qualityNum: number): string {
     ? VIDEO_QUALITY_NAME.OCTUPLE_HD
     : 'Not Defiend';
 }
+
+/**
+ * Generates a random string value within a specified range.
+ * @param {number} min - The minimum value of the range.
+ * @param {number} max - The maximum value of the range.
+ * @returns {string} - A randomly generated string within the specified range.
+ */
+export function getRandVal(min: number, max: number): string {
+  const calMin = min;
+  const calMax = max - min + 1;
+  const calRand = String(Math.floor(Math.random() * calMax) + calMin);
+  return calRand;
+}
