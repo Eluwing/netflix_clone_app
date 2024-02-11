@@ -26,7 +26,7 @@ const PopUpCover = styled.div`
   background-size: cover;
   background-position: center center;
   height: 60%;
-  padding: 0 20px;
+  padding: 0 40px;
 `;
 
 const PopUpTitle = styled.h3`
@@ -38,14 +38,7 @@ const PopUpTitle = styled.h3`
   font-weight: 900;
 `;
 
-const PopUpOverview = styled.p`
-  padding: 20px;
-  color: ${(props) => props.theme.white.lighter};
-`;
-
-const PopUpMovieInfo = styled.div`
-  padding: 0 20px;
-`;
+const PopUpMovieInfo = styled.div``;
 
 const Overlay = styled(motion.div)`
   position: fixed;
@@ -69,6 +62,34 @@ const ButtonArea = styled(motion.div)`
   justify-content: flex-start;
   position: relative;
   top: 70%;
+`;
+
+const MovieInfoArea = styled.div`
+  padding: 10px 10px 10px 40px;
+`;
+const MovieInfoTop = styled.div`
+  display: flex;
+`;
+const MovieInfoBottom = styled.div`
+  display: flex;
+`;
+const MovieInfoItem = styled.div`
+  margin-right: 10px;
+`;
+
+const MovieTopRatingArea = styled.div`
+  padding: 0 0px 10px 40px;
+  display: flex;
+`;
+const MovieTopRatingItem = styled.div`
+  margin-right: 10px;
+  font-weight: 900;
+  font-size: 20px;
+`;
+
+const PopUpOverview = styled.p`
+  padding: 0 40px;
+  color: ${(props) => props.theme.white.lighter};
 `;
 
 interface useQueryType<TInterface> {
@@ -158,6 +179,23 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
                     (clickedScreen?.name && clickedScreen.name)}
                 </PopUpTitle>
               </PopUpCover>
+              <MovieInfoArea>
+                <MovieInfoTop>
+                  <MovieInfoItem>Match</MovieInfoItem>
+                  <MovieInfoItem>year</MovieInfoItem>
+                  <MovieInfoItem>Seasons</MovieInfoItem>
+                  <MovieInfoItem>video quality</MovieInfoItem>
+                  <MovieInfoItem>subtitle icon</MovieInfoItem>
+                </MovieInfoTop>
+                <MovieInfoBottom>
+                  <MovieInfoItem>Age Category</MovieInfoItem>
+                  <MovieInfoItem>Genre</MovieInfoItem>
+                </MovieInfoBottom>
+              </MovieInfoArea>
+              <MovieTopRatingArea>
+                <MovieTopRatingItem>Rating Icon</MovieTopRatingItem>
+                <MovieTopRatingItem>#2 in Tv Shows Today</MovieTopRatingItem>
+              </MovieTopRatingArea>
               <PopUpMovieInfo>
                 <PopUpOverview>{clickedScreen?.overview}</PopUpOverview>
               </PopUpMovieInfo>
