@@ -1,10 +1,15 @@
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { API_INTERFACE_TYPES, SCREEN_TYPES } from '../Constants/Common';
+import {
+  API_INTERFACE_TYPES,
+  GENRES_INTERFACE_TYPES,
+  SCREEN_QUERY_KEY,
+  SCREEN_TYPES,
+} from '../Constants/Common';
 import { useHistory } from 'react-router-dom';
-import { getSliderTypeKey, makeImagePath } from '../utils';
-import { IMovieOrTv } from '../api';
+import { getRandVal, getSliderTypeKey, getVideoQualityTitle, makeImagePath } from '../utils';
+import { IGenres, IMovieOrTv } from '../api';
 import { useQueryClient } from 'react-query';
 import { LikeIcon, PlayIcon, PlusIcon } from '../icon/PopupIcons';
 
@@ -76,7 +81,36 @@ const MovieInfoBottom = styled.div`
 const MovieInfoItem = styled.div`
   margin-right: 10px;
 `;
-
+const MatchItem = styled.div`
+  color: green;
+  font-weight: bold;
+  margin-right: 5px;
+`;
+const VideoQualityArea = styled.div`
+  display: flex;
+  align-items: center;
+`;
+const VideoQualityItem = styled.div`
+  display: flex;
+  align-items: center;
+  border: 0.1px solid gray;
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-size: 7px;
+  margin-right: 5px;
+`;
+const AgeCategoryArea = styled.div`
+  border: 0.1px solid gray;
+  padding: 1px 2px;
+  margin-right: 5px;
+`;
+const GenreArea = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+const GenreItem = styled.p`
+  margin-right: 10px;
+`;
 const MovieTopRatingArea = styled.div`
   padding: 0 0px 10px 40px;
   display: flex;
@@ -97,6 +131,11 @@ interface useQueryType<TInterface> {
   isLoading: boolean;
 }
 
+interface GenreQueryType<TInterface> {
+  genreData: TInterface | undefined;
+  genreIsLoading: boolean;
+}
+
 interface IPopupProps {
   screenType: number;
   screenId: string | undefined;
@@ -113,6 +152,10 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
   const toggleBox = (): void => isSetBoxPopUp((prev) => !prev);
   const queryClient = useQueryClient();
   const [clickedScreen, setClickedScreen] = useState<IMovieOrTv | null>();
+  const [matchRandNum, setMatchRandNum] = useState<string>();
+  const [videoQuality, setVideoQuality] = useState<string>();
+  const [yearRandNum, setYearRandNum] = useState<string>();
+  const [seasonRandNum, setSeasonRandNum] = useState<string>();
   /**
    * State hook for managing the query key set for display to data.
    */
@@ -121,6 +164,10 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
   const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> = {
     data: queryClient.getQueryData([queryKeySet[0], queryKeySet[1]]),
     isLoading: false,
+  };
+  const { genreData }: GenreQueryType<GENRES_INTERFACE_TYPES> = {
+    genreData: queryClient.getQueryData([queryKeySet[0], SCREEN_QUERY_KEY.GENRES]),
+    genreIsLoading: false,
   };
   /**
    * Handles overlay click event and navigates based on the screen type.
@@ -135,6 +182,9 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
       history.push('/');
     }
   };
+  const getGenreName = (genreId: number): IGenres | undefined => {
+    return genreData?.genres.find((genre: IGenres) => genre.id === genreId);
+  };
 
   // Updates the clicked screen data when the data changes.
   useEffect(() => {
@@ -148,6 +198,13 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
     setQueryKeySet(getSliderTypeKey(screenId));
   }, [screenId]);
 
+  // if get Match and Video Quality data for API, delete this code
+  useEffect(() => {
+    setMatchRandNum(getRandVal(90, 100));
+    setVideoQuality(getVideoQualityTitle(Number(getRandVal(0, 5))));
+    setYearRandNum(getRandVal(2000, 2024));
+    setSeasonRandNum(getRandVal(1, 4));
+  }, []);
   // Listens to the scrollY motion value and updates the current scroll position.
   useMotionValueEvent(scrollY, 'change', (latest: number) => {
     setCurrentScrollY(latest + 20);
@@ -181,15 +238,22 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
               </PopUpCover>
               <MovieInfoArea>
                 <MovieInfoTop>
-                  <MovieInfoItem>Match</MovieInfoItem>
-                  <MovieInfoItem>year</MovieInfoItem>
-                  <MovieInfoItem>Seasons</MovieInfoItem>
-                  <MovieInfoItem>video quality</MovieInfoItem>
+                  <MatchItem>{matchRandNum?.concat('% Match')}</MatchItem>
+                  <MovieInfoItem>{yearRandNum}</MovieInfoItem>
+                  <MovieInfoItem>{seasonRandNum?.concat(' Seasons')}</MovieInfoItem>
+                  <VideoQualityArea>
+                    {/* Fix me: if get data, Match value for API */}
+                    <VideoQualityItem>{videoQuality}</VideoQualityItem>
+                  </VideoQualityArea>
                   <MovieInfoItem>subtitle icon</MovieInfoItem>
                 </MovieInfoTop>
                 <MovieInfoBottom>
-                  <MovieInfoItem>Age Category</MovieInfoItem>
-                  <MovieInfoItem>Genre</MovieInfoItem>
+                  <AgeCategoryArea>{clickedScreen?.adult ? '18+' : '15+'}</AgeCategoryArea>
+                  <GenreArea>
+                    {clickedScreen?.genre_ids.map((genre, idx) => {
+                      return <GenreItem key={idx}>{getGenreName(genre)?.name}</GenreItem>;
+                    })}
+                  </GenreArea>
                 </MovieInfoBottom>
               </MovieInfoArea>
               <MovieTopRatingArea>
