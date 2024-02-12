@@ -126,6 +126,30 @@ const PopUpOverview = styled.p`
   color: ${(props) => props.theme.white.lighter};
 `;
 
+const TopTenArea = styled.div`
+  width: 28px;
+  height: 30px;
+  background-color: red;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 900;
+  padding: 0px 5px 0px 5px;
+  margin-right: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+`;
+
+const TopTenBox = styled.div``;
+
+const TopTenTopText = styled.div`
+  font-size: 8px;
+`;
+const TopTenBottomText = styled.div`
+  font-size: 12px;
+`;
+
 interface useQueryType<TInterface> {
   data: TInterface | undefined;
   isLoading: boolean;
@@ -245,7 +269,7 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
                     {/* Fix me: if get data, Match value for API */}
                     <VideoQualityItem>{videoQuality}</VideoQualityItem>
                   </VideoQualityArea>
-                  <MovieInfoItem>subtitle icon</MovieInfoItem>
+                  <MovieInfoItem>sub icon</MovieInfoItem>
                 </MovieInfoTop>
                 <MovieInfoBottom>
                   <AgeCategoryArea>{clickedScreen?.adult ? '18+' : '15+'}</AgeCategoryArea>
@@ -257,7 +281,12 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
                 </MovieInfoBottom>
               </MovieInfoArea>
               <MovieTopRatingArea>
-                <MovieTopRatingItem>Rating Icon</MovieTopRatingItem>
+                <TopTenArea>
+                  <TopTenBox>
+                    <TopTenTopText>TOP</TopTenTopText>
+                    <TopTenBottomText>10</TopTenBottomText>
+                  </TopTenBox>
+                </TopTenArea>
                 <MovieTopRatingItem>#2 in Tv Shows Today</MovieTopRatingItem>
               </MovieTopRatingArea>
               <PopUpMovieInfo>
