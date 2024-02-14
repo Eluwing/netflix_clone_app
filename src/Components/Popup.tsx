@@ -133,11 +133,7 @@ const TopTenArea = styled.div`
   border-radius: 3px;
   font-size: 10px;
   font-weight: 900;
-  /* padding: 0px 5px 0px 5px; */
   margin-right: 10px;
-  /* display: flex;
-  justify-content: center; */
-  //아래 위 간격 정렬 해야됨
 `;
 
 const TopTenBox = styled.div`
