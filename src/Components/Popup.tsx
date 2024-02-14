@@ -133,21 +133,31 @@ const TopTenArea = styled.div`
   border-radius: 3px;
   font-size: 10px;
   font-weight: 900;
-  padding: 0px 5px 0px 5px;
+  /* padding: 0px 5px 0px 5px; */
   margin-right: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+  /* display: flex;
+  justify-content: center; */
+  //아래 위 간격 정렬 해야됨
 `;
 
-const TopTenBox = styled.div``;
+const TopTenBox = styled.div`
+  position: relative;
+`;
+
+const TopTenItem = styled.div`
+  position: absolute;
+  max-width: 100%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+`;
 
 const TopTenTopText = styled.div`
-  font-size: 8px;
+  font-size: 10px;
+  margin-top: 15%;
 `;
 const TopTenBottomText = styled.div`
-  font-size: 12px;
+  font-size: 14px;
+  margin-top: 60%;
 `;
 
 interface useQueryType<TInterface> {
@@ -283,8 +293,12 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
               <MovieTopRatingArea>
                 <TopTenArea>
                   <TopTenBox>
-                    <TopTenTopText>TOP</TopTenTopText>
-                    <TopTenBottomText>10</TopTenBottomText>
+                    <TopTenItem>
+                      <TopTenTopText>TOP</TopTenTopText>
+                    </TopTenItem>
+                    <TopTenItem>
+                      <TopTenBottomText>10</TopTenBottomText>
+                    </TopTenItem>
                   </TopTenBox>
                 </TopTenArea>
                 <MovieTopRatingItem>#2 in Tv Shows Today</MovieTopRatingItem>
