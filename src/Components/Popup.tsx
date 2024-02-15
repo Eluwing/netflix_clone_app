@@ -11,7 +11,7 @@ import { useHistory } from 'react-router-dom';
 import { getRandVal, getSliderTypeKey, getVideoQualityTitle, makeImagePath } from '../utils';
 import { IGenres, IMovieOrTv } from '../api';
 import { useQueryClient } from 'react-query';
-import { LikeIcon, PlayIcon, PlusIcon } from '../icon/PopupIcons';
+import { LikeIcon, PlayIcon, PlusIcon, SubtitleIcon } from '../icon/PopupIcons';
 
 const PopUpArea = styled(motion.div)`
   position: absolute;
@@ -74,6 +74,7 @@ const MovieInfoArea = styled.div`
 `;
 const MovieInfoTop = styled.div`
   display: flex;
+  align-items: center;
 `;
 const MovieInfoBottom = styled.div`
   display: flex;
@@ -84,11 +85,12 @@ const MovieInfoItem = styled.div`
 const MatchItem = styled.div`
   color: green;
   font-weight: bold;
-  margin-right: 5px;
+  margin-right: 10px;
 `;
 const VideoQualityArea = styled.div`
   display: flex;
   align-items: center;
+  margin-right: 10px;
 `;
 const VideoQualityItem = styled.div`
   display: flex;
@@ -96,13 +98,12 @@ const VideoQualityItem = styled.div`
   border: 0.1px solid gray;
   border-radius: 3px;
   padding: 1px 5px;
-  font-size: 7px;
-  margin-right: 5px;
+  font-size: 10px;
 `;
 const AgeCategoryArea = styled.div`
   border: 0.1px solid gray;
   padding: 1px 2px;
-  margin-right: 5px;
+  margin-right: 10px;
 `;
 const GenreArea = styled.div`
   display: flex;
@@ -268,14 +269,19 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
               </PopUpCover>
               <MovieInfoArea>
                 <MovieInfoTop>
+                  {/* Fix me: if get data, Match value for API */}
                   <MatchItem>{matchRandNum?.concat('% Match')}</MatchItem>
+                  {/* Fix me: if get data, Year value for API */}
                   <MovieInfoItem>{yearRandNum}</MovieInfoItem>
+                  {/* Fix me: if get data, Seasons value for API */}
                   <MovieInfoItem>{seasonRandNum?.concat(' Seasons')}</MovieInfoItem>
                   <VideoQualityArea>
-                    {/* Fix me: if get data, Match value for API */}
+                    {/* Fix me: if get data, Video Quality value for API */}
                     <VideoQualityItem>{videoQuality}</VideoQualityItem>
                   </VideoQualityArea>
-                  <MovieInfoItem>sub icon</MovieInfoItem>
+                  <MovieInfoItem>
+                    <SubtitleIcon></SubtitleIcon>
+                  </MovieInfoItem>
                 </MovieInfoTop>
                 <MovieInfoBottom>
                   <AgeCategoryArea>{clickedScreen?.adult ? '18+' : '15+'}</AgeCategoryArea>
