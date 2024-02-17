@@ -1,29 +1,39 @@
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { API_INTERFACE_TYPES, SCREEN_TYPES } from '../Constants/Common';
+import {
+  API_INTERFACE_TYPES,
+  GENRES_INTERFACE_TYPES,
+  SCREEN_QUERY_KEY,
+  SCREEN_TYPES,
+} from '../Constants/Common';
 import { useHistory } from 'react-router-dom';
-import { getSliderTypeKey, makeImagePath } from '../utils';
-import { IMovieOrTv } from '../api';
+import { getRandVal, getSliderTypeKey, getVideoQualityTitle, makeImagePath } from '../utils';
+import { IGenres, IMovieOrTv } from '../api';
 import { useQueryClient } from 'react-query';
+import { LikeIcon, PlayIcon, PlusIcon, SubtitleIcon } from '../icon/PopupIcons';
 
 const PopUpArea = styled(motion.div)`
   position: absolute;
   width: 40vw;
-  height: 90vh;
+  height: auto;
+  max-height: 90vh;
   left: 0;
   right: 0;
   margin: 0 auto;
   border-radius: 15px;
   overflow: hidden;
-  background-color: ${(props) => props.theme.black.lighter};
+  /* background-color: ${(props) => props.theme.black.lighter}; */
+  background-color: #141414;
 `;
 
 const PopUpCover = styled.div`
   width: 100%;
   background-size: cover;
   background-position: center center;
-  height: 400px;
+  padding: 0 40px;
+  min-height: 300px;
+  height: 300px;
 `;
 
 const PopUpTitle = styled.h3`
@@ -31,14 +41,13 @@ const PopUpTitle = styled.h3`
   padding: 10px;
   font-size: 26px;
   position: relative;
-  top: -60px;
+  top: 30%;
+  font-weight: 900;
 `;
 
-const PopUpOverview = styled.p`
-  padding: 20px;
-  position: relative;
-  color: ${(props) => props.theme.white.lighter};
-  top: -60px;
+const PopUpMovieInfo = styled.div`
+  margin-bottom: 20px;
+  background-color: #141414;
 `;
 
 const Overlay = styled(motion.div)`
@@ -57,9 +66,116 @@ const Loader = styled.div`
   align-items: center;
 `;
 
+const ButtonArea = styled(motion.div)`
+  padding: 1rem;
+  display: flex;
+  justify-content: flex-start;
+  position: relative;
+  top: 70%;
+`;
+
+const MovieInfoArea = styled.div`
+  padding: 10px 10px 10px 40px;
+`;
+const MovieInfoTop = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+`;
+const MovieInfoBottom = styled.div`
+  display: flex;
+`;
+const MovieInfoItem = styled.div`
+  margin-right: 10px;
+`;
+const MatchItem = styled.div`
+  color: green;
+  font-weight: bold;
+  margin-right: 10px;
+`;
+const VideoQualityArea = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+`;
+const VideoQualityItem = styled.div`
+  display: flex;
+  align-items: center;
+  border: 0.1px solid gray;
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-size: 10px;
+`;
+const AgeCategoryArea = styled.div`
+  border: 0.1px solid gray;
+  padding: 1px 2px;
+  margin-right: 10px;
+  font-size: 13px;
+  width: 35px;
+  display: flex;
+  justify-content: center;
+`;
+const GenreArea = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+const GenreItem = styled.p`
+  margin-right: 10px;
+`;
+const MovieTopRatingArea = styled.div`
+  padding: 0 0px 10px 40px;
+  display: flex;
+`;
+const MovieTopRatingItem = styled.div`
+  margin-right: 10px;
+  font-weight: 900;
+  font-size: 20px;
+`;
+
+const PopUpOverview = styled.p`
+  padding: 0 40px;
+  color: ${(props) => props.theme.white.lighter};
+  overflow: hidden;
+`;
+
+const TopTenArea = styled.div`
+  width: 28px;
+  height: 30px;
+  background-color: red;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 900;
+  margin-right: 10px;
+`;
+
+const TopTenBox = styled.div`
+  position: relative;
+`;
+
+const TopTenItem = styled.div`
+  position: absolute;
+  max-width: 100%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+`;
+
+const TopTenTopText = styled.div`
+  font-size: 10px;
+  margin-top: 15%;
+`;
+const TopTenBottomText = styled.div`
+  font-size: 14px;
+  margin-top: 60%;
+`;
+
 interface useQueryType<TInterface> {
   data: TInterface | undefined;
   isLoading: boolean;
+}
+
+interface GenreQueryType<TInterface> {
+  genreData: TInterface | undefined;
+  genreIsLoading: boolean;
 }
 
 interface IPopupProps {
@@ -78,6 +194,10 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
   const toggleBox = (): void => isSetBoxPopUp((prev) => !prev);
   const queryClient = useQueryClient();
   const [clickedScreen, setClickedScreen] = useState<IMovieOrTv | null>();
+  const [matchRandNum, setMatchRandNum] = useState<string>();
+  const [videoQuality, setVideoQuality] = useState<string>();
+  const [yearRandNum, setYearRandNum] = useState<string>();
+  const [seasonRandNum, setSeasonRandNum] = useState<string>();
   /**
    * State hook for managing the query key set for display to data.
    */
@@ -86,6 +206,10 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
   const { data, isLoading }: useQueryType<API_INTERFACE_TYPES> = {
     data: queryClient.getQueryData([queryKeySet[0], queryKeySet[1]]),
     isLoading: false,
+  };
+  const { genreData }: GenreQueryType<GENRES_INTERFACE_TYPES> = {
+    genreData: queryClient.getQueryData([queryKeySet[0], SCREEN_QUERY_KEY.GENRES]),
+    genreIsLoading: false,
   };
   /**
    * Handles overlay click event and navigates based on the screen type.
@@ -100,6 +224,9 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
       history.push('/');
     }
   };
+  const getGenreName = (genreId: number): IGenres | undefined => {
+    return genreData?.genres.find((genre: IGenres) => genre.id === genreId);
+  };
 
   // Updates the clicked screen data when the data changes.
   useEffect(() => {
@@ -113,6 +240,13 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
     setQueryKeySet(getSliderTypeKey(screenId));
   }, [screenId]);
 
+  // if get Match and Video Quality data for API, delete this code
+  useEffect(() => {
+    setMatchRandNum(getRandVal(90, 100));
+    setVideoQuality(getVideoQualityTitle(Number(getRandVal(0, 5))));
+    setYearRandNum(getRandVal(2000, 2024));
+    setSeasonRandNum(getRandVal(1, 4));
+  }, []);
   // Listens to the scrollY motion value and updates the current scroll position.
   useMotionValueEvent(scrollY, 'change', (latest: number) => {
     setCurrentScrollY(latest + 20);
@@ -133,12 +267,58 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
                     'w500',
                   )})`,
                 }}
-              ></PopUpCover>
-              <PopUpTitle>
-                {(clickedScreen?.title && clickedScreen.title) ??
-                  (clickedScreen?.name && clickedScreen.name)}
-              </PopUpTitle>
-              <PopUpOverview>{clickedScreen?.overview}</PopUpOverview>
+              >
+                <ButtonArea>
+                  <PlayIcon></PlayIcon>
+                  <PlusIcon></PlusIcon>
+                  <LikeIcon></LikeIcon>
+                </ButtonArea>
+                <PopUpTitle>
+                  {(clickedScreen?.title && clickedScreen.title) ??
+                    (clickedScreen?.name && clickedScreen.name)}
+                </PopUpTitle>
+              </PopUpCover>
+              <MovieInfoArea>
+                <MovieInfoTop>
+                  {/* Fix me: if get data, Match value for API */}
+                  <MatchItem>{matchRandNum?.concat('% Match')}</MatchItem>
+                  {/* Fix me: if get data, Year value for API */}
+                  <MovieInfoItem>{yearRandNum}</MovieInfoItem>
+                  {/* Fix me: if get data, Seasons value for API */}
+                  <MovieInfoItem>{seasonRandNum?.concat(' Seasons')}</MovieInfoItem>
+                  <VideoQualityArea>
+                    {/* Fix me: if get data, Video Quality value for API */}
+                    <VideoQualityItem>{videoQuality}</VideoQualityItem>
+                  </VideoQualityArea>
+                  <MovieInfoItem>
+                    <SubtitleIcon></SubtitleIcon>
+                  </MovieInfoItem>
+                </MovieInfoTop>
+                <MovieInfoBottom>
+                  <AgeCategoryArea>{clickedScreen?.adult ? '18+' : '15+'}</AgeCategoryArea>
+                  <GenreArea>
+                    {clickedScreen?.genre_ids.map((genre, idx) => {
+                      return <GenreItem key={idx}>{getGenreName(genre)?.name}</GenreItem>;
+                    })}
+                  </GenreArea>
+                </MovieInfoBottom>
+              </MovieInfoArea>
+              <MovieTopRatingArea>
+                <TopTenArea>
+                  <TopTenBox>
+                    <TopTenItem>
+                      <TopTenTopText>TOP</TopTenTopText>
+                    </TopTenItem>
+                    <TopTenItem>
+                      <TopTenBottomText>10</TopTenBottomText>
+                    </TopTenItem>
+                  </TopTenBox>
+                </TopTenArea>
+                <MovieTopRatingItem>#2 in Tv Shows Today</MovieTopRatingItem>
+              </MovieTopRatingArea>
+              <PopUpMovieInfo>
+                <PopUpOverview>{clickedScreen?.overview}</PopUpOverview>
+              </PopUpMovieInfo>
             </>
           )}
         </PopUpArea>

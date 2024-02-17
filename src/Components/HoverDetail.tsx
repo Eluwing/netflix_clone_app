@@ -3,7 +3,7 @@ import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 're
 import styled from 'styled-components';
 import { AnimatePresence, motion } from 'framer-motion';
 import { DetailIcon, PlayIcon, PlusIcon } from '../icon/HoverIcons';
-import { getSliderTypeKey, getVideoQualityTitle } from '../utils';
+import { getSliderTypeKey, getVideoQualityTitle, getRandVal } from '../utils';
 import { useQueryClient } from 'react-query';
 import {
   API_INTERFACE_TYPES,
@@ -237,18 +237,6 @@ function HoverDetail({
   };
   const getGenreName = (genreId: number): IGenres | undefined => {
     return genreData?.genres.find((genre: IGenres) => genre.id === genreId);
-  };
-  /**
-   * Generates a random string value within a specified range.
-   * @param {number} min - The minimum value of the range.
-   * @param {number} max - The maximum value of the range.
-   * @returns {string} - A randomly generated string within the specified range.
-   */
-  const getRandVal = (min: number, max: number): string => {
-    const calMin = min;
-    const calMax = max - min + 1;
-    const calRand = String(Math.floor(Math.random() * calMax) + calMin);
-    return calRand;
   };
   /**
    * Toggles the box popup state.
