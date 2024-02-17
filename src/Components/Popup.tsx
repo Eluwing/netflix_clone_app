@@ -16,7 +16,8 @@ import { LikeIcon, PlayIcon, PlusIcon, SubtitleIcon } from '../icon/PopupIcons';
 const PopUpArea = styled(motion.div)`
   position: absolute;
   width: 40vw;
-  height: 90vh;
+  height: auto;
+  max-height: 90vh;
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -30,8 +31,9 @@ const PopUpCover = styled.div`
   width: 100%;
   background-size: cover;
   background-position: center center;
-  height: 60%;
   padding: 0 40px;
+  min-height: 300px;
+  height: 300px;
 `;
 
 const PopUpTitle = styled.h3`
@@ -43,7 +45,10 @@ const PopUpTitle = styled.h3`
   font-weight: 900;
 `;
 
-const PopUpMovieInfo = styled.div``;
+const PopUpMovieInfo = styled.div`
+  margin-bottom: 20px;
+  background-color: #141414;
+`;
 
 const Overlay = styled(motion.div)`
   position: fixed;
@@ -75,6 +80,7 @@ const MovieInfoArea = styled.div`
 const MovieInfoTop = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 5px;
 `;
 const MovieInfoBottom = styled.div`
   display: flex;
@@ -104,6 +110,10 @@ const AgeCategoryArea = styled.div`
   border: 0.1px solid gray;
   padding: 1px 2px;
   margin-right: 10px;
+  font-size: 13px;
+  width: 35px;
+  display: flex;
+  justify-content: center;
 `;
 const GenreArea = styled.div`
   display: flex;
@@ -125,6 +135,7 @@ const MovieTopRatingItem = styled.div`
 const PopUpOverview = styled.p`
   padding: 0 40px;
   color: ${(props) => props.theme.white.lighter};
+  overflow: hidden;
 `;
 
 const TopTenArea = styled.div`
