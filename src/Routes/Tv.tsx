@@ -36,6 +36,7 @@ function Tv(): JSX.Element {
   );
   const [isBoxPopUp, isSetBoxPopUp] = useState(false);
   const [screenId, setScreenId] = useState<string>();
+  const [toptenMovieIds, setToptenMovieIds] = useState<Array<number | undefined>>([]);
   // Save to data in Cache for TV genre list
   useQuery<GENRES_INTERFACE_TYPES>(
     [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.GENRES],
@@ -61,6 +62,8 @@ function Tv(): JSX.Element {
               isSetBoxPopUp={isSetBoxPopUp}
               setScreenId={setScreenId}
               screenId={screenId}
+              setToptenMovieIds={setToptenMovieIds}
+              toptenMovieIds={toptenMovieIds}
             />
           </SliderArea>
           <SliderArea>
@@ -71,6 +74,8 @@ function Tv(): JSX.Element {
               isSetBoxPopUp={isSetBoxPopUp}
               setScreenId={setScreenId}
               screenId={screenId}
+              setToptenMovieIds={setToptenMovieIds}
+              toptenMovieIds={toptenMovieIds}
             />
           </SliderArea>
           <SliderArea>
@@ -81,6 +86,8 @@ function Tv(): JSX.Element {
               isSetBoxPopUp={isSetBoxPopUp}
               setScreenId={setScreenId}
               screenId={screenId}
+              setToptenMovieIds={setToptenMovieIds}
+              toptenMovieIds={toptenMovieIds}
             />
           </SliderArea>
           {isBoxPopUp ? (
@@ -89,6 +96,7 @@ function Tv(): JSX.Element {
                 screenType={SCREEN_TYPES.TV}
                 screenId={screenId}
                 isSetBoxPopUp={isSetBoxPopUp}
+                toptenMovieIds={toptenMovieIds}
               />
             </>
           ) : null}

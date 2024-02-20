@@ -43,6 +43,7 @@ function Home(): JSX.Element {
   );
   const [isBoxPopUp, isSetBoxPopUp] = useState(false);
   const [screenId, setScreenId] = useState<string>();
+  const [toptenMovieIds, setToptenMovieIds] = useState<Array<number | undefined>>([]);
 
   return (
     <Wrapper>
@@ -63,6 +64,8 @@ function Home(): JSX.Element {
               isSetBoxPopUp={isSetBoxPopUp}
               setScreenId={setScreenId}
               screenId={screenId}
+              setToptenMovieIds={setToptenMovieIds}
+              toptenMovieIds={toptenMovieIds}
             />
           </SliderArea>
           <SliderArea>
@@ -73,6 +76,8 @@ function Home(): JSX.Element {
               isSetBoxPopUp={isSetBoxPopUp}
               setScreenId={setScreenId}
               screenId={screenId}
+              setToptenMovieIds={setToptenMovieIds}
+              toptenMovieIds={toptenMovieIds}
             />
           </SliderArea>
           <SliderArea>
@@ -83,6 +88,8 @@ function Home(): JSX.Element {
               isSetBoxPopUp={isSetBoxPopUp}
               setScreenId={setScreenId}
               screenId={screenId}
+              setToptenMovieIds={setToptenMovieIds}
+              toptenMovieIds={toptenMovieIds}
             />
           </SliderArea>
           <SliderArea>
@@ -93,6 +100,8 @@ function Home(): JSX.Element {
               isSetBoxPopUp={isSetBoxPopUp}
               setScreenId={setScreenId}
               screenId={screenId}
+              setToptenMovieIds={setToptenMovieIds}
+              toptenMovieIds={toptenMovieIds}
             />
           </SliderArea>
           {isBoxPopUp ? (
@@ -101,6 +110,7 @@ function Home(): JSX.Element {
                 screenType={SCREEN_TYPES.MOVIES}
                 screenId={screenId}
                 isSetBoxPopUp={isSetBoxPopUp}
+                toptenMovieIds={toptenMovieIds}
               />
             </>
           ) : null}
