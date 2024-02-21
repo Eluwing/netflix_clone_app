@@ -195,7 +195,7 @@ function Popup({ screenType, screenId, isSetBoxPopUp, toptenMovieIds }: IPopupPr
   const [videoQuality, setVideoQuality] = useState<string>();
   const [yearRandNum, setYearRandNum] = useState<string>();
   const [seasonRandNum, setSeasonRandNum] = useState<string>();
-  const [isToptenMovie] = useState<boolean>(false);
+  const [toptenNum, setToptenNum] = useState<number | undefined>(undefined);
   /**
    * Toggles the box popup state.
    */
@@ -229,7 +229,14 @@ function Popup({ screenType, screenId, isSetBoxPopUp, toptenMovieIds }: IPopupPr
   const getGenreName = (genreId: number): IGenres | undefined => {
     return genreData?.genres.find((genre: IGenres) => genre.id === genreId);
   };
-
+  const checkToptenMovie = (clickedScreenId: string | undefined): number | undefined => {
+    const checkedId = toptenMovieIds.findIndex((movieId) => movieId === Number(clickedScreenId));
+    if (typeof checkedId === 'undefined') {
+      return undefined;
+    } else {
+      return checkedId;
+    }
+  };
   // Updates the clicked screen data when the data changes.
   useEffect(() => {
     setClickedScreen(
@@ -240,6 +247,7 @@ function Popup({ screenType, screenId, isSetBoxPopUp, toptenMovieIds }: IPopupPr
   // Sets the query key set based on the slider type and screen ID.
   useEffect(() => {
     setQueryKeySet(getSliderTypeKey(screenId));
+    setToptenNum(checkToptenMovie(screenId));
   }, [screenId]);
 
   // if get Match and Video Quality data for API, delete this code
@@ -305,7 +313,7 @@ function Popup({ screenType, screenId, isSetBoxPopUp, toptenMovieIds }: IPopupPr
                   </GenreArea>
                 </MovieInfoBottom>
               </MovieInfoArea>
-              {isToptenMovie ? (
+              {toptenNum ? (
                 <MovieTopRatingArea>
                   <TopTenArea>
                     <TopTenBox>
@@ -313,11 +321,11 @@ function Popup({ screenType, screenId, isSetBoxPopUp, toptenMovieIds }: IPopupPr
                         <TopTenTopText>TOP</TopTenTopText>
                       </TopTenItem>
                       <TopTenItem>
-                        <TopTenBottomText>10</TopTenBottomText>
+                        <TopTenBottomText>{toptenNum + 1}</TopTenBottomText>
                       </TopTenItem>
                     </TopTenBox>
                   </TopTenArea>
-                  <MovieTopRatingItem>#2 in Tv Shows Today</MovieTopRatingItem>
+                  <MovieTopRatingItem>{`#${toptenNum + 1} in Tv Shows Today`}</MovieTopRatingItem>
                 </MovieTopRatingArea>
               ) : null}
               <PopUpMovieInfo>
