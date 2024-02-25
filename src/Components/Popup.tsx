@@ -171,7 +171,7 @@ const TopTenTopText = styled.div`
 `;
 const TopTenBottomText = styled.div`
   font-size: 14px;
-  margin-top: 60%;
+  margin-top: 120%;
 `;
 
 interface useQueryType<TInterface> {
