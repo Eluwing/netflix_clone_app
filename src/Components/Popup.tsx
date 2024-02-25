@@ -8,7 +8,13 @@ import {
   SCREEN_TYPES,
 } from '../Constants/Common';
 import { useHistory } from 'react-router-dom';
-import { getRandVal, getSliderTypeKey, getVideoQualityTitle, makeImagePath } from '../utils';
+import {
+  getRandVal,
+  getSliderTypeKey,
+  getVideoQualityTitle,
+  makeImagePath,
+  getMovieId,
+} from '../utils';
 import { IGenres, IMovieOrTv } from '../api';
 import { useQueryClient } from 'react-query';
 import { LikeIcon, PlayIcon, PlusIcon, SubtitleIcon } from '../icon/PopupIcons';
@@ -165,7 +171,7 @@ const TopTenTopText = styled.div`
 `;
 const TopTenBottomText = styled.div`
   font-size: 14px;
-  margin-top: 60%;
+  margin-top: 120%;
 `;
 
 interface useQueryType<TInterface> {
@@ -182,22 +188,25 @@ interface IPopupProps {
   screenType: number;
   screenId: string | undefined;
   isSetBoxPopUp: Dispatch<SetStateAction<boolean>>;
+  toptenMovieIds: Array<number | undefined>;
 }
 
-function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Element {
+function Popup({ screenType, screenId, isSetBoxPopUp, toptenMovieIds }: IPopupProps): JSX.Element {
   const history = useHistory();
   const { scrollY } = useScroll();
   const [currentScrollY, setCurrentScrollY] = useState<number>(0);
-  /**
-   * Toggles the box popup state.
-   */
-  const toggleBox = (): void => isSetBoxPopUp((prev) => !prev);
   const queryClient = useQueryClient();
   const [clickedScreen, setClickedScreen] = useState<IMovieOrTv | null>();
   const [matchRandNum, setMatchRandNum] = useState<string>();
   const [videoQuality, setVideoQuality] = useState<string>();
   const [yearRandNum, setYearRandNum] = useState<string>();
   const [seasonRandNum, setSeasonRandNum] = useState<string>();
+  const [toptenNum, setToptenNum] = useState<number | undefined>(undefined);
+  const isToptenMovie = toptenNum !== -1;
+  /**
+   * Toggles the box popup state.
+   */
+  const toggleBox = (): void => isSetBoxPopUp((prev) => !prev);
   /**
    * State hook for managing the query key set for display to data.
    */
@@ -227,7 +236,16 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
   const getGenreName = (genreId: number): IGenres | undefined => {
     return genreData?.genres.find((genre: IGenres) => genre.id === genreId);
   };
-
+  const checkToptenMovie = (clickedScreenId: string | undefined): number | undefined => {
+    const checkedId = toptenMovieIds.findIndex(
+      (movieId) => movieId === Number(getMovieId(clickedScreenId)),
+    );
+    if (typeof checkedId === 'undefined') {
+      return undefined;
+    } else {
+      return checkedId;
+    }
+  };
   // Updates the clicked screen data when the data changes.
   useEffect(() => {
     setClickedScreen(
@@ -238,6 +256,7 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
   // Sets the query key set based on the slider type and screen ID.
   useEffect(() => {
     setQueryKeySet(getSliderTypeKey(screenId));
+    setToptenNum(checkToptenMovie(screenId));
   }, [screenId]);
 
   // if get Match and Video Quality data for API, delete this code
@@ -251,6 +270,7 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
   useMotionValueEvent(scrollY, 'change', (latest: number) => {
     setCurrentScrollY(latest + 20);
   });
+  console.log({ isToptenMovie });
   return (
     <>
       <AnimatePresence>
@@ -303,19 +323,21 @@ function Popup({ screenType, screenId, isSetBoxPopUp }: IPopupProps): JSX.Elemen
                   </GenreArea>
                 </MovieInfoBottom>
               </MovieInfoArea>
-              <MovieTopRatingArea>
-                <TopTenArea>
-                  <TopTenBox>
-                    <TopTenItem>
-                      <TopTenTopText>TOP</TopTenTopText>
-                    </TopTenItem>
-                    <TopTenItem>
-                      <TopTenBottomText>10</TopTenBottomText>
-                    </TopTenItem>
-                  </TopTenBox>
-                </TopTenArea>
-                <MovieTopRatingItem>#2 in Tv Shows Today</MovieTopRatingItem>
-              </MovieTopRatingArea>
+              {isToptenMovie && toptenNum !== undefined ? (
+                <MovieTopRatingArea>
+                  <TopTenArea>
+                    <TopTenBox>
+                      <TopTenItem>
+                        <TopTenTopText>TOP</TopTenTopText>
+                      </TopTenItem>
+                      <TopTenItem>
+                        <TopTenBottomText>{toptenNum + 1}</TopTenBottomText>
+                      </TopTenItem>
+                    </TopTenBox>
+                  </TopTenArea>
+                  <MovieTopRatingItem>{`#${toptenNum + 1} in Tv Shows Today`}</MovieTopRatingItem>
+                </MovieTopRatingArea>
+              ) : null}
               <PopUpMovieInfo>
                 <PopUpOverview>{clickedScreen?.overview}</PopUpOverview>
               </PopUpMovieInfo>

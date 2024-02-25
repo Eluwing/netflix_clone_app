@@ -130,6 +130,8 @@ interface ISliderProps {
   isSetBoxPopUp: Dispatch<SetStateAction<boolean>>;
   setScreenId: Dispatch<SetStateAction<string | undefined>>;
   screenId: string | undefined;
+  setToptenMovieIds: Dispatch<SetStateAction<Array<number | undefined>>>;
+  toptenMovieIds: SetStateAction<Array<number | undefined>>;
 }
 
 interface useQueryType<TInterface> {
@@ -144,6 +146,8 @@ function Slider({
   isBoxPopUp,
   setScreenId,
   screenId,
+  setToptenMovieIds,
+  toptenMovieIds,
 }: ISliderProps): JSX.Element {
   /**
    * Concatenates the slider type and screen type to create a unique identifier.
@@ -262,6 +266,14 @@ function Slider({
    * Retrieves the title for the sliders based on the specified slider type.
    */
   const slidersTitle = getSlidersTitle(sliderType);
+  const getToptenIds = (): void => {
+    if (SLIDER_TYPES.TOP_RATED_MOVIE === sliderType && typeof data !== 'undefined') {
+      // Set movie id of Top Ten list in array
+      for (let i = 0; i < 10; i++) {
+        setToptenMovieIds((prevArray) => [...prevArray, data?.results[i].id]);
+      }
+    }
+  };
   /**
    * Configures the popup movie match based on the screen type and ID.
    */
@@ -272,6 +284,9 @@ function Slider({
       setPopUpMovieMatch((prev) => useRouteMatch<{ screenId: string }>('/tv/:screenId'));
     }
   }, [screenId]);
+  useEffect(() => {
+    getToptenIds();
+  }, [data]);
   return (
     <>
       {isLoading ? (
@@ -309,14 +324,9 @@ function Slider({
                           variants={BoxVariants}
                           whileHover="hover"
                           initial="normal"
-                          // onClick={() =>
-                          //   onBoxHovered(getSliderBoxId(movie.id, sliderAndScreenType))
-                          // }
                           onHoverStart={() =>
                             onBoxHovered(getSliderBoxId(movie.id, sliderAndScreenType))
                           }
-                          // onHoverStart={() => setIsBoxHover(true)}
-                          // onHoverEnd={() => setIsBoxHover(false)}
                           transition={{ type: 'tween' }}
                           bgPhoto={makeImagePath(movie.backdrop_path ?? '', 'w500')}
                         >

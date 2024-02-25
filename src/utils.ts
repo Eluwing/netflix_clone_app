@@ -37,6 +37,22 @@ function getSliderType(screenId: string | undefined): string {
 }
 
 /**
+ * Retrieves the movie ID from the provided screen ID.
+ * @param {string | undefined} screenId - The screen ID containing information about the movie.
+ * @returns {string} - The extracted movie ID.
+ */
+export function getMovieId(screenId: string | undefined): string {
+  const sliderTypeArry: string[] = Object.values(SLIDER_TYPES);
+  for (let i = 0; i < sliderTypeArry.length; i++) {
+    if (screenId?.includes(sliderTypeArry[i])) {
+      // Remove Slider Type and screen Type
+      return screenId.substring(0, screenId.length - 1).replace(sliderTypeArry[i], '');
+    }
+  }
+  return '';
+}
+
+/**
  * Get the query key array for the given slider type.
  * @param {string | undefined} screenId - The screen ID to determine the slider type.
  * @returns {string[]} - The query key array corresponding to the slider type, or an array with empty strings if not found.
