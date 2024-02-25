@@ -8,7 +8,13 @@ import {
   SCREEN_TYPES,
 } from '../Constants/Common';
 import { useHistory } from 'react-router-dom';
-import { getRandVal, getSliderTypeKey, getVideoQualityTitle, makeImagePath } from '../utils';
+import {
+  getRandVal,
+  getSliderTypeKey,
+  getVideoQualityTitle,
+  makeImagePath,
+  getMovieId,
+} from '../utils';
 import { IGenres, IMovieOrTv } from '../api';
 import { useQueryClient } from 'react-query';
 import { LikeIcon, PlayIcon, PlusIcon, SubtitleIcon } from '../icon/PopupIcons';
@@ -196,6 +202,7 @@ function Popup({ screenType, screenId, isSetBoxPopUp, toptenMovieIds }: IPopupPr
   const [yearRandNum, setYearRandNum] = useState<string>();
   const [seasonRandNum, setSeasonRandNum] = useState<string>();
   const [toptenNum, setToptenNum] = useState<number | undefined>(undefined);
+  const isToptenMovie = toptenNum !== -1;
   /**
    * Toggles the box popup state.
    */
@@ -230,7 +237,9 @@ function Popup({ screenType, screenId, isSetBoxPopUp, toptenMovieIds }: IPopupPr
     return genreData?.genres.find((genre: IGenres) => genre.id === genreId);
   };
   const checkToptenMovie = (clickedScreenId: string | undefined): number | undefined => {
-    const checkedId = toptenMovieIds.findIndex((movieId) => movieId === Number(clickedScreenId));
+    const checkedId = toptenMovieIds.findIndex(
+      (movieId) => movieId === Number(getMovieId(clickedScreenId)),
+    );
     if (typeof checkedId === 'undefined') {
       return undefined;
     } else {
@@ -261,6 +270,7 @@ function Popup({ screenType, screenId, isSetBoxPopUp, toptenMovieIds }: IPopupPr
   useMotionValueEvent(scrollY, 'change', (latest: number) => {
     setCurrentScrollY(latest + 20);
   });
+  console.log({ isToptenMovie });
   return (
     <>
       <AnimatePresence>
@@ -313,7 +323,7 @@ function Popup({ screenType, screenId, isSetBoxPopUp, toptenMovieIds }: IPopupPr
                   </GenreArea>
                 </MovieInfoBottom>
               </MovieInfoArea>
-              {toptenNum ? (
+              {isToptenMovie && toptenNum !== undefined ? (
                 <MovieTopRatingArea>
                   <TopTenArea>
                     <TopTenBox>

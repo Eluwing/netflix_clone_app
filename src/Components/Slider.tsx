@@ -267,7 +267,7 @@ function Slider({
    */
   const slidersTitle = getSlidersTitle(sliderType);
   const getToptenIds = (): void => {
-    if (SLIDER_TYPES.TOP_RATED_MOVIE && typeof data?.results !== 'undefined') {
+    if (SLIDER_TYPES.TOP_RATED_MOVIE === sliderType && typeof data !== 'undefined') {
       // Set movie id of Top Ten list in array
       for (let i = 0; i < 10; i++) {
         setToptenMovieIds((prevArray) => [...prevArray, data?.results[i].id]);
@@ -286,7 +286,7 @@ function Slider({
   }, [screenId]);
   useEffect(() => {
     getToptenIds();
-  }, []);
+  }, [data]);
   return (
     <>
       {isLoading ? (
