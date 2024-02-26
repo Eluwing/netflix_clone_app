@@ -47,43 +47,6 @@ const MoreInfoText = styled.div`
   font-weight: 900;
   margin-left: 10px;
 `;
-const CircleStyle = styled.div`
-  padding: 0.4rem;
-  margin-left: 0.6rem;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  cursor: pointer;
-  transition: all 250ms;
-  border-radius: 50%;
-  width: 48px;
-  height: 48px;
-  fill: #141414;
-
-  &:hover {
-    background: white;
-    .card__icon {
-      fill: #141414;
-    }
-  }
-`;
-
-const SubtitleButton = styled.div`
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  transition: transform 0.2s ease-in-out;
-
-  &:hover {
-    transform: scale(1.1);
-  }
-  .cls-1 {
-    fill: none;
-  }
-`;
 
 /**
  * SVG Icon component for detail view.
