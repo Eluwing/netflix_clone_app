@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { makeImagePath } from '../utils';
+import { PlayIcon, MoreInfoIcon } from '../icon/BannerIcons';
 
 const BannerArea = styled.div<{ bgphoto: string }>`
   height: 100%;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: center; */
   padding: 0px 60px 60px 60px;
   background-image: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)),
     url(${(props) => props.bgphoto});
@@ -14,9 +15,22 @@ const BannerArea = styled.div<{ bgphoto: string }>`
   min-height: 500px;
 `;
 
+const DetailContentsArea = styled.div`
+  padding: 1rem;
+`;
+
+const ButtonArea = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  position: relative;
+  top: 50%;
+`;
+
 const Title = styled.h2`
   font-size: 68px;
   margin-bottom: 20px;
+  position: relative;
+  top: 50%;
 `;
 
 const OverView = styled.div`
@@ -42,8 +56,14 @@ function Banner({ backgroundImagePath, title, overview }: IBannerProps): JSX.Ele
     <>
       {/* Banner area with background image */}
       <BannerArea bgphoto={makeImagePath(backgroundImagePath ?? '')}>
-        <Title>{title}</Title>
-        <OverView>{overview}</OverView>
+        <DetailContentsArea>
+          <Title>{title}</Title>
+          <ButtonArea>
+            <PlayIcon></PlayIcon>
+            <MoreInfoIcon></MoreInfoIcon>
+          </ButtonArea>
+        </DetailContentsArea>
+        {/* <OverView>{overview}</OverView> */}
       </BannerArea>
     </>
   );
