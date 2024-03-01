@@ -32,7 +32,7 @@ const MoreInfoButton = styled.div`
   justify-content: center;
   width: 150px;
   height: 45px;
-  background-color: RGB(97, 97, 97, 0.5);
+  background-color: RGB(97, 97, 97, 0.8);
   border-radius: 5px;
   cursor: pointer;
   transition: transform 0.2s ease-in-out;
