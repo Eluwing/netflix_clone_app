@@ -5,9 +5,7 @@ import { PlayIcon, MoreInfoIcon } from '../icon/BannerIcons';
 
 const BannerArea = styled.div<{ bgphoto: string }>`
   height: 100%;
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center; */
+  display: flex;
   padding: 0px 60px 60px 60px;
   background-image: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)),
     url(${(props) => props.bgphoto});
@@ -24,6 +22,13 @@ const ButtonArea = styled.div`
   justify-content: flex-start;
   position: relative;
   top: 50%;
+  &:first-child {
+    margin-right: 50px;
+  }
+`;
+
+const ButtonItem = styled.div`
+  margin-left: 10px;
 `;
 
 const Title = styled.h2`
@@ -31,11 +36,6 @@ const Title = styled.h2`
   margin-bottom: 20px;
   position: relative;
   top: 50%;
-`;
-
-const OverView = styled.div`
-  font-size: 30px;
-  width: 50%;
 `;
 
 interface IBannerProps {
@@ -59,11 +59,14 @@ function Banner({ backgroundImagePath, title, overview }: IBannerProps): JSX.Ele
         <DetailContentsArea>
           <Title>{title}</Title>
           <ButtonArea>
-            <PlayIcon></PlayIcon>
-            <MoreInfoIcon></MoreInfoIcon>
+            <ButtonItem>
+              <PlayIcon />
+            </ButtonItem>
+            <ButtonItem>
+              <MoreInfoIcon />
+            </ButtonItem>
           </ButtonArea>
         </DetailContentsArea>
-        {/* <OverView>{overview}</OverView> */}
       </BannerArea>
     </>
   );
