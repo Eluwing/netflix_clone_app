@@ -127,7 +127,7 @@ interface ISliderProps {
   sliderType: string;
   screenType: number;
   isBoxPopUp: SetStateAction<boolean>;
-  isSetBoxPopUp: Dispatch<SetStateAction<boolean>>;
+  setIsBoxPopUp: Dispatch<SetStateAction<boolean>>;
   setScreenId: Dispatch<SetStateAction<string | undefined>>;
   screenId: string | undefined;
   setToptenMovieIds: Dispatch<SetStateAction<Array<number | undefined>>>;
@@ -142,7 +142,7 @@ interface useQueryType<TInterface> {
 function Slider({
   sliderType,
   screenType,
-  isSetBoxPopUp,
+  setIsBoxPopUp,
   isBoxPopUp,
   setScreenId,
   screenId,
@@ -337,7 +337,7 @@ function Slider({
                               /* if have movie, need modify code that variable in parameter value  */
                               backdropMoviePath={''}
                               isBoxPopUp={isBoxPopUp}
-                              isSetBoxPopUp={isSetBoxPopUp}
+                              setIsBoxPopUp={setIsBoxPopUp}
                               setScreenId={setScreenId}
                               screenId={screenId}
                               screenType={screenType}

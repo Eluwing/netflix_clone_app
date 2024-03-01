@@ -41,7 +41,7 @@ function Home(): JSX.Element {
     // fetches data for movie genre list
     getMovieGenreList,
   );
-  const [isBoxPopUp, isSetBoxPopUp] = useState(false);
+  const [isBoxPopUp, setIsBoxPopUp] = useState(false);
   const [screenId, setScreenId] = useState<string>();
   const [toptenMovieIds, setToptenMovieIds] = useState<Array<number | undefined>>([]);
 
@@ -55,13 +55,16 @@ function Home(): JSX.Element {
             backgroundImagePath={data?.results[0].backdrop_path}
             title={data?.results[0].title}
             overview={data?.results[0].overview}
+            screenId={screenId}
+            setScreenId={setScreenId}
+            setIsBoxPopUp={setIsBoxPopUp}
           />
           <SliderArea>
             <Slider
               sliderType={SLIDER_TYPES.NOW_PLAYING_MOVIE}
               screenType={SCREEN_TYPES.MOVIES}
               isBoxPopUp={isBoxPopUp}
-              isSetBoxPopUp={isSetBoxPopUp}
+              setIsBoxPopUp={setIsBoxPopUp}
               setScreenId={setScreenId}
               screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
@@ -73,7 +76,7 @@ function Home(): JSX.Element {
               sliderType={SLIDER_TYPES.POPULAR_MOVIE}
               screenType={SCREEN_TYPES.MOVIES}
               isBoxPopUp={isBoxPopUp}
-              isSetBoxPopUp={isSetBoxPopUp}
+              setIsBoxPopUp={setIsBoxPopUp}
               setScreenId={setScreenId}
               screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
@@ -85,7 +88,7 @@ function Home(): JSX.Element {
               sliderType={SLIDER_TYPES.TOP_RATED_MOVIE}
               screenType={SCREEN_TYPES.MOVIES}
               isBoxPopUp={isBoxPopUp}
-              isSetBoxPopUp={isSetBoxPopUp}
+              setIsBoxPopUp={setIsBoxPopUp}
               setScreenId={setScreenId}
               screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
@@ -97,7 +100,7 @@ function Home(): JSX.Element {
               sliderType={SLIDER_TYPES.UPCOMING_MOVIE}
               screenType={SCREEN_TYPES.MOVIES}
               isBoxPopUp={isBoxPopUp}
-              isSetBoxPopUp={isSetBoxPopUp}
+              setIsBoxPopUp={setIsBoxPopUp}
               setScreenId={setScreenId}
               screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
@@ -109,7 +112,7 @@ function Home(): JSX.Element {
               <Popup
                 screenType={SCREEN_TYPES.MOVIES}
                 screenId={screenId}
-                isSetBoxPopUp={isSetBoxPopUp}
+                setIsBoxPopUp={setIsBoxPopUp}
                 toptenMovieIds={toptenMovieIds}
               />
             </>

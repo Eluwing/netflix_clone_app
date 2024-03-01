@@ -187,11 +187,11 @@ interface GenreQueryType<TInterface> {
 interface IPopupProps {
   screenType: number;
   screenId: string | undefined;
-  isSetBoxPopUp: Dispatch<SetStateAction<boolean>>;
+  setIsBoxPopUp: Dispatch<SetStateAction<boolean>>;
   toptenMovieIds: Array<number | undefined>;
 }
 
-function Popup({ screenType, screenId, isSetBoxPopUp, toptenMovieIds }: IPopupProps): JSX.Element {
+function Popup({ screenType, screenId, setIsBoxPopUp, toptenMovieIds }: IPopupProps): JSX.Element {
   const history = useHistory();
   const { scrollY } = useScroll();
   const [currentScrollY, setCurrentScrollY] = useState<number>(0);
@@ -206,7 +206,7 @@ function Popup({ screenType, screenId, isSetBoxPopUp, toptenMovieIds }: IPopupPr
   /**
    * Toggles the box popup state.
    */
-  const toggleBox = (): void => isSetBoxPopUp((prev) => !prev);
+  const toggleBox = (): void => setIsBoxPopUp((prev) => !prev);
   /**
    * State hook for managing the query key set for display to data.
    */

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { makeImagePath } from '../utils';
 import { PlayIcon, MoreInfoIcon } from '../icon/BannerIcons';
@@ -42,6 +42,9 @@ interface IBannerProps {
   backgroundImagePath: string | undefined;
   title: string | undefined;
   overview: string | undefined;
+  setIsBoxPopUp: Dispatch<SetStateAction<boolean>>;
+  screenId: string | undefined;
+  setScreenId: Dispatch<SetStateAction<string | undefined>>;
 }
 
 /**
@@ -51,7 +54,14 @@ interface IBannerProps {
  * @param {string} overview - The overview or description to be displayed on the banner.
  * @returns {JSX.Element} - Banner component.
  */
-function Banner({ backgroundImagePath, title, overview }: IBannerProps): JSX.Element {
+function Banner({
+  backgroundImagePath,
+  title,
+  overview,
+  screenId,
+  setScreenId,
+  setIsBoxPopUp,
+}: IBannerProps): JSX.Element {
   return (
     <>
       {/* Banner area with background image */}
