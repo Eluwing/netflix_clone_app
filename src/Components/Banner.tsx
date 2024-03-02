@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { makeImagePath } from '../utils';
+import { PlayIcon, MoreInfoIcon } from '../icon/BannerIcons';
+import { SCREEN_TYPES } from '../Constants/Common';
+import { useHistory } from 'react-router-dom';
 
 const BannerArea = styled.div<{ bgphoto: string }>`
   height: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   padding: 0px 60px 60px 60px;
   background-image: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)),
     url(${(props) => props.bgphoto});
@@ -14,20 +15,60 @@ const BannerArea = styled.div<{ bgphoto: string }>`
   min-height: 500px;
 `;
 
+const DetailContentsArea = styled.div`
+  padding: 1rem;
+`;
+
+const ButtonArea = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  position: relative;
+  top: 50%;
+  &:first-child {
+    margin-right: 50px;
+  }
+`;
+
+const ButtonItem = styled.div`
+  margin-left: 10px;
+`;
+
 const Title = styled.h2`
   font-size: 68px;
   margin-bottom: 20px;
+  position: relative;
+  top: 50%;
 `;
 
-const OverView = styled.div`
-  font-size: 30px;
-  width: 50%;
+const MoreInfoButton = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 45px;
+  background-color: RGB(97, 97, 97, 0.8);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
+const MoreInfoText = styled.div`
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
 `;
 
 interface IBannerProps {
   backgroundImagePath: string | undefined;
   title: string | undefined;
   overview: string | undefined;
+  screenType: number;
+  setIsBoxPopUp: Dispatch<SetStateAction<boolean>>;
+  screenId: string | undefined;
+  setScreenId: Dispatch<SetStateAction<string | undefined>>;
 }
 
 /**
@@ -37,13 +78,50 @@ interface IBannerProps {
  * @param {string} overview - The overview or description to be displayed on the banner.
  * @returns {JSX.Element} - Banner component.
  */
-function Banner({ backgroundImagePath, title, overview }: IBannerProps): JSX.Element {
+function Banner({
+  backgroundImagePath,
+  title,
+  overview,
+  screenType,
+  screenId,
+  setScreenId,
+  setIsBoxPopUp,
+}: IBannerProps): JSX.Element {
+  /**
+   * Toggles the box popup state.
+   */
+  const history = useHistory();
+  const toggleBox = (): void => setIsBoxPopUp((prev) => !prev);
+  const onMoreInfoClicked = (screenId: string | undefined): void => {
+    toggleBox();
+    setScreenId(screenId);
+    if (screenType === SCREEN_TYPES.MOVIES) {
+      history.push(`/movies/${String(screenId)}`);
+    } else if (screenType === SCREEN_TYPES.TV) {
+      history.push(`/tv/${String(screenId)}`);
+    } else {
+      history.push('/');
+    }
+  };
+
   return (
     <>
       {/* Banner area with background image */}
       <BannerArea bgphoto={makeImagePath(backgroundImagePath ?? '')}>
-        <Title>{title}</Title>
-        <OverView>{overview}</OverView>
+        <DetailContentsArea>
+          <Title>{title}</Title>
+          <ButtonArea>
+            <ButtonItem>
+              <PlayIcon />
+            </ButtonItem>
+            <ButtonItem>
+              <MoreInfoButton onClick={() => onMoreInfoClicked(screenId)}>
+                <MoreInfoIcon />
+                <MoreInfoText>More Info</MoreInfoText>
+              </MoreInfoButton>
+            </ButtonItem>
+          </ButtonArea>
+        </DetailContentsArea>
       </BannerArea>
     </>
   );

@@ -34,7 +34,7 @@ function Tv(): JSX.Element {
     // fetch data for TV shows airing today list.
     getAiringTodayTv,
   );
-  const [isBoxPopUp, isSetBoxPopUp] = useState(false);
+  const [isBoxPopUp, setIsBoxPopUp] = useState(false);
   const [screenId, setScreenId] = useState<string>();
   const [toptenMovieIds, setToptenMovieIds] = useState<Array<number | undefined>>([]);
   // Save to data in Cache for TV genre list
@@ -53,13 +53,17 @@ function Tv(): JSX.Element {
             backgroundImagePath={data?.results[1].backdrop_path}
             title={data?.results[1].name}
             overview={data?.results[1].overview}
+            screenType={SCREEN_TYPES.TV}
+            screenId={String(data?.results[1].id).concat(SCREEN_QUERY_KEY.AIRING_TODAY)}
+            setScreenId={setScreenId}
+            setIsBoxPopUp={setIsBoxPopUp}
           />
           <SliderArea>
             <Slider
               sliderType={SLIDER_TYPES.AIRING_TODAY_TV}
               screenType={SCREEN_TYPES.TV}
               isBoxPopUp={false}
-              isSetBoxPopUp={isSetBoxPopUp}
+              setIsBoxPopUp={setIsBoxPopUp}
               setScreenId={setScreenId}
               screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
@@ -71,7 +75,7 @@ function Tv(): JSX.Element {
               sliderType={SLIDER_TYPES.POPULAR_TV}
               screenType={SCREEN_TYPES.TV}
               isBoxPopUp={false}
-              isSetBoxPopUp={isSetBoxPopUp}
+              setIsBoxPopUp={setIsBoxPopUp}
               setScreenId={setScreenId}
               screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
@@ -83,7 +87,7 @@ function Tv(): JSX.Element {
               sliderType={SLIDER_TYPES.CURRENT_ON_AIR_TV}
               screenType={SCREEN_TYPES.TV}
               isBoxPopUp={false}
-              isSetBoxPopUp={isSetBoxPopUp}
+              setIsBoxPopUp={setIsBoxPopUp}
               setScreenId={setScreenId}
               screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
@@ -95,7 +99,7 @@ function Tv(): JSX.Element {
               <Popup
                 screenType={SCREEN_TYPES.TV}
                 screenId={screenId}
-                isSetBoxPopUp={isSetBoxPopUp}
+                setIsBoxPopUp={setIsBoxPopUp}
                 toptenMovieIds={toptenMovieIds}
               />
             </>

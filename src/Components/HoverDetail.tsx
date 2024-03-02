@@ -1,4 +1,3 @@
-/* eslint-disable array-callback-return */
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -155,7 +154,7 @@ interface HoverDetailProps {
   backdropMoviePath: string;
   sliderBoxId: string | undefined; // the Box key id in slider component
   isBoxPopUp: SetStateAction<boolean>;
-  isSetBoxPopUp: Dispatch<SetStateAction<boolean>>;
+  setIsBoxPopUp: Dispatch<SetStateAction<boolean>>;
   setScreenId: Dispatch<SetStateAction<string | undefined>>;
   screenId: string | undefined;
   screenType: number;
@@ -171,7 +170,7 @@ function HoverDetail({
   backdropMoviePath,
   sliderBoxId,
   isBoxPopUp,
-  isSetBoxPopUp,
+  setIsBoxPopUp,
   setScreenId,
   screenId,
   screenType,
@@ -241,7 +240,7 @@ function HoverDetail({
   /**
    * Toggles the box popup state.
    */
-  const toggleBox = (): void => isSetBoxPopUp((prev) => !prev);
+  const toggleBox = (): void => setIsBoxPopUp((prev) => !prev);
 
   /**
    * Handles box click event.
