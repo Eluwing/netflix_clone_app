@@ -53,7 +53,8 @@ function Tv(): JSX.Element {
             backgroundImagePath={data?.results[1].backdrop_path}
             title={data?.results[1].name}
             overview={data?.results[1].overview}
-            screenId={screenId}
+            screenType={SCREEN_TYPES.TV}
+            screenId={String(data?.results[1].id).concat(SCREEN_QUERY_KEY.AIRING_TODAY)}
             setScreenId={setScreenId}
             setIsBoxPopUp={setIsBoxPopUp}
           />

@@ -26,28 +26,7 @@ const PlayButtonText = styled.div`
   font-weight: 900;
   margin-left: 10px;
 `;
-const MoreInfoButton = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 150px;
-  height: 45px;
-  background-color: RGB(97, 97, 97, 0.8);
-  border-radius: 5px;
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out;
-  &:hover {
-    transform: scale(1.1);
-  }
-`;
 const MoreInfoButtonIcon = styled.svg``;
-const MoreInfoText = styled.div`
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  font-weight: 900;
-  margin-left: 10px;
-`;
 
 /**
  * SVG Icon component for detail view.
@@ -70,7 +49,7 @@ export const PlayIcon = (): JSX.Element => {
  */
 export const MoreInfoIcon = (): JSX.Element => {
   return (
-    <MoreInfoButton>
+    <>
       <MoreInfoButtonIcon
         height="20px"
         width="20px"
@@ -95,7 +74,6 @@ export const MoreInfoIcon = (): JSX.Element => {
           </g>
         </g>
       </MoreInfoButtonIcon>
-      <MoreInfoText>More Info</MoreInfoText>
-    </MoreInfoButton>
+    </>
   );
 };

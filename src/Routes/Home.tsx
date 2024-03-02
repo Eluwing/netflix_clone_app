@@ -55,7 +55,8 @@ function Home(): JSX.Element {
             backgroundImagePath={data?.results[0].backdrop_path}
             title={data?.results[0].title}
             overview={data?.results[0].overview}
-            screenId={screenId}
+            screenType={SCREEN_TYPES.MOVIES}
+            screenId={String(data?.results[0].id).concat(SLIDER_TYPES.NOW_PLAYING_MOVIE)}
             setScreenId={setScreenId}
             setIsBoxPopUp={setIsBoxPopUp}
           />

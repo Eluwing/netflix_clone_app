@@ -270,7 +270,6 @@ function Popup({ screenType, screenId, setIsBoxPopUp, toptenMovieIds }: IPopupPr
   useMotionValueEvent(scrollY, 'change', (latest: number) => {
     setCurrentScrollY(latest + 20);
   });
-  console.log({ isToptenMovie });
   return (
     <>
       <AnimatePresence>
