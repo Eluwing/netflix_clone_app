@@ -181,11 +181,11 @@ const TooltipArea = styled.div`
 
 const TooltipText = styled.span`
   visibility: hidden;
-  min-width: 300px;
+  min-width: 400px;
   max-height: 40px;
   border-style: solid;
   background-color: #ffffffe2;
-  color: #333;
+  color: black;
   font-size: 14px;
   font-weight: 900;
   text-align: center;
@@ -195,7 +195,7 @@ const TooltipText = styled.span`
   z-index: 1;
   bottom: 150%;
   left: 50%;
-  margin-left: -150px;
+  margin-left: -200px;
   opacity: 0;
   transition: opacity 0.3s;
   ${TooltipArea}:hover & {
