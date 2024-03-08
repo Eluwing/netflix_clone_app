@@ -44,7 +44,7 @@ const PopUpCover = styled.div`
 
 const PopUpTitle = styled.h3`
   color: ${(props) => props.theme.white.lighter};
-  padding: 10px;
+  padding: 10px 10px 10px 0px;
   font-size: 26px;
   position: relative;
   top: 30%;
@@ -73,7 +73,7 @@ const Loader = styled.div`
 `;
 
 const ButtonArea = styled(motion.div)`
-  padding: 1rem;
+  padding: 1rem 1rem 1rem 0rem;
   display: flex;
   justify-content: flex-start;
   position: relative;
@@ -174,6 +174,47 @@ const TopTenBottomText = styled.div`
   margin-top: 120%;
 `;
 
+const TooltipArea = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
+const TooltipText = styled.span`
+  visibility: hidden;
+  min-width: 400px;
+  max-height: 40px;
+  border-style: solid;
+  background-color: #ffffffe2;
+  color: black;
+  font-size: 14px;
+  font-weight: 900;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 150%;
+  left: 50%;
+  margin-left: -200px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  ${TooltipArea}:hover & {
+    visibility: visible;
+    opacity: 1;
+  }
+  /* tooltip arrow css */
+  &:after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #ffffffe2 transparent transparent transparent;
+  }
+`;
+
 interface useQueryType<TInterface> {
   data: TInterface | undefined;
   isLoading: boolean;
@@ -202,6 +243,7 @@ function Popup({ screenType, screenId, setIsBoxPopUp, toptenMovieIds }: IPopupPr
   const [yearRandNum, setYearRandNum] = useState<string>();
   const [seasonRandNum, setSeasonRandNum] = useState<string>();
   const [toptenNum, setToptenNum] = useState<number | undefined>(undefined);
+  const tooltipsText = 'Subtitles for the deaf and hard of hearing are available';
   const isToptenMovie = toptenNum !== -1;
   /**
    * Toggles the box popup state.
@@ -309,9 +351,10 @@ function Popup({ screenType, screenId, setIsBoxPopUp, toptenMovieIds }: IPopupPr
                     {/* Fix me: if get data, Video Quality value for API */}
                     <VideoQualityItem>{videoQuality}</VideoQualityItem>
                   </VideoQualityArea>
-                  <MovieInfoItem>
+                  <TooltipArea>
                     <SubtitleIcon></SubtitleIcon>
-                  </MovieInfoItem>
+                    <TooltipText>{tooltipsText}</TooltipText>
+                  </TooltipArea>
                 </MovieInfoTop>
                 <MovieInfoBottom>
                   <AgeCategoryArea>{clickedScreen?.adult ? '18+' : '15+'}</AgeCategoryArea>
