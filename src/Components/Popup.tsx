@@ -44,7 +44,7 @@ const PopUpCover = styled.div`
 
 const PopUpTitle = styled.h3`
   color: ${(props) => props.theme.white.lighter};
-  padding: 10px;
+  padding: 10px 10px 10px 0px;
   font-size: 26px;
   position: relative;
   top: 30%;
@@ -73,7 +73,7 @@ const Loader = styled.div`
 `;
 
 const ButtonArea = styled(motion.div)`
-  padding: 1rem;
+  padding: 1rem 1rem 1rem 0rem;
   display: flex;
   justify-content: flex-start;
   position: relative;
