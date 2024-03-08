@@ -134,7 +134,6 @@ export const SubtitleIcon = (): JSX.Element => {
         id="icon"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <title>{'closed-caption--alt'}</title>
         <rect x={19} y={17} width={6} height={2} />
         <rect x={11} y={17} width={6} height={2} />
         <rect x={6} y={17} width={3} height={2} />
