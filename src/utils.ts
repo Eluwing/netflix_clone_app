@@ -150,3 +150,26 @@ export function getRandVal(min: number, max: number): string {
   const calRand = String(Math.floor(Math.random() * calMax) + calMin);
   return calRand;
 }
+
+export function getSliderQueryKey(sliderType: string | undefined): string[] {
+  switch (sliderType) {
+    case SLIDER_TYPES.NOW_PLAYING_MOVIE:
+      return [SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.NOW_PLAYING];
+    case SLIDER_TYPES.POPULAR_MOVIE:
+      return [SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.POPULAR];
+    case SLIDER_TYPES.TOP_RATED_MOVIE:
+      return [SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.TOP_RATED];
+    case SLIDER_TYPES.UPCOMING_MOVIE:
+      return [SCREEN_QUERY_KEY.MOVIE, SCREEN_QUERY_KEY.UPCOMING];
+    case SLIDER_TYPES.AIRING_TODAY_TV:
+      return [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.AIRING_TODAY];
+    case SLIDER_TYPES.POPULAR_TV:
+      return [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.POPULAR];
+    case SLIDER_TYPES.CURRENT_ON_AIR_TV:
+      return [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.CURRENT_ON_AIR];
+    case SLIDER_TYPES.MOST_NEWLY_TV:
+      return [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.UPCOMING];
+    default:
+      return ['', ''];
+  }
+}

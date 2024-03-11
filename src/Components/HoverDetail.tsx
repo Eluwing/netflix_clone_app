@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 're
 import styled from 'styled-components';
 import { AnimatePresence, motion } from 'framer-motion';
 import { DetailIcon, PlayIcon, PlusIcon } from '../icon/HoverIcons';
-import { getSliderTypeKey, getVideoQualityTitle, getRandVal } from '../utils';
+import { getSliderTypeKey, getVideoQualityTitle, getRandVal, getSliderQueryKey } from '../utils';
 import { useQueryClient } from 'react-query';
 import {
   API_INTERFACE_TYPES,
@@ -151,13 +151,17 @@ interface GenreQueryType<TInterface> {
 }
 
 interface HoverDetailProps {
+  sliderType: string;
+  screenType: number;
+  clickedMovieId: SetStateAction<string | undefined>;
+  setClickedMovieId: Dispatch<SetStateAction<string | undefined>>;
+  setClickedSliderType: Dispatch<SetStateAction<string | undefined>>;
   backdropMoviePath: string;
   sliderBoxId: string | undefined; // the Box key id in slider component
   isBoxPopUp: SetStateAction<boolean>;
   setIsBoxPopUp: Dispatch<SetStateAction<boolean>>;
   setScreenId: Dispatch<SetStateAction<string | undefined>>;
   screenId: string | undefined;
-  screenType: number;
 }
 
 /**
@@ -167,13 +171,17 @@ interface HoverDetailProps {
  * @returns {JSX.Element} - HoverDetail component.
  */
 function HoverDetail({
+  sliderType,
+  screenType,
+  clickedMovieId,
+  setClickedMovieId,
+  setClickedSliderType,
   backdropMoviePath,
   sliderBoxId,
   isBoxPopUp,
   setIsBoxPopUp,
   setScreenId,
   screenId,
-  screenType,
 }: HoverDetailProps): JSX.Element {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const queryClient = useQueryClient();
@@ -246,29 +254,54 @@ function HoverDetail({
    * Handles box click event.
    * @param {string} screenId - The screen ID.
    */
-  const onBoxClicked = (screenId: string | undefined): void => {
-    if (!screenId) {
+  // const onBoxClicked = (screenId: string | undefined): void => {
+  //   if (!screenId) {
+  //     return;
+  //   }
+  //   toggleBox();
+  //   setScreenId(screenId);
+  //   if (screenType === SCREEN_TYPES.MOVIES) {
+  //     history.push(`/movies/${screenId}`);
+  //   } else if (screenType === SCREEN_TYPES.TV) {
+  //     history.push(`/tv/${screenId}`);
+  //   } else {
+  //     history.push('/');
+  //   }
+  // };
+
+  const onBoxClicked = (clickedMovieId: SetStateAction<string | undefined> | undefined): void => {
+    if (!clickedMovieId) {
       return;
     }
+    setClickedMovieId(clickedMovieId);
+    setClickedSliderType(sliderType);
     toggleBox();
-    setScreenId(screenId);
     if (screenType === SCREEN_TYPES.MOVIES) {
-      history.push(`/movies/${screenId}`);
+      history.push(`/movies/${String(clickedMovieId)}`);
     } else if (screenType === SCREEN_TYPES.TV) {
-      history.push(`/tv/${screenId}`);
+      history.push(`/tv/${String(clickedMovieId)}`);
     } else {
       history.push('/');
     }
   };
 
+  // useEffect(() => {
+  //   // Sets the query key set based on the Box key id in slider component
+  //   setQueryKeySet(getSliderTypeKey(sliderBoxId));
+  //   // Updates the hovered screen detail data when the screend id changes.
+  //   setHoveredScreen(
+  //     data?.results.find((movie: { id: number }) => sliderBoxId?.includes(String(movie.id))),
+  //   );
+  // }, [sliderBoxId]);
+
   useEffect(() => {
     // Sets the query key set based on the Box key id in slider component
-    setQueryKeySet(getSliderTypeKey(sliderBoxId));
+    setQueryKeySet(getSliderQueryKey(sliderType));
     // Updates the hovered screen detail data when the screend id changes.
     setHoveredScreen(
-      data?.results.find((movie: { id: number }) => sliderBoxId?.includes(String(movie.id))),
+      data?.results.find((movie: { id: number }) => clickedMovieId === String(movie.id)),
     );
-  }, [sliderBoxId]);
+  }, [clickedMovieId]);
 
   // if get Match and Video Quality data for API, delete this code
   useEffect(() => {
@@ -314,7 +347,7 @@ function HoverDetail({
                     <PlusIcon />
                   </CommonButton>
                 </VideoPlayTools>
-                <DetailButton onClick={() => onBoxClicked(screenId)}>
+                <DetailButton onClick={() => onBoxClicked(clickedMovieId)}>
                   <DetailIcon />
                 </DetailButton>
               </ButtonArea>

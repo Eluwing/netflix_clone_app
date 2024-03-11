@@ -44,7 +44,10 @@ function Home(): JSX.Element {
   const [isBoxPopUp, setIsBoxPopUp] = useState(false);
   const [screenId, setScreenId] = useState<string>();
   const [toptenMovieIds, setToptenMovieIds] = useState<Array<number | undefined>>([]);
+  const [clickedMovieId, setClickedMovieId] = useState<string | undefined>('');
+  const [clickedSliderType, setClickedSliderType] = useState<string | undefined>('');
 
+  console.log({ clickedSliderType });
   return (
     <Wrapper>
       {isLoading ? (
@@ -70,6 +73,9 @@ function Home(): JSX.Element {
               screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
               toptenMovieIds={toptenMovieIds}
+              clickedMovieId={clickedMovieId}
+              setClickedMovieId={setClickedMovieId}
+              setClickedSliderType={setClickedSliderType}
             />
           </SliderArea>
           <SliderArea>
@@ -82,6 +88,9 @@ function Home(): JSX.Element {
               screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
               toptenMovieIds={toptenMovieIds}
+              clickedMovieId={clickedMovieId}
+              setClickedMovieId={setClickedMovieId}
+              setClickedSliderType={setClickedSliderType}
             />
           </SliderArea>
           <SliderArea>
@@ -94,6 +103,9 @@ function Home(): JSX.Element {
               screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
               toptenMovieIds={toptenMovieIds}
+              clickedMovieId={clickedMovieId}
+              setClickedMovieId={setClickedMovieId}
+              setClickedSliderType={setClickedSliderType}
             />
           </SliderArea>
           <SliderArea>
@@ -106,12 +118,17 @@ function Home(): JSX.Element {
               screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
               toptenMovieIds={toptenMovieIds}
+              clickedMovieId={clickedMovieId}
+              setClickedMovieId={setClickedMovieId}
+              setClickedSliderType={setClickedSliderType}
             />
           </SliderArea>
           {isBoxPopUp ? (
             <>
               <Popup
                 screenType={SCREEN_TYPES.MOVIES}
+                clickedMovieId={clickedMovieId}
+                clickedSliderType={clickedSliderType}
                 screenId={screenId}
                 setIsBoxPopUp={setIsBoxPopUp}
                 toptenMovieIds={toptenMovieIds}

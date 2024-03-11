@@ -37,6 +37,8 @@ function Tv(): JSX.Element {
   const [isBoxPopUp, setIsBoxPopUp] = useState(false);
   const [screenId, setScreenId] = useState<string>();
   const [toptenMovieIds, setToptenMovieIds] = useState<Array<number | undefined>>([]);
+  const [clickedMovieId, setClickedMovieId] = useState<string | undefined>('');
+  const [clickedSliderType, setClickedSliderType] = useState<string | undefined>('');
   // Save to data in Cache for TV genre list
   useQuery<GENRES_INTERFACE_TYPES>(
     [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.GENRES],
@@ -68,6 +70,9 @@ function Tv(): JSX.Element {
               screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
               toptenMovieIds={toptenMovieIds}
+              clickedMovieId={clickedMovieId}
+              setClickedMovieId={setClickedMovieId}
+              setClickedSliderType={setClickedSliderType}
             />
           </SliderArea>
           <SliderArea>
@@ -80,6 +85,9 @@ function Tv(): JSX.Element {
               screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
               toptenMovieIds={toptenMovieIds}
+              clickedMovieId={clickedMovieId}
+              setClickedMovieId={setClickedMovieId}
+              setClickedSliderType={setClickedSliderType}
             />
           </SliderArea>
           <SliderArea>
@@ -92,6 +100,9 @@ function Tv(): JSX.Element {
               screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
               toptenMovieIds={toptenMovieIds}
+              clickedMovieId={clickedMovieId}
+              setClickedMovieId={setClickedMovieId}
+              setClickedSliderType={setClickedSliderType}
             />
           </SliderArea>
           {isBoxPopUp ? (
@@ -99,6 +110,8 @@ function Tv(): JSX.Element {
               <Popup
                 screenType={SCREEN_TYPES.TV}
                 screenId={screenId}
+                clickedMovieId={clickedMovieId}
+                clickedSliderType={clickedSliderType}
                 setIsBoxPopUp={setIsBoxPopUp}
                 toptenMovieIds={toptenMovieIds}
               />
