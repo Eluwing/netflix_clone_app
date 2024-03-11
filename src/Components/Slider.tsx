@@ -126,12 +126,8 @@ const offset = 6;
 interface ISliderProps {
   sliderType: string;
   screenType: number;
-  isBoxPopUp: SetStateAction<boolean>;
   setIsBoxPopUp: Dispatch<SetStateAction<boolean>>;
-  setScreenId: Dispatch<SetStateAction<string | undefined>>;
-  screenId: string | undefined;
   setToptenMovieIds: Dispatch<SetStateAction<Array<number | undefined>>>;
-  toptenMovieIds: SetStateAction<Array<number | undefined>>;
   clickedMovieId: SetStateAction<string | undefined>;
   setClickedMovieId: Dispatch<SetStateAction<string | undefined>>;
   setClickedSliderType: Dispatch<SetStateAction<string | undefined>>;
@@ -146,11 +142,7 @@ function Slider({
   sliderType,
   screenType,
   setIsBoxPopUp,
-  isBoxPopUp,
-  setScreenId,
-  screenId,
   setToptenMovieIds,
-  toptenMovieIds,
   clickedMovieId,
   setClickedMovieId,
   setClickedSliderType,
@@ -260,17 +252,14 @@ function Slider({
   const toggleLeaving = (): void => setLeaving((prev) => !prev);
 
   /**
-   * Handles the hover event on a box, updating the screenId state.
+   * Handles the hover event on a box, updating the movieId state.
    *
-   * @param {string} screenId - The identifier of the screen associated with the hovered box.
+   * @param {number} movieId - The identifier of the screen associated with the hovered box.
    * @returns {void}
    */
   const onBoxHovered = (movieId: number): void => {
     setClickedMovieId(String(movieId));
   };
-  // const onBoxHovered = (screenId: string): void => {
-  //   setScreenId(screenId);
-  // };
   /**
    * Retrieves the title for the sliders based on the specified slider type.
    */
@@ -286,20 +275,13 @@ function Slider({
   /**
    * Configures the popup movie match based on the screen type and ID.
    */
-  // useEffect(() => {
-  //   if (screenType === SCREEN_TYPES.MOVIES) {
-  //     setPopUpMovieMatch((prev) => useRouteMatch<{ screenId: string }>('/movies/:screenId'));
-  //   } else if (screenType === SCREEN_TYPES.TV) {
-  //     setPopUpMovieMatch((prev) => useRouteMatch<{ screenId: string }>('/tv/:screenId'));
-  //   }
-  // }, [screenId]);
   useEffect(() => {
     if (screenType === SCREEN_TYPES.MOVIES) {
       setPopUpMovieMatch((prev) => useRouteMatch<{ movieId: string }>('/movies/:movieId'));
     } else if (screenType === SCREEN_TYPES.TV) {
       setPopUpMovieMatch((prev) => useRouteMatch<{ movieId: string }>('/tv/:movieId'));
     }
-  }, [screenId]);
+  }, [setClickedMovieId]);
   useEffect(() => {
     getToptenIds();
   }, [data]);
@@ -355,13 +337,9 @@ function Slider({
                               clickedMovieId={clickedMovieId}
                               setClickedMovieId={setClickedMovieId}
                               setClickedSliderType={setClickedSliderType}
-                              sliderBoxId={screenId}
                               /* if have movie, need modify code that variable in parameter value  */
                               backdropMoviePath={''}
-                              isBoxPopUp={isBoxPopUp}
                               setIsBoxPopUp={setIsBoxPopUp}
-                              setScreenId={setScreenId}
-                              screenId={screenId}
                             />
                           </>
                         </Box>

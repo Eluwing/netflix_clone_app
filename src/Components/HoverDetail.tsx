@@ -157,11 +157,7 @@ interface HoverDetailProps {
   setClickedMovieId: Dispatch<SetStateAction<string | undefined>>;
   setClickedSliderType: Dispatch<SetStateAction<string | undefined>>;
   backdropMoviePath: string;
-  sliderBoxId: string | undefined; // the Box key id in slider component
-  isBoxPopUp: SetStateAction<boolean>;
   setIsBoxPopUp: Dispatch<SetStateAction<boolean>>;
-  setScreenId: Dispatch<SetStateAction<string | undefined>>;
-  screenId: string | undefined;
 }
 
 /**
@@ -177,11 +173,7 @@ function HoverDetail({
   setClickedMovieId,
   setClickedSliderType,
   backdropMoviePath,
-  sliderBoxId,
-  isBoxPopUp,
   setIsBoxPopUp,
-  setScreenId,
-  screenId,
 }: HoverDetailProps): JSX.Element {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const queryClient = useQueryClient();

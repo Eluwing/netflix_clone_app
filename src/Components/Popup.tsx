@@ -230,7 +230,6 @@ interface IPopupProps {
   screenType: number;
   clickedMovieId: SetStateAction<string | undefined>;
   clickedSliderType: SetStateAction<string | undefined>;
-  screenId: string | undefined;
   setIsBoxPopUp: Dispatch<SetStateAction<boolean>>;
   toptenMovieIds: Array<number | undefined>;
 }
@@ -239,7 +238,6 @@ function Popup({
   screenType,
   clickedMovieId,
   clickedSliderType,
-  screenId,
   setIsBoxPopUp,
   toptenMovieIds,
 }: IPopupProps): JSX.Element {
@@ -320,12 +318,11 @@ function Popup({
   useMotionValueEvent(scrollY, 'change', (latest: number) => {
     setCurrentScrollY(latest + 20);
   });
-  console.log({ data });
   return (
     <>
       <AnimatePresence>
         <Overlay onClick={onOverlayClick} exit={{ opacity: 0 }} animate={{ opacity: 1 }} />
-        <PopUpArea style={{ top: currentScrollY }} layoutId={screenId}>
+        <PopUpArea style={{ top: currentScrollY }} layoutId={String(clickedSliderType)}>
           {isLoading ? (
             <Loader>Loading...</Loader>
           ) : (

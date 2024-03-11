@@ -64,12 +64,8 @@ function Tv(): JSX.Element {
             <Slider
               sliderType={SLIDER_TYPES.AIRING_TODAY_TV}
               screenType={SCREEN_TYPES.TV}
-              isBoxPopUp={false}
               setIsBoxPopUp={setIsBoxPopUp}
-              setScreenId={setScreenId}
-              screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
-              toptenMovieIds={toptenMovieIds}
               clickedMovieId={clickedMovieId}
               setClickedMovieId={setClickedMovieId}
               setClickedSliderType={setClickedSliderType}
@@ -79,12 +75,8 @@ function Tv(): JSX.Element {
             <Slider
               sliderType={SLIDER_TYPES.POPULAR_TV}
               screenType={SCREEN_TYPES.TV}
-              isBoxPopUp={false}
               setIsBoxPopUp={setIsBoxPopUp}
-              setScreenId={setScreenId}
-              screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
-              toptenMovieIds={toptenMovieIds}
               clickedMovieId={clickedMovieId}
               setClickedMovieId={setClickedMovieId}
               setClickedSliderType={setClickedSliderType}
@@ -94,12 +86,8 @@ function Tv(): JSX.Element {
             <Slider
               sliderType={SLIDER_TYPES.CURRENT_ON_AIR_TV}
               screenType={SCREEN_TYPES.TV}
-              isBoxPopUp={false}
               setIsBoxPopUp={setIsBoxPopUp}
-              setScreenId={setScreenId}
-              screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
-              toptenMovieIds={toptenMovieIds}
               clickedMovieId={clickedMovieId}
               setClickedMovieId={setClickedMovieId}
               setClickedSliderType={setClickedSliderType}
@@ -109,7 +97,6 @@ function Tv(): JSX.Element {
             <>
               <Popup
                 screenType={SCREEN_TYPES.TV}
-                screenId={screenId}
                 clickedMovieId={clickedMovieId}
                 clickedSliderType={clickedSliderType}
                 setIsBoxPopUp={setIsBoxPopUp}

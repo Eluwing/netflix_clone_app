@@ -67,12 +67,8 @@ function Home(): JSX.Element {
             <Slider
               sliderType={SLIDER_TYPES.NOW_PLAYING_MOVIE}
               screenType={SCREEN_TYPES.MOVIES}
-              isBoxPopUp={isBoxPopUp}
               setIsBoxPopUp={setIsBoxPopUp}
-              setScreenId={setScreenId}
-              screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
-              toptenMovieIds={toptenMovieIds}
               clickedMovieId={clickedMovieId}
               setClickedMovieId={setClickedMovieId}
               setClickedSliderType={setClickedSliderType}
@@ -82,12 +78,8 @@ function Home(): JSX.Element {
             <Slider
               sliderType={SLIDER_TYPES.POPULAR_MOVIE}
               screenType={SCREEN_TYPES.MOVIES}
-              isBoxPopUp={isBoxPopUp}
               setIsBoxPopUp={setIsBoxPopUp}
-              setScreenId={setScreenId}
-              screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
-              toptenMovieIds={toptenMovieIds}
               clickedMovieId={clickedMovieId}
               setClickedMovieId={setClickedMovieId}
               setClickedSliderType={setClickedSliderType}
@@ -97,12 +89,8 @@ function Home(): JSX.Element {
             <Slider
               sliderType={SLIDER_TYPES.TOP_RATED_MOVIE}
               screenType={SCREEN_TYPES.MOVIES}
-              isBoxPopUp={isBoxPopUp}
               setIsBoxPopUp={setIsBoxPopUp}
-              setScreenId={setScreenId}
-              screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
-              toptenMovieIds={toptenMovieIds}
               clickedMovieId={clickedMovieId}
               setClickedMovieId={setClickedMovieId}
               setClickedSliderType={setClickedSliderType}
@@ -112,12 +100,8 @@ function Home(): JSX.Element {
             <Slider
               sliderType={SLIDER_TYPES.UPCOMING_MOVIE}
               screenType={SCREEN_TYPES.MOVIES}
-              isBoxPopUp={isBoxPopUp}
               setIsBoxPopUp={setIsBoxPopUp}
-              setScreenId={setScreenId}
-              screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
-              toptenMovieIds={toptenMovieIds}
               clickedMovieId={clickedMovieId}
               setClickedMovieId={setClickedMovieId}
               setClickedSliderType={setClickedSliderType}
@@ -129,7 +113,6 @@ function Home(): JSX.Element {
                 screenType={SCREEN_TYPES.MOVIES}
                 clickedMovieId={clickedMovieId}
                 clickedSliderType={clickedSliderType}
-                screenId={screenId}
                 setIsBoxPopUp={setIsBoxPopUp}
                 toptenMovieIds={toptenMovieIds}
               />
