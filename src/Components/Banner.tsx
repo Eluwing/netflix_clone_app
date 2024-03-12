@@ -65,8 +65,12 @@ interface IBannerProps {
   backgroundImagePath: string | undefined;
   title: string | undefined;
   overview: string | undefined;
+  sliderType: string;
   screenType: number;
   setIsBoxPopUp: Dispatch<SetStateAction<boolean>>;
+  bannerClickdMovieId: number | undefined;
+  setClickedMovieId: Dispatch<SetStateAction<string | undefined>>;
+  setClickedSliderType: Dispatch<SetStateAction<string | undefined>>;
   screenId: string | undefined;
   setScreenId: Dispatch<SetStateAction<string | undefined>>;
 }
@@ -82,23 +86,28 @@ function Banner({
   backgroundImagePath,
   title,
   overview,
+  sliderType,
   screenType,
+  setIsBoxPopUp,
+  bannerClickdMovieId,
+  setClickedMovieId,
+  setClickedSliderType,
   screenId,
   setScreenId,
-  setIsBoxPopUp,
 }: IBannerProps): JSX.Element {
   /**
    * Toggles the box popup state.
    */
   const history = useHistory();
   const toggleBox = (): void => setIsBoxPopUp((prev) => !prev);
-  const onMoreInfoClicked = (screenId: string | undefined): void => {
+  const onMoreInfoClicked = (movieId: string | undefined, sliderType: string | undefined): void => {
     toggleBox();
-    setScreenId(screenId);
+    setClickedMovieId(movieId);
+    setClickedSliderType(sliderType);
     if (screenType === SCREEN_TYPES.MOVIES) {
-      history.push(`/movies/${String(screenId)}`);
+      history.push(`/movies/${String(movieId)}`);
     } else if (screenType === SCREEN_TYPES.TV) {
-      history.push(`/tv/${String(screenId)}`);
+      history.push(`/tv/${String(movieId)}`);
     } else {
       history.push('/');
     }
@@ -106,7 +115,6 @@ function Banner({
 
   return (
     <>
-      {/* Banner area with background image */}
       <BannerArea bgphoto={makeImagePath(backgroundImagePath ?? '')}>
         <DetailContentsArea>
           <Title>{title}</Title>
@@ -115,7 +123,9 @@ function Banner({
               <PlayIcon />
             </ButtonItem>
             <ButtonItem>
-              <MoreInfoButton onClick={() => onMoreInfoClicked(screenId)}>
+              <MoreInfoButton
+                onClick={() => onMoreInfoClicked(String(bannerClickdMovieId), sliderType)}
+              >
                 <MoreInfoIcon />
                 <MoreInfoText>More Info</MoreInfoText>
               </MoreInfoButton>

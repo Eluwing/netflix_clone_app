@@ -47,7 +47,6 @@ function Home(): JSX.Element {
   const [clickedMovieId, setClickedMovieId] = useState<string | undefined>('');
   const [clickedSliderType, setClickedSliderType] = useState<string | undefined>('');
 
-  console.log({ clickedSliderType });
   return (
     <Wrapper>
       {isLoading ? (
@@ -58,10 +57,14 @@ function Home(): JSX.Element {
             backgroundImagePath={data?.results[0].backdrop_path}
             title={data?.results[0].title}
             overview={data?.results[0].overview}
+            sliderType={SLIDER_TYPES.NOW_PLAYING_MOVIE}
             screenType={SCREEN_TYPES.MOVIES}
+            setIsBoxPopUp={setIsBoxPopUp}
+            bannerClickdMovieId={data?.results[0].id}
+            setClickedMovieId={setClickedMovieId}
+            setClickedSliderType={setClickedSliderType}
             screenId={String(data?.results[0].id).concat(SLIDER_TYPES.NOW_PLAYING_MOVIE)}
             setScreenId={setScreenId}
-            setIsBoxPopUp={setIsBoxPopUp}
           />
           <SliderArea>
             <Slider

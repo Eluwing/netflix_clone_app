@@ -56,9 +56,13 @@ function Tv(): JSX.Element {
             title={data?.results[1].name}
             overview={data?.results[1].overview}
             screenType={SCREEN_TYPES.TV}
+            sliderType={SLIDER_TYPES.AIRING_TODAY_TV}
+            setIsBoxPopUp={setIsBoxPopUp}
+            bannerClickdMovieId={data?.results[1].id}
+            setClickedMovieId={setClickedMovieId}
+            setClickedSliderType={setClickedSliderType}
             screenId={String(data?.results[1].id).concat(SCREEN_QUERY_KEY.AIRING_TODAY)}
             setScreenId={setScreenId}
-            setIsBoxPopUp={setIsBoxPopUp}
           />
           <SliderArea>
             <Slider
