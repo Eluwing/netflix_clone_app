@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 're
 import styled from 'styled-components';
 import { AnimatePresence, motion } from 'framer-motion';
 import { DetailIcon, PlayIcon, PlusIcon } from '../icon/HoverIcons';
-import { getSliderTypeKey, getVideoQualityTitle, getRandVal } from '../utils';
+import { getVideoQualityTitle, getRandVal, getSliderQueryKey } from '../utils';
 import { useQueryClient } from 'react-query';
 import {
   API_INTERFACE_TYPES,
@@ -151,13 +151,13 @@ interface GenreQueryType<TInterface> {
 }
 
 interface HoverDetailProps {
-  backdropMoviePath: string;
-  sliderBoxId: string | undefined; // the Box key id in slider component
-  isBoxPopUp: SetStateAction<boolean>;
-  setIsBoxPopUp: Dispatch<SetStateAction<boolean>>;
-  setScreenId: Dispatch<SetStateAction<string | undefined>>;
-  screenId: string | undefined;
+  sliderType: string;
   screenType: number;
+  clickedMovieId: SetStateAction<string | undefined>;
+  setClickedMovieId: Dispatch<SetStateAction<string | undefined>>;
+  setClickedSliderType: Dispatch<SetStateAction<string | undefined>>;
+  backdropMoviePath: string;
+  setIsBoxPopUp: Dispatch<SetStateAction<boolean>>;
 }
 
 /**
@@ -167,13 +167,13 @@ interface HoverDetailProps {
  * @returns {JSX.Element} - HoverDetail component.
  */
 function HoverDetail({
-  backdropMoviePath,
-  sliderBoxId,
-  isBoxPopUp,
-  setIsBoxPopUp,
-  setScreenId,
-  screenId,
+  sliderType,
   screenType,
+  clickedMovieId,
+  setClickedMovieId,
+  setClickedSliderType,
+  backdropMoviePath,
+  setIsBoxPopUp,
 }: HoverDetailProps): JSX.Element {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const queryClient = useQueryClient();
@@ -243,19 +243,23 @@ function HoverDetail({
   const toggleBox = (): void => setIsBoxPopUp((prev) => !prev);
 
   /**
-   * Handles box click event.
-   * @param {string} screenId - The screen ID.
+   * Handles the click event for the box.
+   * Sets the clicked movie ID and slider type, toggles the box visibility,
+   * and redirects to the appropriate screen based on the screen type.
+   * @param {React.SetStateAction<string | undefined> | undefined} clickedMovieId - The ID of the clicked movie.
+   * @returns {void}
    */
-  const onBoxClicked = (screenId: string | undefined): void => {
-    if (!screenId) {
+  const onBoxClicked = (clickedMovieId: SetStateAction<string | undefined> | undefined): void => {
+    if (!clickedMovieId) {
       return;
     }
+    setClickedMovieId(clickedMovieId);
+    setClickedSliderType(sliderType);
     toggleBox();
-    setScreenId(screenId);
     if (screenType === SCREEN_TYPES.MOVIES) {
-      history.push(`/movies/${screenId}`);
+      history.push(`/movies/${String(clickedMovieId)}`);
     } else if (screenType === SCREEN_TYPES.TV) {
-      history.push(`/tv/${screenId}`);
+      history.push(`/tv/${String(clickedMovieId)}`);
     } else {
       history.push('/');
     }
@@ -263,12 +267,12 @@ function HoverDetail({
 
   useEffect(() => {
     // Sets the query key set based on the Box key id in slider component
-    setQueryKeySet(getSliderTypeKey(sliderBoxId));
+    setQueryKeySet(getSliderQueryKey(sliderType));
     // Updates the hovered screen detail data when the screend id changes.
     setHoveredScreen(
-      data?.results.find((movie: { id: number }) => sliderBoxId?.includes(String(movie.id))),
+      data?.results.find((movie: { id: number }) => clickedMovieId === String(movie.id)),
     );
-  }, [sliderBoxId]);
+  }, [clickedMovieId]);
 
   // if get Match and Video Quality data for API, delete this code
   useEffect(() => {
@@ -314,7 +318,7 @@ function HoverDetail({
                     <PlusIcon />
                   </CommonButton>
                 </VideoPlayTools>
-                <DetailButton onClick={() => onBoxClicked(screenId)}>
+                <DetailButton onClick={() => onBoxClicked(clickedMovieId)}>
                   <DetailIcon />
                 </DetailButton>
               </ButtonArea>

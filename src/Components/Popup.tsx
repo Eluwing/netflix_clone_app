@@ -8,13 +8,7 @@ import {
   SCREEN_TYPES,
 } from '../Constants/Common';
 import { useHistory } from 'react-router-dom';
-import {
-  getRandVal,
-  getSliderTypeKey,
-  getVideoQualityTitle,
-  makeImagePath,
-  getMovieId,
-} from '../utils';
+import { getRandVal, getVideoQualityTitle, makeImagePath, getSliderQueryKey } from '../utils';
 import { IGenres, IMovieOrTv } from '../api';
 import { useQueryClient } from 'react-query';
 import { LikeIcon, PlayIcon, PlusIcon, SubtitleIcon } from '../icon/PopupIcons';
@@ -227,12 +221,19 @@ interface GenreQueryType<TInterface> {
 
 interface IPopupProps {
   screenType: number;
-  screenId: string | undefined;
+  clickedMovieId: SetStateAction<string | undefined>;
+  clickedSliderType: SetStateAction<string | undefined>;
   setIsBoxPopUp: Dispatch<SetStateAction<boolean>>;
   toptenMovieIds: Array<number | undefined>;
 }
 
-function Popup({ screenType, screenId, setIsBoxPopUp, toptenMovieIds }: IPopupProps): JSX.Element {
+function Popup({
+  screenType,
+  clickedMovieId,
+  clickedSliderType,
+  setIsBoxPopUp,
+  toptenMovieIds,
+}: IPopupProps): JSX.Element {
   const history = useHistory();
   const { scrollY } = useScroll();
   const [currentScrollY, setCurrentScrollY] = useState<number>(0);
@@ -275,13 +276,21 @@ function Popup({ screenType, screenId, setIsBoxPopUp, toptenMovieIds }: IPopupPr
       history.push('/');
     }
   };
+  /**
+   * Retrieves the genre name associated with the given genre ID.
+   * @param {number} genreId - The ID of the genre.
+   * @returns {IGenres | undefined} - The genre object if found, otherwise undefined.
+   */
   const getGenreName = (genreId: number): IGenres | undefined => {
     return genreData?.genres.find((genre: IGenres) => genre.id === genreId);
   };
-  const checkToptenMovie = (clickedScreenId: string | undefined): number | undefined => {
-    const checkedId = toptenMovieIds.findIndex(
-      (movieId) => movieId === Number(getMovieId(clickedScreenId)),
-    );
+  /**
+   * Checks if the clicked movie ID is among the top ten movies.
+   * @param {number | undefined} clickedMovieId - The ID of the clicked movie.
+   * @returns {number | undefined} - The index of the movie in the top ten list if found, otherwise undefined.
+   */
+  const checkToptenMovie = (clickedMovieId: number | undefined): number | undefined => {
+    const checkedId = toptenMovieIds.findIndex((movieId) => movieId === clickedMovieId);
     if (typeof checkedId === 'undefined') {
       return undefined;
     } else {
@@ -291,15 +300,17 @@ function Popup({ screenType, screenId, setIsBoxPopUp, toptenMovieIds }: IPopupPr
   // Updates the clicked screen data when the data changes.
   useEffect(() => {
     setClickedScreen(
-      data?.results.find((movie: { id: number }) => screenId?.includes(String(movie.id))),
+      data?.results.find((movie: { id: number }) => movie.id === Number(clickedMovieId)),
     );
   }, [data]);
 
-  // Sets the query key set based on the slider type and screen ID.
+  // Update query key set and top ten number when clicked movie ID changes
   useEffect(() => {
-    setQueryKeySet(getSliderTypeKey(screenId));
-    setToptenNum(checkToptenMovie(screenId));
-  }, [screenId]);
+    // Set query key set based on clicked slider type
+    setQueryKeySet(getSliderQueryKey(String(clickedSliderType)));
+    // Check if clicked movie is among top ten and update top ten number accordingly
+    setToptenNum(checkToptenMovie(Number(clickedMovieId)));
+  }, [clickedMovieId]);
 
   // if get Match and Video Quality data for API, delete this code
   useEffect(() => {
@@ -316,7 +327,7 @@ function Popup({ screenType, screenId, setIsBoxPopUp, toptenMovieIds }: IPopupPr
     <>
       <AnimatePresence>
         <Overlay onClick={onOverlayClick} exit={{ opacity: 0 }} animate={{ opacity: 1 }} />
-        <PopUpArea style={{ top: currentScrollY }} layoutId={screenId}>
+        <PopUpArea style={{ top: currentScrollY }} layoutId={String(clickedSliderType)}>
           {isLoading ? (
             <Loader>Loading...</Loader>
           ) : (

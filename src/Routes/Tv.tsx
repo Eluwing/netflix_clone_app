@@ -35,8 +35,9 @@ function Tv(): JSX.Element {
     getAiringTodayTv,
   );
   const [isBoxPopUp, setIsBoxPopUp] = useState(false);
-  const [screenId, setScreenId] = useState<string>();
   const [toptenMovieIds, setToptenMovieIds] = useState<Array<number | undefined>>([]);
+  const [clickedMovieId, setClickedMovieId] = useState<string | undefined>('');
+  const [clickedSliderType, setClickedSliderType] = useState<string | undefined>('');
   // Save to data in Cache for TV genre list
   useQuery<GENRES_INTERFACE_TYPES>(
     [SCREEN_QUERY_KEY.TV, SCREEN_QUERY_KEY.GENRES],
@@ -54,51 +55,51 @@ function Tv(): JSX.Element {
             title={data?.results[1].name}
             overview={data?.results[1].overview}
             screenType={SCREEN_TYPES.TV}
-            screenId={String(data?.results[1].id).concat(SCREEN_QUERY_KEY.AIRING_TODAY)}
-            setScreenId={setScreenId}
+            sliderType={SLIDER_TYPES.AIRING_TODAY_TV}
             setIsBoxPopUp={setIsBoxPopUp}
+            bannerClickdMovieId={data?.results[1].id}
+            setClickedMovieId={setClickedMovieId}
+            setClickedSliderType={setClickedSliderType}
           />
           <SliderArea>
             <Slider
               sliderType={SLIDER_TYPES.AIRING_TODAY_TV}
               screenType={SCREEN_TYPES.TV}
-              isBoxPopUp={false}
               setIsBoxPopUp={setIsBoxPopUp}
-              setScreenId={setScreenId}
-              screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
-              toptenMovieIds={toptenMovieIds}
+              clickedMovieId={clickedMovieId}
+              setClickedMovieId={setClickedMovieId}
+              setClickedSliderType={setClickedSliderType}
             />
           </SliderArea>
           <SliderArea>
             <Slider
               sliderType={SLIDER_TYPES.POPULAR_TV}
               screenType={SCREEN_TYPES.TV}
-              isBoxPopUp={false}
               setIsBoxPopUp={setIsBoxPopUp}
-              setScreenId={setScreenId}
-              screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
-              toptenMovieIds={toptenMovieIds}
+              clickedMovieId={clickedMovieId}
+              setClickedMovieId={setClickedMovieId}
+              setClickedSliderType={setClickedSliderType}
             />
           </SliderArea>
           <SliderArea>
             <Slider
               sliderType={SLIDER_TYPES.CURRENT_ON_AIR_TV}
               screenType={SCREEN_TYPES.TV}
-              isBoxPopUp={false}
               setIsBoxPopUp={setIsBoxPopUp}
-              setScreenId={setScreenId}
-              screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
-              toptenMovieIds={toptenMovieIds}
+              clickedMovieId={clickedMovieId}
+              setClickedMovieId={setClickedMovieId}
+              setClickedSliderType={setClickedSliderType}
             />
           </SliderArea>
           {isBoxPopUp ? (
             <>
               <Popup
                 screenType={SCREEN_TYPES.TV}
-                screenId={screenId}
+                clickedMovieId={clickedMovieId}
+                clickedSliderType={clickedSliderType}
                 setIsBoxPopUp={setIsBoxPopUp}
                 toptenMovieIds={toptenMovieIds}
               />

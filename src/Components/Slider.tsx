@@ -126,12 +126,11 @@ const offset = 6;
 interface ISliderProps {
   sliderType: string;
   screenType: number;
-  isBoxPopUp: SetStateAction<boolean>;
   setIsBoxPopUp: Dispatch<SetStateAction<boolean>>;
-  setScreenId: Dispatch<SetStateAction<string | undefined>>;
-  screenId: string | undefined;
   setToptenMovieIds: Dispatch<SetStateAction<Array<number | undefined>>>;
-  toptenMovieIds: SetStateAction<Array<number | undefined>>;
+  clickedMovieId: SetStateAction<string | undefined>;
+  setClickedMovieId: Dispatch<SetStateAction<string | undefined>>;
+  setClickedSliderType: Dispatch<SetStateAction<string | undefined>>;
 }
 
 interface useQueryType<TInterface> {
@@ -143,11 +142,10 @@ function Slider({
   sliderType,
   screenType,
   setIsBoxPopUp,
-  isBoxPopUp,
-  setScreenId,
-  screenId,
   setToptenMovieIds,
-  toptenMovieIds,
+  clickedMovieId,
+  setClickedMovieId,
+  setClickedSliderType,
 }: ISliderProps): JSX.Element {
   /**
    * Concatenates the slider type and screen type to create a unique identifier.
@@ -158,7 +156,7 @@ function Slider({
   /**
    * State hook for managing the popup movie match.
    */
-  const [, setPopUpMovieMatch] = useState<match<{ screenId: string }> | null>();
+  const [, setPopUpMovieMatch] = useState<match<{ movieId: string }> | null>();
   const emptyData: useQueryType<API_INTERFACE_TYPES> = {
     // Because it is not possible to set an empty object in TypeScript
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -254,18 +252,22 @@ function Slider({
   const toggleLeaving = (): void => setLeaving((prev) => !prev);
 
   /**
-   * Handles the hover event on a box, updating the screenId state.
+   * Handles the hover event on a box, updating the movieId state.
    *
-   * @param {string} screenId - The identifier of the screen associated with the hovered box.
+   * @param {number} movieId - The identifier of the screen associated with the hovered box.
    * @returns {void}
    */
-  const onBoxHovered = (screenId: string): void => {
-    setScreenId(screenId);
+  const onBoxHovered = (movieId: number): void => {
+    setClickedMovieId(String(movieId));
   };
   /**
    * Retrieves the title for the sliders based on the specified slider type.
    */
   const slidersTitle = getSlidersTitle(sliderType);
+  /**
+   * Retrieves the IDs of the top ten movies if the slider type is 'TOP_RATED_MOVIE'.
+   * @returns {void}
+   */
   const getToptenIds = (): void => {
     if (SLIDER_TYPES.TOP_RATED_MOVIE === sliderType && typeof data !== 'undefined') {
       // Set movie id of Top Ten list in array
@@ -279,11 +281,11 @@ function Slider({
    */
   useEffect(() => {
     if (screenType === SCREEN_TYPES.MOVIES) {
-      setPopUpMovieMatch((prev) => useRouteMatch<{ screenId: string }>('/movies/:screenId'));
+      setPopUpMovieMatch((prev) => useRouteMatch<{ movieId: string }>('/movies/:movieId'));
     } else if (screenType === SCREEN_TYPES.TV) {
-      setPopUpMovieMatch((prev) => useRouteMatch<{ screenId: string }>('/tv/:screenId'));
+      setPopUpMovieMatch((prev) => useRouteMatch<{ movieId: string }>('/tv/:movieId'));
     }
-  }, [screenId]);
+  }, [clickedMovieId]);
   useEffect(() => {
     getToptenIds();
   }, [data]);
@@ -324,23 +326,21 @@ function Slider({
                           variants={BoxVariants}
                           whileHover="hover"
                           initial="normal"
-                          onHoverStart={() =>
-                            onBoxHovered(getSliderBoxId(movie.id, sliderAndScreenType))
-                          }
+                          onHoverStart={() => onBoxHovered(movie.id)}
                           transition={{ type: 'tween' }}
                           bgPhoto={makeImagePath(movie.backdrop_path ?? '', 'w500')}
                         >
                           {(movie.title && movie.title) ?? (movie.name && movie.name)}
                           <>
                             <HoverDetail
-                              sliderBoxId={screenId}
+                              screenType={screenType}
+                              sliderType={sliderType}
+                              clickedMovieId={clickedMovieId}
+                              setClickedMovieId={setClickedMovieId}
+                              setClickedSliderType={setClickedSliderType}
                               /* if have movie, need modify code that variable in parameter value  */
                               backdropMoviePath={''}
-                              isBoxPopUp={isBoxPopUp}
                               setIsBoxPopUp={setIsBoxPopUp}
-                              setScreenId={setScreenId}
-                              screenId={screenId}
-                              screenType={screenType}
                             />
                           </>
                         </Box>

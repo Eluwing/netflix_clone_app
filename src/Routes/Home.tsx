@@ -42,8 +42,9 @@ function Home(): JSX.Element {
     getMovieGenreList,
   );
   const [isBoxPopUp, setIsBoxPopUp] = useState(false);
-  const [screenId, setScreenId] = useState<string>();
   const [toptenMovieIds, setToptenMovieIds] = useState<Array<number | undefined>>([]);
+  const [clickedMovieId, setClickedMovieId] = useState<string | undefined>('');
+  const [clickedSliderType, setClickedSliderType] = useState<string | undefined>('');
 
   return (
     <Wrapper>
@@ -55,64 +56,63 @@ function Home(): JSX.Element {
             backgroundImagePath={data?.results[0].backdrop_path}
             title={data?.results[0].title}
             overview={data?.results[0].overview}
+            sliderType={SLIDER_TYPES.NOW_PLAYING_MOVIE}
             screenType={SCREEN_TYPES.MOVIES}
-            screenId={String(data?.results[0].id).concat(SLIDER_TYPES.NOW_PLAYING_MOVIE)}
-            setScreenId={setScreenId}
             setIsBoxPopUp={setIsBoxPopUp}
+            bannerClickdMovieId={data?.results[0].id}
+            setClickedMovieId={setClickedMovieId}
+            setClickedSliderType={setClickedSliderType}
           />
           <SliderArea>
             <Slider
               sliderType={SLIDER_TYPES.NOW_PLAYING_MOVIE}
               screenType={SCREEN_TYPES.MOVIES}
-              isBoxPopUp={isBoxPopUp}
               setIsBoxPopUp={setIsBoxPopUp}
-              setScreenId={setScreenId}
-              screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
-              toptenMovieIds={toptenMovieIds}
+              clickedMovieId={clickedMovieId}
+              setClickedMovieId={setClickedMovieId}
+              setClickedSliderType={setClickedSliderType}
             />
           </SliderArea>
           <SliderArea>
             <Slider
               sliderType={SLIDER_TYPES.POPULAR_MOVIE}
               screenType={SCREEN_TYPES.MOVIES}
-              isBoxPopUp={isBoxPopUp}
               setIsBoxPopUp={setIsBoxPopUp}
-              setScreenId={setScreenId}
-              screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
-              toptenMovieIds={toptenMovieIds}
+              clickedMovieId={clickedMovieId}
+              setClickedMovieId={setClickedMovieId}
+              setClickedSliderType={setClickedSliderType}
             />
           </SliderArea>
           <SliderArea>
             <Slider
               sliderType={SLIDER_TYPES.TOP_RATED_MOVIE}
               screenType={SCREEN_TYPES.MOVIES}
-              isBoxPopUp={isBoxPopUp}
               setIsBoxPopUp={setIsBoxPopUp}
-              setScreenId={setScreenId}
-              screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
-              toptenMovieIds={toptenMovieIds}
+              clickedMovieId={clickedMovieId}
+              setClickedMovieId={setClickedMovieId}
+              setClickedSliderType={setClickedSliderType}
             />
           </SliderArea>
           <SliderArea>
             <Slider
               sliderType={SLIDER_TYPES.UPCOMING_MOVIE}
               screenType={SCREEN_TYPES.MOVIES}
-              isBoxPopUp={isBoxPopUp}
               setIsBoxPopUp={setIsBoxPopUp}
-              setScreenId={setScreenId}
-              screenId={screenId}
               setToptenMovieIds={setToptenMovieIds}
-              toptenMovieIds={toptenMovieIds}
+              clickedMovieId={clickedMovieId}
+              setClickedMovieId={setClickedMovieId}
+              setClickedSliderType={setClickedSliderType}
             />
           </SliderArea>
           {isBoxPopUp ? (
             <>
               <Popup
                 screenType={SCREEN_TYPES.MOVIES}
-                screenId={screenId}
+                clickedMovieId={clickedMovieId}
+                clickedSliderType={clickedSliderType}
                 setIsBoxPopUp={setIsBoxPopUp}
                 toptenMovieIds={toptenMovieIds}
               />
