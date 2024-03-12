@@ -42,7 +42,6 @@ function Home(): JSX.Element {
     getMovieGenreList,
   );
   const [isBoxPopUp, setIsBoxPopUp] = useState(false);
-  const [screenId, setScreenId] = useState<string>();
   const [toptenMovieIds, setToptenMovieIds] = useState<Array<number | undefined>>([]);
   const [clickedMovieId, setClickedMovieId] = useState<string | undefined>('');
   const [clickedSliderType, setClickedSliderType] = useState<string | undefined>('');
@@ -63,8 +62,6 @@ function Home(): JSX.Element {
             bannerClickdMovieId={data?.results[0].id}
             setClickedMovieId={setClickedMovieId}
             setClickedSliderType={setClickedSliderType}
-            screenId={String(data?.results[0].id).concat(SLIDER_TYPES.NOW_PLAYING_MOVIE)}
-            setScreenId={setScreenId}
           />
           <SliderArea>
             <Slider

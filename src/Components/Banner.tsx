@@ -71,8 +71,6 @@ interface IBannerProps {
   bannerClickdMovieId: number | undefined;
   setClickedMovieId: Dispatch<SetStateAction<string | undefined>>;
   setClickedSliderType: Dispatch<SetStateAction<string | undefined>>;
-  screenId: string | undefined;
-  setScreenId: Dispatch<SetStateAction<string | undefined>>;
 }
 
 /**
@@ -92,8 +90,6 @@ function Banner({
   bannerClickdMovieId,
   setClickedMovieId,
   setClickedSliderType,
-  screenId,
-  setScreenId,
 }: IBannerProps): JSX.Element {
   /**
    * Toggles the box popup state.

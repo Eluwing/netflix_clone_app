@@ -35,7 +35,6 @@ function Tv(): JSX.Element {
     getAiringTodayTv,
   );
   const [isBoxPopUp, setIsBoxPopUp] = useState(false);
-  const [screenId, setScreenId] = useState<string>();
   const [toptenMovieIds, setToptenMovieIds] = useState<Array<number | undefined>>([]);
   const [clickedMovieId, setClickedMovieId] = useState<string | undefined>('');
   const [clickedSliderType, setClickedSliderType] = useState<string | undefined>('');
@@ -61,8 +60,6 @@ function Tv(): JSX.Element {
             bannerClickdMovieId={data?.results[1].id}
             setClickedMovieId={setClickedMovieId}
             setClickedSliderType={setClickedSliderType}
-            screenId={String(data?.results[1].id).concat(SCREEN_QUERY_KEY.AIRING_TODAY)}
-            setScreenId={setScreenId}
           />
           <SliderArea>
             <Slider
