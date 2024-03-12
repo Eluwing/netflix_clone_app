@@ -151,6 +151,11 @@ export function getRandVal(min: number, max: number): string {
   return calRand;
 }
 
+/**
+ * Retrieves the query keys for the given slider type.
+ * @param {string | undefined} sliderType - The type of slider.
+ * @returns {string[]} - An array containing the screen and query keys.
+ */
 export function getSliderQueryKey(sliderType: string | undefined): string[] {
   switch (sliderType) {
     case SLIDER_TYPES.NOW_PLAYING_MOVIE:
