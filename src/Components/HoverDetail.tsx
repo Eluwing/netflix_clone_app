@@ -243,24 +243,12 @@ function HoverDetail({
   const toggleBox = (): void => setIsBoxPopUp((prev) => !prev);
 
   /**
-   * Handles box click event.
-   * @param {string} screenId - The screen ID.
+   * Handles the click event for the box.
+   * Sets the clicked movie ID and slider type, toggles the box visibility,
+   * and redirects to the appropriate screen based on the screen type.
+   * @param {React.SetStateAction<string | undefined> | undefined} clickedMovieId - The ID of the clicked movie.
+   * @returns {void}
    */
-  // const onBoxClicked = (screenId: string | undefined): void => {
-  //   if (!screenId) {
-  //     return;
-  //   }
-  //   toggleBox();
-  //   setScreenId(screenId);
-  //   if (screenType === SCREEN_TYPES.MOVIES) {
-  //     history.push(`/movies/${screenId}`);
-  //   } else if (screenType === SCREEN_TYPES.TV) {
-  //     history.push(`/tv/${screenId}`);
-  //   } else {
-  //     history.push('/');
-  //   }
-  // };
-
   const onBoxClicked = (clickedMovieId: SetStateAction<string | undefined> | undefined): void => {
     if (!clickedMovieId) {
       return;
@@ -276,15 +264,6 @@ function HoverDetail({
       history.push('/');
     }
   };
-
-  // useEffect(() => {
-  //   // Sets the query key set based on the Box key id in slider component
-  //   setQueryKeySet(getSliderTypeKey(sliderBoxId));
-  //   // Updates the hovered screen detail data when the screend id changes.
-  //   setHoveredScreen(
-  //     data?.results.find((movie: { id: number }) => sliderBoxId?.includes(String(movie.id))),
-  //   );
-  // }, [sliderBoxId]);
 
   useEffect(() => {
     // Sets the query key set based on the Box key id in slider component

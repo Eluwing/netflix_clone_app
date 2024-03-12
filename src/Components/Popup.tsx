@@ -283,9 +283,19 @@ function Popup({
       history.push('/');
     }
   };
+  /**
+   * Retrieves the genre name associated with the given genre ID.
+   * @param {number} genreId - The ID of the genre.
+   * @returns {IGenres | undefined} - The genre object if found, otherwise undefined.
+   */
   const getGenreName = (genreId: number): IGenres | undefined => {
     return genreData?.genres.find((genre: IGenres) => genre.id === genreId);
   };
+  /**
+   * Checks if the clicked movie ID is among the top ten movies.
+   * @param {number | undefined} clickedMovieId - The ID of the clicked movie.
+   * @returns {number | undefined} - The index of the movie in the top ten list if found, otherwise undefined.
+   */
   const checkToptenMovie = (clickedMovieId: number | undefined): number | undefined => {
     const checkedId = toptenMovieIds.findIndex((movieId) => movieId === clickedMovieId);
     if (typeof checkedId === 'undefined') {
@@ -301,9 +311,11 @@ function Popup({
     );
   }, [data]);
 
-  // Sets the query key set based on the slider type and screen ID.
+  // Update query key set and top ten number when clicked movie ID changes
   useEffect(() => {
+    // Set query key set based on clicked slider type
     setQueryKeySet(getSliderQueryKey(String(clickedSliderType)));
+    // Check if clicked movie is among top ten and update top ten number accordingly
     setToptenNum(checkToptenMovie(Number(clickedMovieId)));
   }, [clickedMovieId]);
 

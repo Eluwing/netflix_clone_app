@@ -91,11 +91,19 @@ function Banner({
   setClickedMovieId,
   setClickedSliderType,
 }: IBannerProps): JSX.Element {
+  const history = useHistory();
   /**
    * Toggles the box popup state.
    */
-  const history = useHistory();
   const toggleBox = (): void => setIsBoxPopUp((prev) => !prev);
+  /**
+   * Handles the click event for the "More Info" button.
+   * Toggles a box, sets clicked movie ID and slider type,
+   * and redirects to the appropriate screen based on the screen type.
+   * @param {string | undefined} movieId - The ID of the movie.
+   * @param {string | undefined} sliderType - The type of slider.
+   * @returns {void}
+   */
   const onMoreInfoClicked = (movieId: string | undefined, sliderType: string | undefined): void => {
     toggleBox();
     setClickedMovieId(movieId);

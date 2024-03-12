@@ -264,6 +264,10 @@ function Slider({
    * Retrieves the title for the sliders based on the specified slider type.
    */
   const slidersTitle = getSlidersTitle(sliderType);
+  /**
+   * Retrieves the IDs of the top ten movies if the slider type is 'TOP_RATED_MOVIE'.
+   * @returns {void}
+   */
   const getToptenIds = (): void => {
     if (SLIDER_TYPES.TOP_RATED_MOVIE === sliderType && typeof data !== 'undefined') {
       // Set movie id of Top Ten list in array
