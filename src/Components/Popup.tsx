@@ -8,14 +8,7 @@ import {
   SCREEN_TYPES,
 } from '../Constants/Common';
 import { useHistory } from 'react-router-dom';
-import {
-  getRandVal,
-  getSliderTypeKey,
-  getVideoQualityTitle,
-  makeImagePath,
-  getMovieId,
-  getSliderQueryKey,
-} from '../utils';
+import { getRandVal, getVideoQualityTitle, makeImagePath, getSliderQueryKey } from '../utils';
 import { IGenres, IMovieOrTv } from '../api';
 import { useQueryClient } from 'react-query';
 import { LikeIcon, PlayIcon, PlusIcon, SubtitleIcon } from '../icon/PopupIcons';

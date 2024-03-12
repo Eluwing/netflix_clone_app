@@ -285,7 +285,7 @@ function Slider({
     } else if (screenType === SCREEN_TYPES.TV) {
       setPopUpMovieMatch((prev) => useRouteMatch<{ movieId: string }>('/tv/:movieId'));
     }
-  }, [setClickedMovieId]);
+  }, [clickedMovieId]);
   useEffect(() => {
     getToptenIds();
   }, [data]);
@@ -326,10 +326,7 @@ function Slider({
                           variants={BoxVariants}
                           whileHover="hover"
                           initial="normal"
-                          onHoverStart={
-                            // () => onBoxHovered(getSliderBoxId(movie.id, sliderAndScreenType))
-                            () => onBoxHovered(movie.id)
-                          }
+                          onHoverStart={() => onBoxHovered(movie.id)}
                           transition={{ type: 'tween' }}
                           bgPhoto={makeImagePath(movie.backdrop_path ?? '', 'w500')}
                         >

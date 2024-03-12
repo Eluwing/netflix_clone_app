@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 're
 import styled from 'styled-components';
 import { AnimatePresence, motion } from 'framer-motion';
 import { DetailIcon, PlayIcon, PlusIcon } from '../icon/HoverIcons';
-import { getSliderTypeKey, getVideoQualityTitle, getRandVal, getSliderQueryKey } from '../utils';
+import { getVideoQualityTitle, getRandVal, getSliderQueryKey } from '../utils';
 import { useQueryClient } from 'react-query';
 import {
   API_INTERFACE_TYPES,
