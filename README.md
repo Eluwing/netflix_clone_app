@@ -1,26 +1,68 @@
-# Netfilx Clone App
+# Netfilxクローンアプリ
+![image](https://github.com/Eluwing/netflix_clone_app/assets/19554478/21a4d04b-6801-4695-a63a-8e74a1781ffb)
 
-## Git Page  
+## 開発理由
+業務内で初めて経験したReactの振り返り/業務知識を深めるために実装したアプリになります。
+
+コロナが流行している際にHuluとかNextfilxでドラマを良く見た時がありますが,、  
+このアプリはどのようにどの技術スタックがあれば装可能かが気になり作り始めました。
+
+## 利用技術
+
+### フロントエンド
+
+| 技術         | バージョン  |
+|--------------|-------------|
+| React        | [18.2.0] |
+| TypeScript | [4.9.4] |
+| react-router-dom | [5.3.3] |
+| styled-components        | [5.3.5] |
+| react-query      | [3.39.2] |
+| react-query/devtools      | [3.39.2] |
+| framer-motion      | [8.3.4] |
+| prettier | [2.8.1] |
+| eslint | [8.30.0] |
+
+### その他
+
+| 技術         | バージョン  | 説明  |
+|--------------|-------------|-------------|
+| themoviedb      | なし | 本プロジェクトでは動画の情報を取得できるAPIを提供するサービスを利用しています。<br>URL：https://www.themoviedb.org/ |
+
+## 画面一覧
+- 映画リスト画面（メイン）
+- TVリスト画面
+
+## 機能一覧(共通)
+- 検索機能
+ - 映画リスト表示（検索結果）
+ - TVリスト表示（検索結果）
+ - （検索機能）ページネーション
+- 動画リストスライダー
+　- 新作動画スライダー
+  - 人気動画スライダー
+  - トップ乱金スライダー
+  - 発売予定動画スライダー
+  - スライダー共通機能
+    - 前のリストに移動、次のリストに移動 
+- プレビューポップアップ（映画ボックスマウスオーバー）
+  - プレビュー動画再生（サンプル動画）
+    - プレビュー動画再生（プレビュー動画マウスオーバー）
+    - プレビュー動画再生中止（プレビュー動画マウスアウト）
+  - 動画基本情報表示
+    - Match、ジャンル、年齢、動画品質
+  - プレイボタン（表示のみ）
+  - マイリスト追加ボタン（表示のみ）
+  - 詳細情報ボタン
+    - プレイボタン（表示のみ）
+    - マイリスト追加ボタン（表示のみ）
+    - いいねボタン（表示のみ）
+    - 動画基本情報表示
+      - Match、ジャンル、年齢、動画品質、字幕ツールチップ、詳細内容
+    
+## デモ  
 https://eluwing.github.io/netflix_clone_app/
->This page display Warning your browser that it is a page with security issues due to a page similar to Netflix.  
+>NetFlixと似ているアプリのため、リンクで接続するとブラウザーの上でワーニングが表示されます
 
-## Todo List
-
-1. More display moive list in Home Page(2023.05.01 Complete)
-2. Create Tv Show page(2023.05.16 Complete)
-3. Fix pop up modal animation bug that A box pops up on the last slider(2023.05.27 Complete)
-4. Fix Pop Up modal bug that not display contents(2023.07.11 Complete)
-5. Fix bug box animation in Slider(2023.07.11 Complete)
-6. Fix bug overlay area in Slider(2023.07.24 Complete)
-7. Fix Not display Pop up data(2023.07.28 Complete)
-8. Improve CSS prev and next button in List Area(2023.08.05 Complete)
-9. Movie list next button animation in Slider component(2023.08.09 Complete)
-10. Fix a bug where some movie image width settings in slide components were set incorrectly(2023.08.15 Complete)
-11. Add Search Feature by entering the keyword(2023.09.17 Complete)
-12. Add Pagination feature in display Search Result Component(2023.11.03 Complete)
-13. Improve moive detail modal
-14. Fix Slider Animation Bug
-15. Other Netflix like features
-
-## Bug Fix and Feature Report(Korean)
+## バグ修正/機能追加レポート(韓国語)
 https://www.notion.so/Clone-Netfilx-379ec8e8b68249b3bf5d1efec0854123?pvs=4
