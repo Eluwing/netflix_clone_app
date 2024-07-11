@@ -23,7 +23,7 @@ const VideoCoverArea = styled(motion.video)`
 const VideoPlayTools = styled(motion.div)``;
 
 const ButtonArea = styled(motion.div)`
-  padding: 1rem;
+  padding: 1rem 1rem 0rem 1rem;
   display: flex;
   justify-content: space-between;
 `;
@@ -54,7 +54,7 @@ const Wapper = styled.div``;
 const DetailButton = styled(CommonButton)``;
 
 const VideoDetail = styled.div`
-  padding: 0rem 1rem 1rem 1rem;
+  padding: 1rem;
   font-size: 10px;
   background-color: #141414;
 `;
